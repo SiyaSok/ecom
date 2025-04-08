@@ -17,3 +17,25 @@ export function formatNumberWithDecimal(num: number): string {
 
   return decimal ? `${int}.${decimal.padEnd(2, "0")}` : `${int}.00`;
 }
+
+// Format errors
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function FormatError(error: any) {
+  console.log(error, error.name);
+  if (error.name === "ZodError") {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const fieldErrors = error.errors?.map((err: any) => err.message) || [];
+    return fieldErrors.join(". ");
+  } else if (
+    error.name === "PrismaClientKnownRequestError" &&
+    error.code === "P2002"
+  ) {
+    const field = error.meta?.target ? error.meta.target[0] : "Field";
+    return `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`;
+  } else {
+    return typeof error.message === "string"
+      ? error.message
+      : JSON.stringify(error);
+  }
+}
