@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import ModeToggle from "./mode-toggle";
-import { EllipsisVertical, ShoppingCart, UserIcon } from "lucide-react";
+import { EllipsisVertical, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -12,6 +12,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import UserButton from "./user-button";
 const Menu = () => {
   return (
     <div className='flex justify-end gap-3'>
@@ -22,12 +23,7 @@ const Menu = () => {
             <ShoppingCart className='' /> Cart
           </Link>
         </Button>
-        <Button asChild>
-          <Link href='/sign-in'>
-            <UserIcon className='' />
-            Sign In
-          </Link>
-        </Button>
+        <UserButton />
       </nav>
       <nav className='md:hidden'>
         <Sheet>
@@ -43,12 +39,7 @@ const Menu = () => {
                   <ShoppingCart className='' /> Cart
                 </Link>
               </Button>
-              <Button asChild>
-                <Link href='/sign-in'>
-                  <UserIcon className='' />
-                  Sign In
-                </Link>
-              </Button>
+              <UserButton />
               <SheetDescription></SheetDescription>
             </SheetHeader>
           </SheetContent>
