@@ -60,8 +60,6 @@ export const config = {
         session.user.name = user.name;
       }
 
-      console.log(token);
-
       return session;
     },
     async jwt({ token, user, trigger, session }: any) {
