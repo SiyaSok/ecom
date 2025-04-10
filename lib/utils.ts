@@ -22,7 +22,6 @@ export function formatNumberWithDecimal(num: number): string {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function FormatError(error: any) {
-  console.log(error, error.name);
   if (error.name === "ZodError") {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const fieldErrors = error.errors?.map((err: any) => err.message) || [];
@@ -37,5 +36,17 @@ export async function FormatError(error: any) {
     return typeof error.message === "string"
       ? error.message
       : JSON.stringify(error);
+  }
+}
+
+// Round number to 2 decimal places
+
+export function round2(value: number | string) {
+  if (typeof value === "number") {
+    return Math.round((value + Number.EPSILON) * 100) / 100;
+  } else if (typeof value === "string") {
+    return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
+  } else {
+    throw new Error("Value must a number or string");
   }
 }

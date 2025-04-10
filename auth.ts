@@ -1,53 +1,50 @@
 /** @format */
 
-import NextAuth from "next-auth";
+import NextAuth, { type NextAuthConfig } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/db/prisma";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compareSync } from "bcrypt-ts-edge";
-import type { NextAuthConfig } from "next-auth";
-import { use } from "react";
+import { authConfig } from "./auth.config";
 
-export const config = {
+export const config: NextAuthConfig = {
   pages: {
     signIn: "/sign-in",
     signOut: "/sign-in",
   },
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
+      name: "Credentials",
       credentials: {
-        email: { label: "email" },
-        password: { label: "Password" },
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (credentials == null) return null;
+        if (!credentials?.email || !credentials?.password) return null;
 
-        const user = await prisma.user.findFirst({
+        const user = await prisma.user.findUnique({
           where: { email: credentials.email as string },
         });
 
-        if (user && user.password) {
-          const isMatch = compareSync(
-            credentials.password as string,
-            user.password
-          );
+        if (!user || !user.password) return null;
 
-          if (isMatch) {
-            return {
-              id: user.id,
-              name: user.name,
-              email: user.email,
-              role: user.role,
-            };
-          }
-        }
+        const isValidPassword = compareSync(
+          credentials.password as string,
+          user.password
+        );
+        if (!isValidPassword) return null;
 
-        return null;
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        };
       },
     }),
   ],
@@ -76,7 +73,8 @@ export const config = {
 
       return token;
     },
+    ...authConfig.callbacks,
   },
-} satisfies NextAuthConfig;
+};
 
 export const { handlers, signIn, signOut, auth } = NextAuth(config);
