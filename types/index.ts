@@ -4,6 +4,7 @@ import {
   insertProductSchema,
   cartItemSchema,
   inssertCartSchema,
+  ShippingAddressSchema,
 } from "@/lib/vaildators";
 import { z } from "zod";
 
@@ -16,3 +17,4 @@ export type Product = z.infer<typeof insertProductSchema> & {
 
 export type Cart = z.infer<typeof inssertCartSchema>;
 export type CartItem = z.infer<typeof cartItemSchema>;
+export type ShippingAddress = z.infer<typeof ShippingAddressSchema>;
