@@ -7,7 +7,7 @@ import { CartItem } from "@/types";
 import { convertToPlainObject, FormatError, round2 } from "../utils";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { auth } from "@/auth";
-import { cartItemSchema, inssertCartSchema } from "../vaildators";
+import { cartItemSchema, insertCartSchema } from "../vaildators";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
 
@@ -50,7 +50,7 @@ export async function addItemToCart(data: CartItem) {
 
     if (!cart) {
       // Create New cart Object
-      const newCart = inssertCartSchema.parse({
+      const newCart = insertCartSchema.parse({
         userId: userId,
         items: [item],
         sessionCartId: sessionCartId,

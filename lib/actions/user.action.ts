@@ -4,7 +4,7 @@
 
 import {
   paymentMethodSchema,
-  ShippingAddressSchema,
+  shippingAddressSchema,
   signInFormSchema,
   signUpFormSchema,
 } from "../vaildators";
@@ -94,7 +94,7 @@ export async function updateUserAddress(data: ShippingAddress) {
 
     if (!user) throw new Error("User not found!!");
 
-    const address = ShippingAddressSchema.parse(data);
+    const address = shippingAddressSchema.parse(data);
 
     await prisma.user.update({
       where: { id: session?.user?.id },

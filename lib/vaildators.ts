@@ -4,8 +4,6 @@ import { z } from "zod";
 import { formatNumberWithDecimal } from "./utils";
 import { PAYMENT_METHODS } from "./constants";
 
-// Schema for inserting products
-
 const currency = z
   .string()
   .refine(
@@ -13,20 +11,23 @@ const currency = z
     "Price must have exactly two decimal places"
   );
 
+// Schema for inserting products
 export const insertProductSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   slug: z.string().min(3, "Slug must be at least 3 characters"),
   category: z.string().min(3, "Category must be at least 3 characters"),
   brand: z.string().min(3, "Brand must be at least 3 characters"),
-  description: z
-    .string()
-    .min(10, "Brand must be at least 10 characters")
-    .max(500),
+  description: z.string().min(3, "Description must be at least 3 characters"),
   stock: z.coerce.number(),
-  images: z.array(z.string().min(1, "Product must be at least have 1 image")),
+  images: z.array(z.string()).min(1, "Product must have at least one image"),
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
   price: currency,
+});
+
+// Schema for updating products
+export const updateProductSchema = insertProductSchema.extend({
+  id: z.string().min(1, "Id is required"),
 });
 
 // Schema for signing users in
@@ -35,6 +36,7 @@ export const signInFormSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
+// Schema for signing up a user
 export const signUpFormSchema = z
   .object({
     name: z.string().min(3, "Name must be at least 3 characters"),
@@ -45,10 +47,11 @@ export const signUpFormSchema = z
       .min(6, "Confirm password must be at least 6 characters"),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Password don't match",
+    message: "Passwords don't match",
     path: ["confirmPassword"],
   });
 
+// Cart Schemas
 export const cartItemSchema = z.object({
   productId: z.string().min(1, "Product is required"),
   name: z.string().min(1, "Name is required"),
@@ -58,7 +61,7 @@ export const cartItemSchema = z.object({
   price: currency,
 });
 
-export const inssertCartSchema = z.object({
+export const insertCartSchema = z.object({
   items: z.array(cartItemSchema),
   itemsPrice: currency,
   totalPrice: currency,
@@ -69,19 +72,17 @@ export const inssertCartSchema = z.object({
 });
 
 // Schema for the shipping address
-
-export const ShippingAddressSchema = z.object({
+export const shippingAddressSchema = z.object({
   fullName: z.string().min(3, "Name must be at least 3 characters"),
   streetAddress: z.string().min(3, "Address must be at least 3 characters"),
   city: z.string().min(3, "City must be at least 3 characters"),
-  postalCode: z.string().min(3, "Postal Code must be at least 3 characters"),
-  country: z.string().min(3, "Counttry must be at least 3 characters"),
+  postalCode: z.string().min(3, "Postal code must be at least 3 characters"),
+  country: z.string().min(3, "Country must be at least 3 characters"),
   lat: z.number().optional(),
   lng: z.number().optional(),
 });
 
 // Schema for payment method
-
 export const paymentMethodSchema = z
   .object({
     type: z.string().min(1, "Payment method is required"),
@@ -98,15 +99,13 @@ export const insertOrderSchema = z.object({
   shippingPrice: currency,
   taxPrice: currency,
   totalPrice: currency,
-  paymentMethodS: z.string().refine((data) => PAYMENT_METHODS.includes(data), {
-    message: "invalid payment method",
+  paymentMethod: z.string().refine((data) => PAYMENT_METHODS.includes(data), {
+    message: "Invalid payment method",
   }),
-
-  ShippingAddress: ShippingAddressSchema,
+  shippingAddress: shippingAddressSchema,
 });
 
-// Schema for inserting order item
-
+// Schema for inserting an order item
 export const insertOrderItemSchema = z.object({
   productId: z.string(),
   slug: z.string(),

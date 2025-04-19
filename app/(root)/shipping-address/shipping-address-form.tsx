@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useTransition } from "react";
 import { ShippingAddress } from "@/types";
-import { ShippingAddressSchema } from "@/lib/vaildators";
+import { shippingAddressSchema } from "@/lib/vaildators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ControllerRenderProps, useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
@@ -26,16 +26,19 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
   const [isPending, startTransition] = useTransition();
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof ShippingAddressSchema>>({
-    resolver: zodResolver(ShippingAddressSchema),
+  const form = useForm<z.infer<typeof shippingAddressSchema>>({
+    resolver: zodResolver(shippingAddressSchema),
     defaultValues: address,
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof ShippingAddressSchema>> = async (
+  const onSubmit: SubmitHandler<z.infer<typeof shippingAddressSchema>> = async (
     values
   ) => {
     startTransition(async () => {
       const res = await updateUserAddress(values);
+
+      console.log(res);
+
       if (!res.success) {
         toast({
           variant: "destructive",
@@ -68,7 +71,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
                 field,
               }: {
                 field: ControllerRenderProps<
-                  z.infer<typeof ShippingAddressSchema>
+                  z.infer<typeof shippingAddressSchema>
                 >;
               }) => (
                 <FormItem className='w-full'>
@@ -90,7 +93,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
                 field,
               }: {
                 field: ControllerRenderProps<
-                  z.infer<typeof ShippingAddressSchema>
+                  z.infer<typeof shippingAddressSchema>
                 >;
               }) => (
                 <FormItem className='w-full'>
@@ -112,7 +115,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
                 field,
               }: {
                 field: ControllerRenderProps<
-                  z.infer<typeof ShippingAddressSchema>
+                  z.infer<typeof shippingAddressSchema>
                 >;
               }) => (
                 <FormItem className='w-full'>
@@ -134,7 +137,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
                 field,
               }: {
                 field: ControllerRenderProps<
-                  z.infer<typeof ShippingAddressSchema>
+                  z.infer<typeof shippingAddressSchema>
                 >;
               }) => (
                 <FormItem className='w-full'>
@@ -156,7 +159,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
                 field,
               }: {
                 field: ControllerRenderProps<
-                  z.infer<typeof ShippingAddressSchema>
+                  z.infer<typeof shippingAddressSchema>
                 >;
               }) => (
                 <FormItem className='w-full'>
