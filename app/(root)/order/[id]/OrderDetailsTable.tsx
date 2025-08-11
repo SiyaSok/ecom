@@ -1,4 +1,5 @@
 /** @format */
+"use client";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,8 +15,25 @@ import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import { Order } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
+import {
+  PayPalButtons,
+  PayPalScriptProvider,
+  usePayPalScriptReducer,
+} from "@paypal/react-paypal-js";
 
-const OrderDetailsTable = ({ order }: { order: Order }) => {
+import {
+  createPayPalOrder,
+  approvePayPalOrder,
+} from "@/lib/actions/order.action";
+
+const OrderDetailsTable = ({
+  order,
+  paypalClientId,
+}: {
+  order: Order;
+  paypalClientId: string;
+}) => {
   const {
     id,
     shippingAddress,
@@ -31,6 +49,45 @@ const OrderDetailsTable = ({ order }: { order: Order }) => {
     deliveredAt,
   } = order;
 
+  const { toast } = useToast();
+  const PrintLoadingState = () => {
+    const [{ isPending, isRejected }] = usePayPalScriptReducer();
+
+    let status: string = "";
+
+    if (isPending) {
+      status = "Loading PayPal...";
+    } else if (isRejected) {
+      status = "Error Loading PayPal...";
+    }
+
+    return status;
+  };
+
+  const handleCreatePayPalOrder = async () => {
+    const res = await createPayPalOrder(order.id);
+
+    if (!res.success) {
+      toast({
+        variant: "destructive",
+        description: res.message,
+      });
+    }
+
+    return res.data;
+  };
+
+  const handleApprovePayPalOrder = async (data: { orderID: string }) => {
+    const res = await approvePayPalOrder(order.id, data);
+
+    if (!res.success) {
+      toast({
+        variant: res.success ? "default" : "destructive",
+        description: res.message,
+      });
+    }
+  };
+  console.log(paypalClientId);
   return (
     <>
       <h1 className='py-4 text-2xl'>Order {formatId(id)}</h1>
@@ -97,7 +154,7 @@ const OrderDetailsTable = ({ order }: { order: Order }) => {
                         <span className='px-2'>{item.qty}</span>
                       </TableCell>
                       <TableCell className='text-right'>
-                        ${item.price}
+                        R {item.price}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -127,7 +184,7 @@ const OrderDetailsTable = ({ order }: { order: Order }) => {
               </div>
 
               {/* PayPal Payment */}
-              {/* {!isPaid && paymentMethod === 'PayPal' && (
+              {!isPaid && paymentMethod === "PayPal" && (
                 <div>
                   <PayPalScriptProvider options={{ clientId: paypalClientId }}>
                     <PrintLoadingState />
@@ -138,7 +195,7 @@ const OrderDetailsTable = ({ order }: { order: Order }) => {
                   </PayPalScriptProvider>
                 </div>
               )}
- */}
+
               {/* Stripe Payment */}
               {/* {!isPaid && paymentMethod === 'Stripe' && stripeClientSecret && (
                 <StripePayment
