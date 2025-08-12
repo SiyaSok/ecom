@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { BringToFront, LogOut, User, UserIcon } from "lucide-react";
+import { BringToFront, LogOut, Target, User, UserIcon } from "lucide-react";
 
 const UserButton = async () => {
   const session = await auth();
@@ -65,6 +65,17 @@ const UserButton = async () => {
               <BringToFront /> Order History
             </Link>
           </DropdownMenuItem>
+
+          {session?.user?.role === "admin" && (
+            <DropdownMenuItem>
+              <Link
+                href='/admin/overview'
+                className='w-full flex gap-2 items-center'>
+                <Target /> Admim
+              </Link>
+            </DropdownMenuItem>
+          )}
+
           <DropdownMenuItem className='p-0 mb-1'>
             <form action={signOutUser} className='w-full'>
               <Button
