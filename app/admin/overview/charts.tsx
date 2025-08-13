@@ -1,6 +1,13 @@
 /** @format */
 "use client";
-import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import {
+  BarChart,
+  Bar,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from "recharts";
 
 const ChartOverview = ({
   data: { salesData },
@@ -12,6 +19,8 @@ const ChartOverview = ({
   return (
     <ResponsiveContainer width='100%' height={350}>
       <BarChart data={salesData}>
+        <Tooltip />
+
         <XAxis
           dataKey='month'
           stroke='#888888'
@@ -25,7 +34,7 @@ const ChartOverview = ({
           fontSize={12}
           tickLine={false}
           axisLine={false}
-          tickFormatter={(value) => `$${value}`}
+          tickFormatter={(value) => `R${value}`}
         />
         <Bar
           dataKey='totalSales'
