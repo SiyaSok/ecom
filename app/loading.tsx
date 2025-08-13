@@ -1,7 +1,7 @@
 /** @format */
 
 import Image from "next/image";
-import loader from "@/assets/loader.gif";
+import loader from "@/assets/loading-4802_512.gif";
 const LoadingPage = () => {
   return (
     <div

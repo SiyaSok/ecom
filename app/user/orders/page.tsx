@@ -12,6 +12,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Pagination from "@/components/ui/shared/pagination";
+import { Button } from "@/components/ui/button";
+import { Eye } from "lucide-react";
 
 // export const matadata: Metadata = {
 //   title: "My Orders",
@@ -57,7 +59,11 @@ const OrdersPage = async (props: {
                     : "Not Delivered"}
                 </TableCell>
                 <TableCell>
-                  <Link href={`/order/${order.id}`}>View </Link>
+                  <Button asChild variant='outline' size='sm'>
+                    <Link href={`/order/${order.id}`}>
+                      <Eye />
+                    </Link>
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

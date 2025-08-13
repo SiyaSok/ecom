@@ -1,6 +1,6 @@
 /** @format */
 // import { Metadata } from "next";
-import { getAllOrders } from "@/lib/actions/order.action";
+import { deleteOrder, getAllOrders } from "@/lib/actions/order.action";
 import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import Link from "next/link";
 import {
@@ -14,7 +14,8 @@ import {
 import Pagination from "@/components/ui/shared/pagination";
 import { rquireAdmin } from "@/lib/auth-guard";
 import { Button } from "@/components/ui/button";
-import { Eye, Trash } from "lucide-react";
+import { Eye } from "lucide-react";
+import DeleteDialog from "@/components/ui/shared/delete-dialog";
 
 const OrdersPage = async (props: {
   searchParams: Promise<{ page: string }>;
@@ -63,11 +64,7 @@ const OrdersPage = async (props: {
                       <Eye />
                     </Link>
                   </Button>
-                  <Button asChild variant='outline' size='sm' className='ml-2'>
-                    <Link href={`/order/${order.id}`}>
-                      <Trash />
-                    </Link>
-                  </Button>
+                  <DeleteDialog id={order.id} action={deleteOrder} />
                 </TableCell>
               </TableRow>
             ))}
