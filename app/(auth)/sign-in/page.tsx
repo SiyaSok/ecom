@@ -39,8 +39,8 @@ const SignInPage = async (props: {
             <Image
               src='/images/logo.svg'
               alt='logo'
-              height={50}
-              width={50}
+              height={80}
+              width={80}
               priority={true}
             />
           </Link>

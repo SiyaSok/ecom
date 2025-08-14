@@ -397,3 +397,41 @@ export async function deleteOrder(orderId: string) {
     return { success: false, message: FormatError(error) };
   }
 }
+
+// Update Cash on delivery order to  paid
+export async function updateOrderToPaidCOD(orderId: string) {
+  try {
+    await updateOrderToPaid({ orderId });
+
+    revalidatePath(`/order/${orderId}`);
+
+    return { success: true, message: "'Order has been marked as paid" };
+  } catch (error) {
+    return { success: false, message: FormatError(error) };
+  }
+}
+// Update Cash on delivery order to  delivered
+export async function deliverOrder(orderId: string) {
+  try {
+    const order = await prisma.order.findFirst({
+      where: { id: orderId },
+    });
+
+    if (!order) throw new Error("Order not found!!");
+    if (!order.isPaid) throw new Error("Order has not been Paid!!");
+
+    await prisma.order.update({
+      where: { id: orderId },
+      data: {
+        isDelivered: true,
+        deliveredAt: new Date(),
+      },
+    });
+
+    revalidatePath(`/order/${orderId}`);
+
+    return { success: true, message: "'Order has been marked as delivered" };
+  } catch (error) {
+    return { success: false, message: FormatError(error) };
+  }
+}
