@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "../button";
 import { formURLQuery } from "@/lib/utils";
+import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
 type PaginationProps = {
   page: number | string;
@@ -33,7 +34,7 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
         className='w-28'
         disabled={Number(page) <= 1}
         onClick={() => handleClick("prev")}>
-        Prev
+        <ChevronsLeft />
       </Button>
       <Button
         size='lg'
@@ -41,7 +42,7 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
         className='w-28'
         disabled={Number(page) >= totalPages}
         onClick={() => handleClick("next")}>
-        Next
+        <ChevronsRight />
       </Button>
     </div>
   );
