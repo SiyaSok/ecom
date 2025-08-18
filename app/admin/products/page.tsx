@@ -37,7 +37,20 @@ const ProductsPage = async (props: {
   return (
     <div className='space-y-2'>
       <div className='flex-between'>
-        <h2 className='h2-bold'>Products</h2>
+        <div className='flex items-center gap-3'>
+          <h1 className='h2-bold'>Proucts</h1>
+          {searchText && (
+            <div>
+              Filted by <i>&quot;{searchText}&quot;</i>{" "}
+              <Link href={"/admin/products"}>
+                <Button variant='outline' size='sm'>
+                  Remove Filter
+                </Button>
+              </Link>
+            </div>
+          )}
+        </div>
+
         <Button asChild variant='outline' size={"lg"}>
           <Link href={"/admin/products/create"} className=''>
             Create Product

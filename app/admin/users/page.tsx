@@ -28,9 +28,22 @@ const UsersPage = async (props: {
     page: Number(page) || 1,
     query: searchText || "",
   });
+
   return (
     <div className='space-y-2'>
-      <h2 className='h2-bold'>All Users</h2>
+      <div className='flex items-center gap-3'>
+        <h1 className='h2-bold'>User</h1>
+        {searchText && (
+          <div>
+            Filted by <i>&quot;{searchText}&quot;</i>{" "}
+            <Link href={"/admin/users"}>
+              <Button variant='outline' size='sm'>
+                Remove Filter
+              </Button>
+            </Link>
+          </div>
+        )}
+      </div>
       <div className='overflow-x-auto'>
         <Table>
           <TableHeader>
