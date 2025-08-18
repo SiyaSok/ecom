@@ -7,6 +7,7 @@ import {
   shippingAddressSchema,
   signInFormSchema,
   signUpFormSchema,
+  updateUserSchema,
 } from "../vaildators";
 import { auth, signIn, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
@@ -15,6 +16,9 @@ import { prisma } from "@/db/prisma";
 import { FormatError } from "../utils";
 import { ShippingAddress } from "@/types";
 import { z } from "zod";
+import { PAGE_SIZE } from "../constants";
+import { revalidatePath } from "next/cache";
+
 export async function signInWithCredentials(
   prevState: unknown,
   formData: FormData
@@ -83,6 +87,29 @@ export async function getUserById(userId: string) {
   return user;
 }
 
+// get all users
+export async function geAllUsers({
+  limit = PAGE_SIZE,
+  page,
+}: // query,
+{
+  limit?: number;
+  page: number;
+  query: string;
+}) {
+  const data = await prisma.user.findMany({
+    orderBy: { createdAt: "desc" },
+    take: limit,
+    skip: (page - 1) * limit,
+  });
+
+  const dataCount = await prisma.user.count();
+
+  return {
+    data,
+    totalPages: Math.ceil(dataCount / limit),
+  };
+}
 // update user Adddress
 export async function updateUserAddress(data: ShippingAddress) {
   try {
@@ -155,6 +182,50 @@ export async function updateProfile(user: { name: string; email: string }) {
       where: { id: currentUser?.id },
       data: { name: user.name },
     });
+    return {
+      success: true,
+      message: "User Profile has been update successfully",
+    };
+  } catch (error) {
+    return { success: false, message: FormatError(error) };
+  }
+}
+
+// Delete user
+export async function deleteUser(userId: string) {
+  try {
+    await prisma.user.delete({
+      where: { id: userId },
+    });
+
+    revalidatePath("/admin/users");
+
+    return {
+      success: true,
+      message: "The User has been deleted...",
+    };
+  } catch (error) {
+    return { success: false, message: FormatError(error) };
+  }
+}
+
+// update the user
+
+export async function updateUser(user: z.infer<typeof updateUserSchema>) {
+  try {
+    const currentUser = await prisma.user.findFirst({
+      where: { id: user.id },
+    });
+
+    if (!currentUser) throw new Error("User not found!!");
+
+    await prisma.user.update({
+      where: { id: currentUser?.id },
+      data: { name: user.name, role: user.role },
+    });
+
+    revalidatePath("/admin/users");
+
     return {
       success: true,
       message: "User Profile has been update successfully",
