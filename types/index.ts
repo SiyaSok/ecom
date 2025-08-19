@@ -6,6 +6,7 @@ import {
   insertOrderItemSchema,
   insertOrderSchema,
   insertProductSchema,
+  insertReviewSchema,
   paymentResultSchema,
   shippingAddressSchema,
 } from "@/lib/vaildators";
@@ -34,8 +35,8 @@ export type Order = z.infer<typeof insertOrderSchema> & {
   // paymentResult: PaymentResult;
 };
 export type PaymentResult = z.infer<typeof paymentResultSchema>;
-// export type Review = z.infer<typeof insertReviewSchema> & {
-//   id: string;
-//   createdAt: Date;
-//   user?: { name: string };
-// };
+export type Review = z.infer<typeof insertReviewSchema> & {
+  id: string;
+  createdAt: Date;
+  user?: { name: string };
+};
