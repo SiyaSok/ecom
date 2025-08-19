@@ -41,7 +41,6 @@ const ProductCarousel = ({ data }: { data: Product[] }) => {
                 />
                 <div className='absolute inset-0 flex items-end justify-start'>
                   <h2 className='bg-gray-900 bg-opacity-50 text-xl font-bold text-white px-2'>
-                    {" "}
                     {product.name}
                   </h2>
                 </div>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Menu from "./menu";
 import CategoryDrawer from "./category-drawer";
+import Search from "./search";
 const Header = () => {
   return (
     <header className='w-full border-b'>
@@ -23,6 +24,7 @@ const Header = () => {
             </span>
           </Link>
         </div>
+        <Search />
         <Menu />
       </div>
     </header>
