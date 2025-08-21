@@ -8,12 +8,13 @@ import { auth } from "@/auth";
 import { getMyCart } from "./cart.action";
 import { getUserById } from "./user.action";
 import { prisma } from "@/db/prisma";
-import { CartItem, PaymentResult } from "@/types";
+import { CartItem, PaymentResult, ShippingAddress } from "@/types";
 import { insertOrderSchema } from "../vaildators";
 import { paypal } from "../paypal";
 import { revalidatePath } from "next/cache";
 import { PAGE_SIZE } from "../constants";
 import { Prisma } from "@prisma/client";
+import { sendPurchaseReceipt } from "@/email";
 
 export async function createOrder() {
   try {
@@ -251,6 +252,14 @@ export async function updateOrderToPaid({
     });
 
     if (!updateOrder) throw new Error("NO order found!!");
+
+    sendPurchaseReceipt({
+      order: {
+        ...updateOrder,
+        shippingAddress: updateOrder.shippingAddress as ShippingAddress,
+        paymentResult: updateOrder.paymentResult as PaymentResult,
+      },
+    });
   } catch (error) {
     return { success: false, message: FormatError(error) };
   }
