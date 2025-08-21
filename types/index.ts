@@ -3,6 +3,8 @@
 import {
   cartItemSchema,
   insertCartSchema,
+  insertCategorySchema,
+  insertCollectionSchema,
   insertOrderItemSchema,
   insertOrderSchema,
   insertProductSchema,
@@ -40,3 +42,5 @@ export type Review = z.infer<typeof insertReviewSchema> & {
   createdAt: Date;
   user?: { name: string };
 };
+export type Collection = z.infer<typeof insertCollectionSchema>;
+export type Category = z.infer<typeof insertCategorySchema>;

@@ -23,6 +23,8 @@ export const insertProductSchema = z.object({
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
   price: currency,
+  collectionId: z.string().uuid().nullable().optional(), // ✅ Added
+  categoryId: z.string().uuid().nullable().optional(), // ✅ Added
 });
 
 // Schema for updating products
@@ -146,4 +148,36 @@ export const insertReviewSchema = z.object({
     .int()
     .min(1, "Rating must be at least 1")
     .max(5, "Rating must be at most 5"),
+});
+
+// NEW: Schema for collections
+export const insertCollectionSchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  slug: z
+    .string()
+    .min(3, "Slug must be at least 3 characters")
+    .nullable()
+    .optional(),
+
+  description: z.string().optional().nullable(),
+});
+
+export const updateCollectionSchema = insertCollectionSchema.extend({
+  id: z.string().uuid("Invalid collection ID"),
+});
+
+// NEW: Schema for categories
+export const insertCategorySchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  slug: z
+    .string()
+    .min(3, "Slug must be at least 3 characters")
+    .nullable()
+    .optional(),
+
+  description: z.string().optional().nullable(),
+});
+
+export const updateCategorySchema = insertCategorySchema.extend({
+  id: z.string().uuid("Invalid category ID"),
 });

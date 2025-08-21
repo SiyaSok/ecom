@@ -18,6 +18,8 @@ const ProductDatailsPage = async (props: {
 
   const product = await getSingleProductBySlug(slug);
 
+  console.log(product);
+
   const session = await auth();
   const userId = session?.user?.id;
 

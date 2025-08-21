@@ -23,6 +23,14 @@ const links = [
     title: "Users",
     href: "/admin/users",
   },
+  {
+    title: "Collections",
+    href: "/admin/collections",
+  },
+  {
+    title: "Categories",
+    href: "/admin/categories",
+  },
 ];
 
 const MainNav = ({
