@@ -190,7 +190,7 @@ export async function approvePayPalOrder(
     return { success: false, message: FormatError(error) };
   }
 }
-async function updateOrderToPaid({
+export async function updateOrderToPaid({
   orderId,
   paymentResult,
 }: {
