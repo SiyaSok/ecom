@@ -3,13 +3,10 @@
 import { z } from "zod";
 import { formatNumberWithDecimal } from "./utils";
 import { PAYMENT_METHODS } from "./constants";
-
-const currency = z
-  .string()
-  .refine(
-    (value) => /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(Number(value))),
-    "Price must have exactly two decimal places"
-  );
+const currency = z.string().refine((value) => {
+  const num = Number(value);
+  return !isNaN(num) && /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(num));
+}, "Price must have exactly two decimal places");
 
 // Schema for inserting products
 export const insertProductSchema = z.object({
@@ -23,8 +20,8 @@ export const insertProductSchema = z.object({
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
   price: currency,
-  collectionId: z.string().uuid().nullable().optional(), // ✅ Added
-  categoryId: z.string().uuid().nullable().optional(), // ✅ Added
+  collectionId: z.string().min(1, "Collection is required"),
+  categoryId: z.string().min(1, "Category is required"),
 });
 
 // Schema for updating products
@@ -127,8 +124,8 @@ export const paymentResultSchema = z.object({
 
 // Schema for updating the user profile
 export const updateProfileSchema = z.object({
-  name: z.string().min(3, "Name must be at leaast 3 characters"),
-  email: z.string().min(3, "Email must be at leaast 3 characters"),
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  email: z.string().min(3, "Email must be at least 3 characters"),
 });
 
 // Schema to update users
@@ -158,7 +155,6 @@ export const insertCollectionSchema = z.object({
     .min(3, "Slug must be at least 3 characters")
     .nullable()
     .optional(),
-
   description: z.string().optional().nullable(),
 });
 
@@ -180,4 +176,9 @@ export const insertCategorySchema = z.object({
 
 export const updateCategorySchema = insertCategorySchema.extend({
   id: z.string().uuid("Invalid category ID"),
+});
+
+export const insertWishlistSchema = z.object({
+  userId: z.string().uuid("Invalid user ID"),
+  productId: z.string().uuid("Invalid product ID"),
 });

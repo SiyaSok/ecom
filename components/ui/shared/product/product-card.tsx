@@ -9,7 +9,7 @@ import Rating from "./rating";
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <Card className='w-full max-w-sm'>
+    <Card className='w-full max-w-sm border-none'>
       <CardHeader className='p-0 items-center'>
         <Link href={`/product/${product.slug}`}>
           <Image
@@ -20,7 +20,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           />
         </Link>
       </CardHeader>
-      <CardContent className='p-4 grid gap-4 space-y-2'>
+      <CardContent className='p-4 grid gap-4 space-y-1'>
         <div className='text-sm'>{product.brand}</div>
         <Link href={`/product/${product.slug}`}>
           <h2 className='text-sm font-medium'>{product.name}</h2>

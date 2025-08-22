@@ -22,10 +22,10 @@ export async function getLatestProducts() {
 export async function getSingleProductBySlug(slug: string) {
   return await prisma.product.findFirst({
     where: { slug: slug },
-    include: {
-      Category: { select: { name: true } },
-      Collection: { select: { name: true } },
-    },
+    // include: {
+    //   Category: { select: { name: true } },
+    //   Collection: { select: { name: true } },
+    // },
   });
 }
 
@@ -35,10 +35,10 @@ export async function getSingleProductById(id: string) {
   try {
     const data = await prisma.product.findFirst({
       where: { id: id },
-      include: {
-        Category: { select: { name: true } },
-        Collection: { select: { name: true } },
-      },
+      // include: {
+      //   Category: { select: { name: true } },
+      //   Collection: { select: { name: true } },
+      // },
     });
     return convertToPlainObject(data);
   } catch (error) {
@@ -116,10 +116,10 @@ export async function getAllProducts({
             : { createdAt: "asc" },
     take: limit,
     skip: (page - 1) * limit,
-    include: {
-      Category: { select: { name: true } },
-      Collection: { select: { name: true } },
-    },
+    // include: {
+    //   Category: { select: { name: true } },
+    //   Collection: { select: { name: true } },
+    // },
   });
 
   const dataCount = await prisma.product.count({});

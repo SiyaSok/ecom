@@ -15,46 +15,49 @@ datasource db {
 }
 
 model Product {
-  id           String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name         String
-  slug         String      @unique(map: "product_slug_idx")
+  slug         String     @unique(map: "product_slug_idx")
   category     String
-  images       String[]
   brand        String
   description  String
   stock        Int
-  price        Decimal     @default(0) @db.Decimal(12, 2)
-  rating       Decimal     @default(0) @db.Decimal(3, 2)
-  numReviews   Int         @default(0)
-  isFeatured   Boolean     @default(false)
+  images       String[]
+  isFeatured   Boolean    @default(false)
   banner       String?
-  createdAt    DateTime    @default(now()) @db.Timestamp(6)
-  updatedAt    DateTime    @updatedAt
-  OrderItem    OrderItem[]
-  Review       Review[]
-  Collection   Collection? @relation(fields: [collectionId], references: [id])
-  Category     Category?
-  collectionId String?     @db.Uuid
-  categoryId   String?     @db.Uuid // ✅ Added foreign key
+  price        Decimal    @default(0) @db.Decimal(12, 2)
+  rating       Decimal    @default(0) @db.Decimal(3, 2)
+  collectionId String     @db.Uuid
+  categoryId   String     @db.Uuid
+  numReviews   Int        @default(0)
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  category_    Category   @relation(fields: [categoryId], references: [id])
+
+  createdAt DateTime    @default(now()) @db.Timestamp(6)
+  updatedAt DateTime?   @updatedAt
+  OrderItem OrderItem[]
+  Review    Review[]
+  Wishlist  Wishlist[]
 }
 
 model User {
-  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name          String    @default("No_name")
-  email         String    @unique(map: "user_email_idx")
-  emailVerified DateTime? @db.Timestamp(6)
+  id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String     @default("No_name")
+  email         String     @unique(map: "user_email_idx")
+  emailVerified DateTime?  @db.Timestamp(6)
   image         String?
   password      String?
-  role          String    @default("user")
-  address       Json?     @db.Json
+  role          String     @default("user")
+  address       Json?      @db.Json
   paymentMethod String?
-  createdAt     DateTime  @default(now()) @db.Timestamp(6)
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime   @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime   @updatedAt
   account       Account[]
   session       Session[]
   Cart          Cart[]
   Order         Order[]
   Review        Review[]
+  Wishlist      Wishlist[]
 }
 
 model Account {
@@ -162,8 +165,8 @@ model Collection {
   slug        String?    @unique // ✅ Added for URL-friendly identification
   description String?
   products    Product[] // one collection = many products
-  categories  Category[] // one collection = many categories
   createdAt   DateTime   @default(now()) @db.Timestamp(6)
+  categories  Category[] @relation("CategoryCollections")
   updatedAt   DateTime?  @updatedAt
 }
 
@@ -172,9 +175,19 @@ model Category {
   slug        String?      @unique
   description String?
   name        String       @default("No_name")
-  productId   String?      @unique @db.Uuid // one product = one category
-  product     Product?     @relation(fields: [productId], references: [id], onDelete: Cascade)
-  collection  Collection[]
+  products    Product[]
+  collections Collection[] @relation("CategoryCollections")
   createdAt   DateTime     @default(now()) @db.Timestamp(6)
   updatedAt   DateTime?    @updatedAt
+}
+
+model Wishlist {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @db.Uuid
+  productId String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+
+  @@unique([userId, productId]) // Prevent duplicate wishlist entries
 }

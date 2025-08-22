@@ -4,7 +4,7 @@
 import { useToast } from "@/hooks/use-toast";
 import { productDefaultValues } from "@/lib/constants";
 import { insertProductSchema, updateProductSchema } from "@/lib/vaildators";
-import { Product } from "@/types";
+import { Category, Collection, Product } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -29,15 +29,26 @@ import {
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
 import { Checkbox } from "../ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const ProductForm = ({
   type,
   product,
   productId,
+  categories,
+  collections,
 }: {
   type: "Create" | "Update";
   product?: Product;
   productId?: string;
+  categories: Category[];
+  collections: Collection[];
 }) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -100,7 +111,7 @@ const ProductForm = ({
   const isFeatured = form.watch("isFeatured");
   const banner = form.watch("banner");
 
-  console.log(banner);
+  console.log(categories);
 
   return (
     <Form {...form}>
@@ -172,6 +183,63 @@ const ProductForm = ({
                 <FormLabel>Brand</FormLabel>
                 <FormControl>
                   <Input placeholder='Enter product brand' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className='flex flex-col gap-5 md:flex-row'>
+          <FormField
+            control={form.control}
+            name='collectionId'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabel>Collection</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}>
+                    <SelectTrigger className='w-full'>
+                      <SelectValue placeholder='Select a collections' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {collections.map((collection) => (
+                        <SelectItem key={collection.id} value={collection.id}>
+                          {collection.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='categoryId'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabel>Category</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}>
+                    <SelectTrigger className='w-full'>
+                      <SelectValue placeholder='Select a category' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>

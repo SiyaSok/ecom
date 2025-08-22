@@ -16,7 +16,7 @@ import { z } from "zod";
 
 export type Product = z.infer<typeof insertProductSchema> & {
   id: string;
-  rating: string;
+  rating?: string;
   numReviews: number;
   createdAt: Date;
 };
@@ -42,5 +42,9 @@ export type Review = z.infer<typeof insertReviewSchema> & {
   createdAt: Date;
   user?: { name: string };
 };
-export type Collection = z.infer<typeof insertCollectionSchema>;
-export type Category = z.infer<typeof insertCategorySchema>;
+export type Collection = z.infer<typeof insertCollectionSchema> & {
+  id: string;
+};
+export type Category = z.infer<typeof insertCategorySchema> & {
+  id: string;
+};

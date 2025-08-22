@@ -39,7 +39,7 @@ const CollectionsPage = async (props: {
           {searchText && (
             <div>
               Filted by <i>&quot;{searchText}&quot;</i>{" "}
-              <Link href={"/admin/products"}>
+              <Link href={"/admin/collections"}>
                 <Button variant='outline' size='sm'>
                   Remove Filter
                 </Button>
@@ -50,7 +50,7 @@ const CollectionsPage = async (props: {
 
         <Button asChild variant='outline' size={"lg"}>
           <Link href={"/admin/collections/create"} className=''>
-            Create Product
+            Create Collections
           </Link>
         </Button>
       </div>

@@ -11,9 +11,9 @@ const ProductImages = ({ images }: { images: string[] }) => {
       <Image
         src={images[current]}
         alt='product-image'
-        width={1000}
-        height={1000}
-        className='min-h-[300px] object-cover object-center'
+        width={800}
+        height={800}
+        className='min-h-[200px] object-cover object-center'
       />
       <div className='flex'>
         {images.map((image, index) => (
@@ -21,10 +21,10 @@ const ProductImages = ({ images }: { images: string[] }) => {
             key={index}
             onClick={() => setCutrrent(index)}
             className={cn(
-              "border mr-2 cursor-pointer hover:border-orange-600",
-              current === index && "border-orange-500"
+              "border mr-2 cursor-pointer hover:border-black",
+              current === index && "border-black"
             )}>
-            <Image src={image} alt='image' width={100} height={100} />
+            <Image src={image} alt='image' width={80} height={80} />
           </div>
         ))}
       </div>

@@ -78,7 +78,7 @@ const ProductsPage = async (props: {
                 <TableCell>{formatCurrency(product.price)}</TableCell>
                 <TableCell>{product.category}</TableCell>
                 <TableCell>{product.stock}</TableCell>
-                <TableCell>{product.rating}</TableCell>
+                <TableCell>{product.rating.toString()}</TableCell>
 
                 <TableCell>
                   <Button size='sm' variant='outline'>
