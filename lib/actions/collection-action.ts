@@ -32,7 +32,7 @@ export async function createCollection(
 
 // update products
 
-export async function updateeCollection(
+export async function updateCollection(
   data: z.infer<typeof updateCollectionSchema>
 ) {
   try {
@@ -89,27 +89,21 @@ export async function getSingleCollectiontById(id: string) {
   }
 }
 
-// export async function updateeProducts(
-//   data: z.infer<typeof insertCollectionSchema>
-// ) {
-//   try {
-//     const collection = insertCollectionSchema.parse(data);
-
-//     const existingProd = await prisma.collection.findFirst({
-//       where: { name: collection.name },
-//     });
-
-//     if (!existingProd) throw new Error("Product not found!! ");
-
-//     await prisma.product.update({
-//       where: { id: product.id },
-//       data: product,
-//     });
-
-//     revalidatePath("/adminn/products");
-
-//     return { success: true, message: "Product has been updated..." };
-//   } catch (error) {
-//     return { success: false, message: FormatError(error) };
-//   }
-// }
+//get single Collection By Slug
+export async function getSingleCollectionBySlug(slug: string) {
+  return await prisma.collection.findFirst({
+    where: { slug: slug.toLowerCase() },
+    include: {
+      products: {
+        include: {
+          collection: {
+            select: { name: true, slug: true },
+          },
+          category_: {
+            select: { name: true, slug: true },
+          },
+        },
+      },
+    },
+  });
+}

@@ -10,8 +10,17 @@ import { getMyCart } from "@/lib/actions/cart.action";
 import { auth } from "@/auth";
 import ReviewList from "./review-list";
 import Rating from "@/components/ui/shared/product/rating";
-import { Button } from "@/components/ui/button";
-import { Heart, TruckIcon } from "lucide-react";
+import { TruckIcon } from "lucide-react";
+import AddToWishList from "@/components/ui/shared/product/add-to-wishlish";
+import Breadcrumbs from "@/components/ui/shared/product/Breadcrumbs";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
 const ProductDatailsPage = async (props: {
   params: Promise<{ slug: string }>;
 }) => {
@@ -24,8 +33,10 @@ const ProductDatailsPage = async (props: {
   const cart = await getMyCart();
 
   if (!product) notFound();
+
   return (
     <>
+      <Breadcrumbs product={product} />
       <section>
         <div className='grid grid-cols-1 md:grid-cols-4 gap-10'>
           <div className='col-span-2'>
@@ -36,12 +47,17 @@ const ProductDatailsPage = async (props: {
               <p>
                 {product.brand} {product.category}
               </p>
-              <h1 className='h3-bold'>{product.name}</h1>
+              <h1 className='text-2xl'>{product.name}</h1>
               <div className='flex flex-col sm:flex-row sm:items-center gap-3'>
                 <ProductPrice
                   value={Number(product.price)}
-                  className='font-bold my-1'
+                  className='font-bold my-1 italic text-2xl'
                 />
+              </div>
+              <div className='flex flex-col sm:flex-row sm:items-center gap-3'>
+                <p className='text-sm text-muted-foreground'>
+                  eB:{Number(product.price) * 10}
+                </p>
               </div>
               <p>
                 {/* {product.rating} of {product.numReviews} Reviews */}
@@ -53,10 +69,7 @@ const ProductDatailsPage = async (props: {
             </div>
             <div>
               {product.stock > 0 && (
-                <div className='flex-center'>
-                  <Button variant='outline' className='mr-2 w-24 h-14'>
-                    <Heart />
-                  </Button>
+                <div className='grid grid-cols-2 gap-2'>
                   <AddToCart
                     cart={cart}
                     item={{
@@ -67,6 +80,10 @@ const ProductDatailsPage = async (props: {
                       qty: 1,
                       image: product.images![0],
                     }}
+                  />
+                  <AddToWishList
+                    productId={product.id}
+                    userId={userId || null}
                   />
                 </div>
               )}
@@ -80,6 +97,48 @@ const ProductDatailsPage = async (props: {
                 Or 6 payments of R {(Number(product.price) / 6).toFixed(2)} at
                 0% interest.
               </p>
+            </div>
+            <div className='mt-4'>
+              <Accordion type='single' collapsible>
+                <AccordionItem value='item-1'>
+                  <AccordionTrigger className='flex flex-col items-start'>
+                    <p>
+                      {" "}
+                      GET IT NOW, PAY LATER Pay using our credit options,
+                      Payflex,
+                    </p>
+                    <p className='text-muted-foreground text-sm mt-2'>
+                      {" "}
+                      PayJustNow, Mobicred or RCS.
+                    </p>
+                  </AccordionTrigger>
+                  <AccordionContent className='space-y-4'>
+                    <p>
+                      Simply choose the option that best suits you at checkout,
+                      and we’ll ship it immediately once the order is approved.
+                    </p>
+                    <p>
+                      From R174.75 every 2 weeks Pay for your order in either 4
+                      interest-free payments over 6 weeks OR 3 interest-free
+                      payments over 3 paydays – all at 0% interest.
+                    </p>
+                    <p>
+                      R233.00 every month Super simple and easy sign-up. Pay for
+                      your purchases over 3 instalments, interest and fee free.
+                    </p>
+                    <p>
+                      R65p.m x 12 months Easy online application, instant
+                      response. Apply online and repay in convenient monthly
+                      instalments.
+                    </p>
+                    <p>
+                      R64p.m x 12 months Affordable monthly instalments, with
+                      flexible payment options: Revolving, 24 or 36 months
+                      budget plans.
+                    </p>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
             <div className='mt-4'>
               {/* <p className='font-semibold'>Description</p> */}

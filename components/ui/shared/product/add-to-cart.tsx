@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { addItemToCart } from "@/lib/actions/cart.action";
 import { useTransition } from "react";
+
 const AddToCart = ({ cart, item }: { cart?: Cart; item: CartItem }) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -78,7 +79,7 @@ const AddToCart = ({ cart, item }: { cart?: Cart; item: CartItem }) => {
       ) : (
         <Plus className='h-4 w-4' />
       )}{" "}
-      Add To Cart
+      ADD TO CART
     </Button>
   );
 };

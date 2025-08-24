@@ -13,6 +13,14 @@ export async function getLatestProducts() {
   const products = await prisma.product.findMany({
     take: LATEST_PRODUCTS_LIMIT,
     orderBy: { createdAt: "desc" },
+    include: {
+      collection: {
+        select: { name: true, slug: true }, // ✅ include slug
+      },
+      category_: {
+        select: { name: true, slug: true }, // ✅ include slug
+      },
+    },
   });
   return convertToPlainObject(products);
 }
@@ -22,10 +30,10 @@ export async function getLatestProducts() {
 export async function getSingleProductBySlug(slug: string) {
   return await prisma.product.findFirst({
     where: { slug: slug },
-    // include: {
-    //   Category: { select: { name: true } },
-    //   Collection: { select: { name: true } },
-    // },
+    include: {
+      collection: { select: { name: true, slug: true } },
+      category_: { select: { name: true, slug: true } },
+    },
   });
 }
 
@@ -35,10 +43,10 @@ export async function getSingleProductById(id: string) {
   try {
     const data = await prisma.product.findFirst({
       where: { id: id },
-      // include: {
-      //   Category: { select: { name: true } },
-      //   Collection: { select: { name: true } },
-      // },
+      include: {
+        collection: { select: { name: true, slug: true } },
+        category_: { select: { name: true, slug: true } },
+      },
     });
     return convertToPlainObject(data);
   } catch (error) {
@@ -116,10 +124,10 @@ export async function getAllProducts({
             : { createdAt: "asc" },
     take: limit,
     skip: (page - 1) * limit,
-    // include: {
-    //   Category: { select: { name: true } },
-    //   Collection: { select: { name: true } },
-    // },
+    include: {
+      category_: { select: { name: true, slug: true } },
+      collection: { select: { name: true, slug: true } },
+    },
   });
 
   const dataCount = await prisma.product.count({});
@@ -214,6 +222,10 @@ export async function getFeaturedProducts() {
   const data = await prisma.product.findMany({
     where: { isFeatured: true },
     orderBy: { createdAt: "desc" },
+    include: {
+      collection: { select: { name: true, slug: true } },
+      category_: { select: { name: true, slug: true } },
+    },
     take: 4,
   });
 

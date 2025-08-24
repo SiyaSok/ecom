@@ -1,5 +1,6 @@
 /** @format */
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/ui/shared/product/product-card";
 import {
@@ -201,11 +202,13 @@ const SearchPage = async (props: {
       </div>
       <div className='space-y-4 md:col-span-4'>
         <div className='flex-between flex-col md:flex-row my-4'>
-          <div className='flex items-center'>
-            {q !== "all" && q !== "" && "Query: " + q}{" "}
-            {category !== "all" && "Category: " + category}{" "}
-            {price !== "all" && "Price: " + price}{" "}
-            {rating !== "all" && "Rating: " + rating + " stars & up"}{" "}
+          <div className='flex items-center gap-2'>
+            {q !== "all" && q !== "" && <Badge>{"Query: " + q}</Badge>}
+            {category !== "all" && <Badge>{"Category: " + category}</Badge>}
+            {price !== "all" && <Badge>{"Price: " + price}</Badge>}{" "}
+            {rating !== "all" && (
+              <Badge>{"Rating: " + rating + " stars & up"}</Badge>
+            )}{" "}
             {(q !== "all" && q !== "") ||
             (category !== "all" && category !== "") ||
             price !== "all" ||
@@ -232,7 +235,7 @@ const SearchPage = async (props: {
             ))}
           </div>
         </div>
-        <div className='grid  grid-cols-1 gap-4 md:grid-cols-3'>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
           {products.data.length > 0 ? (
             products.data.map((product: Product) => (
               <ProductCard key={product.slug} product={product} />

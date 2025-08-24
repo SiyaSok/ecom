@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { formatNumberWithDecimal } from "./utils";
 import { PAYMENT_METHODS } from "./constants";
+
 const currency = z.string().refine((value) => {
   const num = Number(value);
   return !isNaN(num) && /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(num));

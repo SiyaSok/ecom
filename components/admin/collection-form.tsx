@@ -26,7 +26,7 @@ import { Textarea } from "../ui/textarea";
 import slugify from "slugify";
 import {
   createCollection,
-  updateeCollection,
+  updateCollection,
 } from "@/lib/actions/collection-action";
 
 const CollectionForm = ({
@@ -73,7 +73,7 @@ const CollectionForm = ({
         router.push("/admin/collections");
         return;
       }
-      const res = await updateeCollection({ ...values, id: collectionId });
+      const res = await updateCollection({ ...values, id: collectionId });
       if (!res.success) {
         toast({
           variant: "destructive",
