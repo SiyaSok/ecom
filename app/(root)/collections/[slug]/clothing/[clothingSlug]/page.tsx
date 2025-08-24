@@ -1,12 +1,15 @@
 /** @format */
 
 import ProductCard from "@/components/ui/shared/product/product-card";
-import { getSingleCollectionBySlug } from "@/lib/actions/collection-action";
+import { getSingleCategoryBySlug } from "@/lib/actions/category-action";
 import { Product } from "@/types";
 
-const CollectionPage = async (props: { params: Promise<{ slug: string }> }) => {
-  const { slug } = await props.params;
-  const collection = await getSingleCollectionBySlug(slug);
+const CategoryPage = async (props: {
+  params: Promise<{ slug: string; clothingSlug: string }>;
+}) => {
+  const { slug, clothingSlug } = await props.params;
+
+  const collection = await getSingleCategoryBySlug(slug, clothingSlug);
 
   console.log(collection);
 
@@ -25,4 +28,4 @@ const CollectionPage = async (props: { params: Promise<{ slug: string }> }) => {
   );
 };
 
-export default CollectionPage;
+export default CategoryPage;

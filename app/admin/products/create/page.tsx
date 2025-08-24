@@ -6,8 +6,8 @@ import { getAllCollections } from "@/lib/actions/collection-action";
 
 const CreateProduct = async () => {
   const collections = await getAllCollections({
-    page: Number(1),
-    query: "1",
+    // page: Number(1),
+    // query: "1",
   });
 
   const categories = await getCategories({

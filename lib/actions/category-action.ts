@@ -3,7 +3,7 @@
 "use server";
 
 import { prisma } from "@/db/prisma";
-import { convertToPlainObject, FormatError } from "../utils";
+import { FormatError } from "../utils";
 import { insertCategorySchema, updateCategorySchema } from "../vaildators";
 import { revalidatePath } from "next/cache";
 import z from "zod";
@@ -75,13 +75,47 @@ export async function getCategories({
 }
 
 //get single category  by id
-export async function getSingleCategoryById(id: string) {
-  try {
-    const data = await prisma.category.findFirst({
-      where: { id: id },
-    });
-    return convertToPlainObject(data);
-  } catch (error) {
-    return { success: false, message: FormatError(error) };
-  }
+export async function getSingleCategoryById(slug: string) {
+  return await prisma.category.findFirst({
+    where: { slug: slug.toLowerCase() },
+    include: {
+      products: {
+        include: {
+          collection: {
+            select: { name: true, slug: true },
+          },
+          category_: {
+            select: { name: true, slug: true },
+          },
+        },
+      },
+    },
+  });
+}
+
+//get single category  by id
+export async function getSingleCategoryBySlug(slug: string, subSlug?: string) {
+  console.log(slug);
+  console.log(subSlug);
+
+  return await prisma.category.findFirst({
+    where: {
+      slug: subSlug,
+    },
+    include: {
+      products: {
+        where: {
+          collection: { slug: slug },
+        },
+        include: {
+          collection: {
+            select: { name: true, slug: true },
+          },
+          category_: {
+            select: { name: true, slug: true },
+          },
+        },
+      },
+    },
+  });
 }

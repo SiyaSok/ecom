@@ -27,8 +27,8 @@ const CollectionsPage = async (props: {
   const searchText = searchParams.query || "";
 
   const collections = await getAllCollections({
-    page: page,
-    query: searchText,
+    // page: page,
+    // query: searchText,
   });
 
   return (

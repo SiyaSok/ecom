@@ -17,8 +17,8 @@ const EditProductPage = async (props: {
   const product = await getSingleProductById(id);
 
   const collections = await getAllCollections({
-    page: Number(page),
-    query,
+    // page: Number(page),
+    // query,
   });
 
   const categories = await getCategories({

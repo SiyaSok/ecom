@@ -15,10 +15,10 @@ export async function getLatestProducts() {
     orderBy: { createdAt: "desc" },
     include: {
       collection: {
-        select: { name: true, slug: true }, // ✅ include slug
+        select: { name: true, slug: true },
       },
       category_: {
-        select: { name: true, slug: true }, // ✅ include slug
+        select: { name: true, slug: true },
       },
     },
   });

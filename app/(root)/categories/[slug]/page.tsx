@@ -1,19 +1,16 @@
 /** @format */
 
 import ProductCard from "@/components/ui/shared/product/product-card";
-import { getSingleCollectionBySlug } from "@/lib/actions/collection-action";
+import { getSingleCategoryBySlug } from "@/lib/actions/category-action";
 import { Product } from "@/types";
 
 const CollectionPage = async (props: { params: Promise<{ slug: string }> }) => {
   const { slug } = await props.params;
-  const collection = await getSingleCollectionBySlug(slug);
-
-  console.log(collection);
-
+  const category = await getSingleCategoryBySlug(slug);
   return (
     <div className='grid  grid-cols-1 gap-4 md:grid-cols-3'>
-      {(collection?.products.length ?? 0 > 0) ? (
-        collection?.products.map((product: Product) => (
+      {(category?.products.length ?? 0 > 0) ? (
+        category?.products.map((product: Product) => (
           <ProductCard key={product.slug} product={product} />
         ))
       ) : (

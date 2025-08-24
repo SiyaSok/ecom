@@ -64,10 +64,14 @@ export async function getAllCollections({
   // query,
 }: {
   limit?: number;
-  page: number;
-  query: string;
 }) {
-  const data = await prisma.collection.findMany();
+  const data = await prisma.collection.findMany({
+    include: {
+      categories: {
+        select: { name: true, slug: true },
+      },
+    },
+  });
 
   const dataCount = await prisma.collection.count({});
 
