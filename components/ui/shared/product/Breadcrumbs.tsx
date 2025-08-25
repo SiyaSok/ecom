@@ -1,7 +1,7 @@
 /** @format */
 
 import Link from "next/link";
-import { SlashIcon } from "lucide-react";
+import { ChevronsRight } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,40 +10,73 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Product } from "@/types";
 
-const Breadcrumbs = ({ product }: { product: Product }) => {
+const Breadcrumbs = ({
+  collectionName,
+  categoryName,
+  productName,
+}: {
+  collectionName?: string;
+  categoryName?: string;
+  productName?: string;
+}) => {
   return (
-    <div className='border-b border-gray-100 mb-2'>
+    <div className='border-b border-gray-100 mb-2 text-xs'>
       <Breadcrumb className='mb-3'>
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href='/'>Home</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator>
-            <SlashIcon />
-          </BreadcrumbSeparator>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href={`/collections/${product.collection.slug}`}>
-                {product.collection.name}
+              <Link className='text-xs' href='/'>
+                Home
               </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator>
-            <SlashIcon />
-          </BreadcrumbSeparator>
-          <BreadcrumbItem>
-            <BreadcrumbPage>{product.category_.name}</BreadcrumbPage>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator>
-            <SlashIcon />
-          </BreadcrumbSeparator>
-          <BreadcrumbItem>
-            <BreadcrumbPage>{product.name}</BreadcrumbPage>
-          </BreadcrumbItem>
+
+          {collectionName && (
+            <>
+              <BreadcrumbSeparator>
+                <ChevronsRight />
+              </BreadcrumbSeparator>
+              <BreadcrumbItem>
+                <BreadcrumbPage>
+                  <Link
+                    className='text-xs'
+                    href={`/collections/${collectionName?.toLowerCase}`}>
+                    {collectionName}
+                  </Link>
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </>
+          )}
+
+          {categoryName && (
+            <>
+              <BreadcrumbSeparator>
+                <ChevronsRight />
+              </BreadcrumbSeparator>
+              <BreadcrumbItem>
+                <BreadcrumbPage>
+                  <Link
+                    className='text-xs'
+                    href={`/collections/${categoryName?.toLowerCase}`}>
+                    {categoryName}
+                  </Link>
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </>
+          )}
+          {productName && (
+            <>
+              <BreadcrumbSeparator>
+                <ChevronsRight />
+              </BreadcrumbSeparator>
+              <BreadcrumbItem>
+                <BreadcrumbPage className='text-xs'>
+                  {productName}
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </>
+          )}
         </BreadcrumbList>
       </Breadcrumb>
     </div>

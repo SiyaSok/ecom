@@ -20,13 +20,15 @@ const ProductCard = ({ product }: { product: Product }) => {
           />
         </Link>
       </CardHeader>
-      <CardContent className='p-4 grid gap-4 space-y-1'>
-        <div className='text-sm'>{product.brand}</div>
+      <CardContent className='p-4 gap-3 md:gap-4  space-y-1'>
+        <div className='text-sm text-gray-400'>{product.brand}</div>
         <Link href={`/product/${product.slug}`}>
-          <h2 className='text-sm font-medium'>{product.name}</h2>
+          <h2 className='text-sm font-medium text-nowrap text-ellipsis overflow-hidden'>
+            {product.name}
+          </h2>
         </Link>
 
-        <div className='flex-between gap-4'>
+        <div className='flex md:items-center justify-between gap-2 md:gap-4 flex-col md:flex-row  items-start'>
           {/* <p>{product.rating} Stars</p> */}
           <Rating value={Number(product.rating)} />
           {product.stock > 0 ? (

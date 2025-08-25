@@ -21,7 +21,7 @@ const CollectionsMenu = async () => {
                     <Link
                       data-testid='link'
                       className={`flex h-[32px] w-max cursor-pointer items-center rounded-[40px] px-3 text-base font-bold leading-4 no-underline duration-300 ease-out hover:bg-black hover:text-white `}
-                      href={`/collection/${collection.slug}`}>
+                      href={`/collections/${collection.slug}`}>
                       {collection.name}
                     </Link>
                   </div>
@@ -61,9 +61,6 @@ const CollectionsMenu = async () => {
               ))}
             </div>
           </div>
-          <span
-            data-testid='horizontal-divider'
-            className='block transform bg-gray-300 h-px translate-y-1/2 w-full lg:ml-0'></span>
         </div>
       </div>
     </div>

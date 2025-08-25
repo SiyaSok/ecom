@@ -36,7 +36,11 @@ const ProductDatailsPage = async (props: {
 
   return (
     <>
-      <Breadcrumbs product={product} />
+      <Breadcrumbs
+        collectionName={product?.collection?.name}
+        categoryName={product?.category_?.name}
+        productName={product.name}
+      />
       <section>
         <div className='grid grid-cols-1 md:grid-cols-4 gap-10'>
           <div className='col-span-2'>

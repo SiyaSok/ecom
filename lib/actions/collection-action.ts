@@ -95,7 +95,7 @@ export async function getSingleCollectiontById(id: string) {
 
 //get single Collection By Slug
 export async function getSingleCollectionBySlug(slug: string) {
-  return await prisma.collection.findFirst({
+  const data = await prisma.collection.findFirst({
     where: { slug: slug.toLowerCase() },
     include: {
       products: {
@@ -110,4 +110,17 @@ export async function getSingleCollectionBySlug(slug: string) {
       },
     },
   });
+
+  const dataCount = await prisma.product.count({
+    where: {
+      collection: {
+        slug: slug,
+      },
+    },
+  });
+
+  return {
+    data,
+    dataCount,
+  };
 }
