@@ -8,86 +8,117 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
   DropdownMenuItem,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { BringToFront, LogOut, Target, User, UserIcon } from "lucide-react";
+import {
+  BringToFront,
+  Heart,
+  LogOut,
+  Target,
+  User,
+  UserIcon,
+} from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const UserButton = async () => {
   const session = await auth();
 
-  if (!session) {
+  if (!session?.user) {
     return (
-      <Button asChild>
+      <Button asChild variant='ghost' size='sm' className='gap-2'>
         <Link href='/sign-in'>
-          <UserIcon className='' />
+          <UserIcon className='h-4 w-4' />
           Sign In
         </Link>
       </Button>
     );
   }
 
-  const firstInitial = session.user?.name?.charAt(0).toUpperCase() ?? "U";
+  const { user } = session;
+  const firstInitial = user.name?.charAt(0).toUpperCase() ?? "U";
 
   return (
-    <div className='flex items-center gap-2'>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant='ghost'
-            className='relative flex h-8 w-8 items-center justify-center font-bold rounded-full bg-white text-black ml-2'>
-            {firstInitial}
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className='w-56' align='end' forceMount>
-          <DropdownMenuLabel className='font-normal'>
-            <div className='flex flex-col space-y-1'>
-              <div className='text-sm font-medium leading-none'>
-                {session.user?.name}
-              </div>
-              <div className='text-sm text-muted-foreground leading-none'>
-                {session.user?.email}
-              </div>
-            </div>
-          </DropdownMenuLabel>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant='ghost'
+          size='icon'
+          className='relative h-8 w-8 rounded-full border bg-white font-bold text-black hover:bg-gray-100 mt-1'>
+          <Avatar className='h-8 w-8'>
+            <AvatarFallback>{firstInitial}</AvatarFallback>
+          </Avatar>
+        </Button>
+      </DropdownMenuTrigger>
 
-          <DropdownMenuItem>
+      <DropdownMenuContent className='w-56' align='end' forceMount>
+        <DropdownMenuLabel className='p-3'>
+          <div className='flex flex-col space-y-1'>
+            <p className='text-sm font-medium leading-none truncate'>
+              {user.name}
+            </p>
+            <p className='text-xs text-muted-foreground leading-none truncate'>
+              {user.email}
+            </p>
+          </div>
+        </DropdownMenuLabel>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem asChild>
+          <Link
+            href='/user/profile'
+            className='flex w-full items-center gap-2 p-2 hover:bg-accent hover:text-accent-foreground'>
+            <User className='h-4 w-4' />
+            Profile
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link
+            href='/wishlist'
+            className='flex w-full items-center gap-2 p-2 hover:bg-accent hover:text-accent-foreground'>
+            <Heart className='h-4 w-4' />
+            Wishlist
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link
+            href='/user/orders'
+            className='flex w-full items-center gap-2 p-2 hover:bg-accent hover:text-accent-foreground'>
+            <BringToFront className='h-4 w-4' />
+            Orders
+          </Link>
+        </DropdownMenuItem>
+
+        {user.role === "admin" && (
+          <DropdownMenuItem asChild>
             <Link
-              href='/user/profile'
-              className='w-full flex gap-2 items-center'>
-              <User /> User Profile
+              href='/admin/overview'
+              className='flex w-full items-center gap-2 p-2 hover:bg-accent hover:text-accent-foreground'>
+              <Target className='h-4 w-4' />
+              Admin
             </Link>
           </DropdownMenuItem>
+        )}
 
-          <DropdownMenuItem>
-            <Link
-              href='/user/orders'
-              className='w-full flex gap-2 items-center'>
-              <BringToFront /> Order History
-            </Link>
-          </DropdownMenuItem>
+        <DropdownMenuSeparator />
 
-          {session?.user?.role === "admin" && (
-            <DropdownMenuItem>
-              <Link
-                href='/admin/overview'
-                className='w-full flex gap-2 items-center'>
-                <Target /> Admim
-              </Link>
-            </DropdownMenuItem>
-          )}
-
-          <DropdownMenuItem className='p-0 mb-1'>
-            <form action={signOutUser} className='w-full'>
-              <Button
-                className='w-full py-4 px-2 h-4 justify-start  '
-                variant='ghost'>
-                <LogOut /> Sign Out
-              </Button>
-            </form>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+        <DropdownMenuItem asChild>
+          <form action={signOutUser} className='w-full'>
+            <Button
+              type='submit'
+              variant='ghost'
+              className='w-full justify-start px-2 py-1.5 text-sm'
+              size='sm'>
+              <LogOut className='mr-2 h-4 w-4' />
+              Sign Out
+            </Button>
+          </form>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

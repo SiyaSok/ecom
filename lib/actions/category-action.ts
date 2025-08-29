@@ -75,9 +75,9 @@ export async function getCategories({
 }
 
 //get single category  by id
-export async function getSingleCategoryById(slug: string) {
+export async function getSingleCategoryById(id: string) {
   return await prisma.category.findFirst({
-    where: { slug: slug.toLowerCase() },
+    where: { id: id.toLowerCase() },
     include: {
       products: {
         include: {

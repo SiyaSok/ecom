@@ -17,7 +17,7 @@ datasource db {
 model Product {
   id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name         String
-  slug         String     @unique(map: "product_slug_idx")
+  slug         String     @unique(map: "product_slug_idx") // ✅ unique, used in relation
   category     String
   brand        String
   description  String
@@ -182,12 +182,14 @@ model Category {
 }
 
 model Wishlist {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId    String   @db.Uuid
-  productId String   @db.Uuid
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  id          String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String @db.Uuid
+  productSlug String
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productSlug], references: [slug], onDelete: Cascade) // ✅ FIX
+
   createdAt DateTime @default(now()) @db.Timestamp(6)
 
-  @@unique([userId, productId]) // Prevent duplicate wishlist entries
+  @@unique([userId, productSlug])
 }

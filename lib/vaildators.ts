@@ -181,5 +181,5 @@ export const updateCategorySchema = insertCategorySchema.extend({
 
 export const insertWishlistSchema = z.object({
   userId: z.string().uuid("Invalid user ID"),
-  productId: z.string().uuid("Invalid product ID"),
+  productSlug: z.string().uuid("Invalid product Slug"),
 });

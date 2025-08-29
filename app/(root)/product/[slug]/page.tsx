@@ -86,7 +86,7 @@ const ProductDatailsPage = async (props: {
                     }}
                   />
                   <AddToWishList
-                    productId={product.id}
+                    productSlug={product.slug}
                     userId={userId || null}
                   />
                 </div>
