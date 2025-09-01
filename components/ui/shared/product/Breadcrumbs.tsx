@@ -41,7 +41,7 @@ const Breadcrumbs = ({
                 <BreadcrumbPage>
                   <Link
                     className='text-xs'
-                    href={`/collections/${collectionName?.toLowerCase}`}>
+                    href={`/collections/${collectionName.toLowerCase()}`}>
                     {collectionName}
                   </Link>
                 </BreadcrumbPage>
@@ -58,7 +58,7 @@ const Breadcrumbs = ({
                 <BreadcrumbPage>
                   <Link
                     className='text-xs'
-                    href={`/collections/${categoryName?.toLowerCase}`}>
+                    href={`/collections/${categoryName.toLowerCase()}`}>
                     {categoryName}
                   </Link>
                 </BreadcrumbPage>

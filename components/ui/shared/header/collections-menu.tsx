@@ -7,7 +7,7 @@ const CollectionsMenu = async () => {
 
   return (
     <div
-      className='z-[4] w-full max-w-[1200px] m-auto bg-white shadow-sm'
+      className='z-[4] w-full max-w-[1200px] m-auto bg-white border-b  border-gray-100 '
       id='collections'>
       <div className='relative h-full'>
         <div className='z-[1] bg-white relative sm:px-4 md:px-6 lg:z-10 lg:p-0'>
@@ -28,7 +28,7 @@ const CollectionsMenu = async () => {
 
                   {/* Mega Nav Dropdown */}
                   {collection.categories && (
-                    <div className='custom-scrollbar  border-gray-200 bg-white absolute inset-x-0 top-16 z-[1] hidden max-h-[566px] w-full overflow-y-auto overscroll-y-none border-t p-3 pb-8 pt-4 shadow-md transition duration-300 ease-out lg:group-hover:block'>
+                    <div className='custom-scrollbar  border-gray-100 bg-white absolute inset-x-0 top-16 z-[1] hidden max-h-[566px] w-full overflow-y-auto overscroll-y-none border-t p-3 pb-8 pt-4 shadow-md transition duration-300 ease-out lg:group-hover:block'>
                       <div className='mx-auto h-full transition duration-300 ease-out'>
                         <div className='flex flex-col'>
                           <div className='font-bold text-lg mb-2'>Clothing</div>

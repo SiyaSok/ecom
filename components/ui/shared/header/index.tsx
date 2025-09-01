@@ -12,13 +12,6 @@ const Header = () => {
         <div className='flex-start'>
           <CategoryDrawer />
           <Link href='/' className='flex-start ml-4'>
-            {/* <Image
-              src='/images/logo.svg'
-              alt='logo'
-              width={60}
-              height={60}
-              priority={true}
-            /> */}
             <span className='hidden text-white lg:block font-bold text-2xl '>
               {APP_NAME}
             </span>

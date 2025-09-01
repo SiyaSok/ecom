@@ -46,7 +46,7 @@ const ProductDatailsPage = async (props: {
           <div className='col-span-2'>
             <ProductImages images={product.images} />
           </div>
-          <div className='col-span-2 p-5'>
+          <div className='col-span-2 p-2 md:p-5'>
             <div className='flex flex-col gap-2'>
               <p>
                 {product.brand} {product.category}
@@ -63,13 +63,11 @@ const ProductDatailsPage = async (props: {
                   eB:{Number(product.price) * 10}
                 </p>
               </div>
-              <p>
-                {/* {product.rating} of {product.numReviews} Reviews */}
-                <div className='flex flex-col sm:flex-row sm:items-center gap-3 mb-4'>
-                  <Rating value={Number(product.rating) || 0} />
-                  <p className='mt-2'> {product.numReviews} reviews</p>
-                </div>
-              </p>
+              {/* {product.rating} of {product.numReviews} Reviews */}
+              <div className='flex flex-col sm:flex-row sm:items-center gap-3 mb-4'>
+                <Rating value={Number(product.rating) || 0} />
+                <p className='mt-2'> {product.numReviews} reviews</p>
+              </div>
             </div>
             <div>
               {product.stock > 0 && (
@@ -105,9 +103,8 @@ const ProductDatailsPage = async (props: {
             <div className='mt-4'>
               <Accordion type='single' collapsible>
                 <AccordionItem value='item-1'>
-                  <AccordionTrigger className='flex flex-col items-start'>
-                    <p>
-                      {" "}
+                  <AccordionTrigger className='flex  flex-col items-start'>
+                    <p className='text-start'>
                       GET IT NOW, PAY LATER Pay using our credit options,
                       Payflex,
                     </p>
