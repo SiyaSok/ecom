@@ -66,8 +66,8 @@ const AddToWishList = ({
 
   return (
     <Button
-      variant={isBookmarked ? "default" : "outline"}
-      className='w-full h-14 flex items-center justify-center gap-2'
+      variant={"outline"}
+      className='w-full h-14 flex items-center justify-center gap-2 text-gray-400'
       type='button'
       onClick={handleAddToWishList}
       disabled={isLoading}>
@@ -75,7 +75,7 @@ const AddToWishList = ({
         <Loader className='h-4 w-4 animate-spin' />
       ) : (
         <Heart
-          className={`h-4 w-4 ${isBookmarked ? "fill-red-500 text-red-500" : ""}`}
+          className={`h-4 w-4  ${isBookmarked ? "fill-red-500 text-red-500" : ""}`}
         />
       )}
       {isBookmarked ? "REMOVE FROM WISHLIST" : "ADD TO WISHLIST"}

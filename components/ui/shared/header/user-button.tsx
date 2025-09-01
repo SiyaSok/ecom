@@ -44,7 +44,7 @@ const UserButton = async () => {
         <Button
           variant='ghost'
           size='icon'
-          className='relative h-8 w-8 rounded-full border bg-white font-bold text-black hover:bg-gray-100 mt-1'>
+          className='relative h-8 w-8 rounded-full border bg-white font-bold text-black hover:bg-gray-100'>
           <Avatar className='h-8 w-8'>
             <AvatarFallback>{firstInitial}</AvatarFallback>
           </Avatar>
