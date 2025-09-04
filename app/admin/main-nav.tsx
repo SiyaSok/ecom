@@ -31,6 +31,10 @@ const links = [
     title: "Categories",
     href: "/admin/categories",
   },
+  {
+    title: "Subcategories",
+    href: "/admin/subcategories",
+  },
 ];
 
 const MainNav = ({

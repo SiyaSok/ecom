@@ -33,11 +33,13 @@ model Product {
   collection   Collection @relation(fields: [collectionId], references: [id])
   category_    Category   @relation(fields: [categoryId], references: [id])
 
-  createdAt DateTime    @default(now()) @db.Timestamp(6)
-  updatedAt DateTime?   @updatedAt
-  OrderItem OrderItem[]
-  Review    Review[]
-  Wishlist  Wishlist[]
+  createdAt     DateTime     @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime?    @updatedAt
+  OrderItem     OrderItem[]
+  Review        Review[]
+  Wishlist      Wishlist[]
+  SubCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
+  subCategoryId String?      @db.Uuid
 }
 
 model User {
@@ -171,14 +173,26 @@ model Collection {
 }
 
 model Category {
-  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  slug        String?      @unique
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug          String?       @unique
+  description   String?
+  name          String        @default("No_name")
+  products      Product[]
+  collections   Collection[]  @relation("CategoryCollections")
+  subCategories SubCategory[] @relation("CategorySubCategories")
+  createdAt     DateTime      @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime?     @updatedAt
+}
+
+model SubCategory {
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String     @default("No_name")
+  slug        String?    @unique
   description String?
-  name        String       @default("No_name")
-  products    Product[]
-  collections Collection[] @relation("CategoryCollections")
-  createdAt   DateTime     @default(now()) @db.Timestamp(6)
-  updatedAt   DateTime?    @updatedAt
+  categories  Category[] @relation("CategorySubCategories")
+  products    Product[] // Optional: if products are tagged with subcategories
+  createdAt   DateTime   @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime?  @updatedAt
 }
 
 model Wishlist {

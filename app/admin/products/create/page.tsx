@@ -10,10 +10,7 @@ const CreateProduct = async () => {
     // query: "1",
   });
 
-  const categories = await getCategories({
-    page: Number(1),
-    query: "1",
-  });
+  const categories = await getCategories({});
 
   return (
     <>

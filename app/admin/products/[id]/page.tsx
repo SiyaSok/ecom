@@ -12,7 +12,7 @@ const EditProductPage = async (props: {
 }) => {
   const { id } = await props.params;
 
-  const { page, query } = await props.searchParams;
+  // const { page, query } = await props.searchParams;
 
   const product = await getSingleProductById(id);
 
@@ -21,10 +21,7 @@ const EditProductPage = async (props: {
     // query,
   });
 
-  const categories = await getCategories({
-    page: Number(page),
-    query,
-  });
+  const categories = await getCategories({});
 
   if (
     !product ||

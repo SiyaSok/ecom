@@ -157,6 +157,16 @@ export const insertCollectionSchema = z.object({
     .nullable()
     .optional(),
   description: z.string().optional().nullable(),
+  categoryIds: z.array(z.string().uuid()).optional(),
+  categories: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        slug: z.string().nullable(),
+      })
+    )
+    .optional(),
 });
 
 export const updateCollectionSchema = insertCollectionSchema.extend({
@@ -176,6 +186,21 @@ export const insertCategorySchema = z.object({
 });
 
 export const updateCategorySchema = insertCategorySchema.extend({
+  id: z.string().uuid("Invalid category ID"),
+});
+
+export const insertSubCategorySchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  slug: z
+    .string()
+    .min(3, "Slug must be at least 3 characters")
+    .nullable()
+    .optional(),
+
+  description: z.string().optional().nullable(),
+});
+
+export const updateSubCategorySchema = insertSubCategorySchema.extend({
   id: z.string().uuid("Invalid category ID"),
 });
 

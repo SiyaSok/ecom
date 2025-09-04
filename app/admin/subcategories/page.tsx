@@ -10,14 +10,14 @@ import {
   TableRow,
   Table,
 } from "@/components/ui/table";
-import { getCategories } from "@/lib/actions/category-action";
+import { getSubCategories } from "@/lib/actions/subcategory-action";
 
 import { rquireAdmin } from "@/lib/auth-guard";
 import { formatDateTime, formatId } from "@/lib/utils";
 import { SquarePen } from "lucide-react";
 import Link from "next/link";
 
-const CategoriesPage = async (props: {
+const SubCategoriesPage = async (props: {
   searchParams: Promise<{ page: string; query: string }>;
 }) => {
   await rquireAdmin();
@@ -27,13 +27,13 @@ const CategoriesPage = async (props: {
   const page = Number(searchParams.page) || 1;
   const searchText = searchParams.query || "";
 
-  const categories = await getCategories({});
+  const categories = await getSubCategories({});
 
   return (
     <div className='space-y-2'>
       <div className='flex-between'>
         <div className='flex items-center gap-3'>
-          <h1 className='h2-bold'>Categories</h1>
+          <h1 className='h2-bold'>Subcategories</h1>
           {searchText && (
             <div>
               Filted by <i>&quot;{searchText}&quot;</i>{" "}
@@ -47,8 +47,8 @@ const CategoriesPage = async (props: {
         </div>
 
         <Button asChild variant='outline' size={"lg"}>
-          <Link href={"/admin/categories/create"} className=''>
-            Create Category
+          <Link href={"/admin/subcategories/create"} className=''>
+            Create Subcategory
           </Link>
         </Button>
       </div>
@@ -76,7 +76,7 @@ const CategoriesPage = async (props: {
                 </TableCell>
                 <TableCell>
                   <Button size='sm' variant='outline'>
-                    <Link href={`/admin/categories/${category.id}`}>
+                    <Link href={`/admin/subcategories/${category.id}`}>
                       <SquarePen />
                     </Link>
                   </Button>
@@ -97,4 +97,4 @@ const CategoriesPage = async (props: {
   );
 };
 
-export default CategoriesPage;
+export default SubCategoriesPage;

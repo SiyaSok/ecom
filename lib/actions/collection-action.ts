@@ -17,9 +17,16 @@ export async function createCollection(
   try {
     const collection = insertCollectionSchema.parse(data);
 
-    console.log(collection);
+    const { categoryIds, ...rest } = collection;
 
-    await prisma.collection.create({ data: collection });
+    await prisma.collection.create({
+      data: {
+        ...rest,
+        categories: {
+          connect: categoryIds?.map((id) => ({ id })),
+        },
+      },
+    });
 
     revalidatePath("/adminn/collections");
 
@@ -44,9 +51,16 @@ export async function updateCollection(
 
     if (!existingProd) throw new Error("Product not found!! ");
 
+    const { id, categoryIds, ...rest } = collection;
+
     await prisma.collection.update({
-      where: { id: collection.id },
-      data: collection,
+      where: { id },
+      data: {
+        ...rest,
+        categories: {
+          connect: categoryIds?.map((id) => ({ id })),
+        },
+      },
     });
 
     revalidatePath("/adminn/products");
@@ -67,9 +81,7 @@ export async function getAllCollections({
 }) {
   const data = await prisma.collection.findMany({
     include: {
-      categories: {
-        select: { name: true, slug: true },
-      },
+      categories: true,
     },
   });
 
@@ -86,6 +98,9 @@ export async function getSingleCollectiontById(id: string) {
   try {
     const data = await prisma.collection.findFirst({
       where: { id: id },
+      include: {
+        categories: true,
+      },
     });
     return convertToPlainObject(data);
   } catch (error) {

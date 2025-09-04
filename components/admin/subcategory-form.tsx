@@ -4,10 +4,10 @@
 import { useToast } from "@/hooks/use-toast";
 import { productDefaultValues } from "@/lib/constants";
 import {
-  insertCollectionSchema,
-  updateCollectionSchema,
+  insertSubCategorySchema,
+  updateSubCategorySchema,
 } from "@/lib/vaildators";
-import { Category, Collection } from "@/types";
+import { Category } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -24,46 +24,38 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import slugify from "slugify";
-import {
-  createCollection,
-  updateCollection,
-} from "@/lib/actions/collection-action";
-import { Checkbox } from "../ui/checkbox";
 
-const CollectionForm = ({
+import {
+  createSubCategory,
+  updateSubCategory,
+} from "@/lib/actions/subcategory-action";
+
+const SubCategoryForm = ({
   type,
-  collection,
-  collectionId,
-  categories,
+  category,
+  categoryId,
 }: {
   type: "Create" | "Update";
-  collection?: Collection;
-  collectionId?: string;
-  categories?: Category[];
+  category?: Category;
+  categoryId?: string;
 }) => {
   const router = useRouter();
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof insertCollectionSchema>>({
+  const form = useForm<z.infer<typeof insertSubCategorySchema>>({
     resolver: zodResolver(
-      type === "Update" ? updateCollectionSchema : insertCollectionSchema
+      type === "Update" ? updateSubCategorySchema : insertSubCategorySchema
     ),
     defaultValues:
-      collection && type === "Update"
-        ? {
-            ...collection,
-            categoryIds: collection.categories?.map((c) => c.id) ?? [],
-          }
-        : productDefaultValues,
+      category && type === "Update" ? category : productDefaultValues,
   });
 
   const onSubmit: SubmitHandler<
-    z.infer<typeof insertCollectionSchema>
+    z.infer<typeof insertSubCategorySchema>
   > = async (values) => {
     // On Create
-
     if (type === "Create") {
-      const res = await createCollection(values);
+      const res = await createSubCategory(values);
       if (!res.success) {
         toast({
           variant: "destructive",
@@ -73,16 +65,19 @@ const CollectionForm = ({
         toast({
           description: res.message,
         });
-        router.push("/admin/collections");
+        router.push("/admin/subcategories");
       }
     }
     // On Update
     if (type === "Update") {
-      if (!collectionId) {
-        router.push("/admin/collections");
+      if (!categoryId) {
+        router.push("/admin/subcategories");
         return;
       }
-      const res = await updateCollection({ ...values, id: collectionId });
+      const res = await updateSubCategory({ ...values, id: categoryId });
+
+      console.log(res.message);
+
       if (!res.success) {
         toast({
           variant: "destructive",
@@ -92,7 +87,7 @@ const CollectionForm = ({
         toast({
           description: res.message,
         });
-        router.push("/admin/collections");
+        router.push("/admin/subcategories");
       }
     }
   };
@@ -172,49 +167,13 @@ const CollectionForm = ({
             )}
           />
         </div>
-        <div className='flex flex-col gap-5 md:flex-row'>
-          <FormField
-            control={form.control}
-            name='categoryIds'
-            render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel>Categories</FormLabel>
-                <div className='space-y-2'>
-                  {categories?.map((item) => (
-                    <FormItem
-                      key={item.id}
-                      className='flex items-center gap-2 space-y-0'>
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value?.includes(item.id)}
-                          onCheckedChange={(checked) => {
-                            const newValue = checked
-                              ? [...(field.value ?? []), item.id]
-                              : (field.value ?? []).filter(
-                                  (id) => id !== item.id
-                                );
-                            field.onChange(newValue);
-                          }}
-                        />
-                      </FormControl>
-                      <FormLabel className='text-sm font-normal'>
-                        {item.name}
-                      </FormLabel>
-                    </FormItem>
-                  ))}
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
         <div>
           <Button
             type='submit'
             size='lg'
             disabled={form.formState.isSubmitting}
             className='button col-span-2 w-full'>
-            {form.formState.isSubmitting ? "Submitting" : `${type} Collection`}
+            {form.formState.isSubmitting ? "Submitting" : `${type} SubCategory`}
           </Button>
         </div>
       </form>
@@ -222,4 +181,4 @@ const CollectionForm = ({
   );
 };
 
-export default CollectionForm;
+export default SubCategoryForm;

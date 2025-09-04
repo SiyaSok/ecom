@@ -4,23 +4,26 @@
 
 import { prisma } from "@/db/prisma";
 import { FormatError } from "../utils";
-import { insertCategorySchema, updateCategorySchema } from "../vaildators";
+import {
+  insertSubCategorySchema,
+  updateSubCategorySchema,
+} from "../vaildators";
 import { revalidatePath } from "next/cache";
 import z from "zod";
 import { PAGE_SIZE } from "../constants";
 
 //create category
-export async function createCategory(
-  data: z.infer<typeof insertCategorySchema>
+export async function createSubCategory(
+  data: z.infer<typeof insertSubCategorySchema>
 ) {
   try {
-    const category = insertCategorySchema.parse(data);
+    const category = insertSubCategorySchema.parse(data);
 
-    await prisma.category.create({ data: category });
+    await prisma.subCategory.create({ data: category });
 
-    revalidatePath("/adminn/categories");
+    revalidatePath("/adminn/subcategories");
 
-    return { success: true, message: "A new category has been created..." };
+    return { success: true, message: "A new subcategory has been created..." };
   } catch (error) {
     console.log(FormatError(error));
     return { success: false, message: FormatError(error) };
@@ -29,36 +32,40 @@ export async function createCategory(
 
 // update category
 
-export async function updateCategory(
-  data: z.infer<typeof updateCategorySchema>
+export async function updateSubCategory(
+  data: z.infer<typeof updateSubCategorySchema>
 ) {
   try {
-    const category = updateCategorySchema.parse(data);
+    const category = updateSubCategorySchema.parse(data);
 
-    const existingCategory = await prisma.category.findFirst({
+    const existingCategory = await prisma.subCategory.findFirst({
       where: { id: category.id },
     });
 
     if (!existingCategory) throw new Error("category not found!! ");
 
-    await prisma.category.update({
+    await prisma.subCategory.update({
       where: { id: category.id },
       data: category,
     });
 
-    revalidatePath("/adminn/categories");
+    revalidatePath("/adminn/subcategories");
 
-    return { success: true, message: "Category has been updated..." };
+    return { success: true, message: "Subcategory has been updated..." };
   } catch (error) {
     return { success: false, message: FormatError(error) };
   }
 }
 
 // Get all categories
-export async function getCategories({ limit = PAGE_SIZE }: { limit?: number }) {
-  const data = await prisma.category.findMany();
+export async function getSubCategories({
+  limit = PAGE_SIZE,
+}: {
+  limit?: number;
+}) {
+  const data = await prisma.subCategory.findMany();
 
-  const dataCount = await prisma.category.count({});
+  const dataCount = await prisma.subCategory.count({});
 
   return {
     data,
@@ -67,8 +74,8 @@ export async function getCategories({ limit = PAGE_SIZE }: { limit?: number }) {
 }
 
 //get single category  by id
-export async function getSingleCategoryById(id: string) {
-  return await prisma.category.findFirst({
+export async function getSubSingleCategoryById(id: string) {
+  return await prisma.subCategory.findFirst({
     where: { id: id.toLowerCase() },
     include: {
       products: {
@@ -86,8 +93,11 @@ export async function getSingleCategoryById(id: string) {
 }
 
 //get single category  by id
-export async function getSingleCategoryBySlug(slug: string, subSlug?: string) {
-  const data = await prisma.category.findFirst({
+export async function getSingleSubCategoryBySlug(
+  slug: string,
+  subSlug?: string
+) {
+  const data = await prisma.subCategory.findFirst({
     where: {
       slug: subSlug,
     },
