@@ -9,7 +9,6 @@ import {
 import { Product } from "@/types";
 import { CircleX } from "lucide-react";
 import Link from "next/link";
-import Sort from "./sort";
 
 const prices = [
   {
@@ -233,7 +232,6 @@ const SearchPage = async (props: {
                 {s}
               </Link>
             ))}
-            <Sort sort={sort} sortOrders={sortOrders} />
           </div>
         </div>
         <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>

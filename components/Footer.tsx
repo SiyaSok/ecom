@@ -2,7 +2,7 @@
 
 const Footer = () => {
   return (
-    <footer className='bg-neutral-700 text-white'>
+    <footer className='bg-black text-white'>
       {/* Top Section */}
       <div className='w-full px-12 py-6'>
         {/* Logo */}
