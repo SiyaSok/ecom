@@ -15,10 +15,12 @@ const Breadcrumbs = ({
   collectionName,
   categoryName,
   productName,
+  subCategoryName,
 }: {
   collectionName?: string;
   categoryName?: string;
   productName?: string;
+  subCategoryName?: string;
 }) => {
   return (
     <div className='border-b border-gray-100 mb-2 text-xs'>
@@ -65,6 +67,24 @@ const Breadcrumbs = ({
               </BreadcrumbItem>
             </>
           )}
+
+          {subCategoryName && (
+            <>
+              <BreadcrumbSeparator>
+                <ChevronsRight />
+              </BreadcrumbSeparator>
+              <BreadcrumbItem>
+                <BreadcrumbPage>
+                  <Link
+                    className='text-xs'
+                    href={`/collections/${subCategoryName.toLowerCase()}`}>
+                    {subCategoryName}
+                  </Link>
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </>
+          )}
+
           {productName && (
             <>
               <BreadcrumbSeparator>

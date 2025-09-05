@@ -17,9 +17,21 @@ const HomePage = async () => {
   return (
     <>
       {featuredProducts.length > 0 && (
-        <ProductCarousel data={featuredProducts} />
+        <ProductCarousel
+          data={featuredProducts.map((product) => ({
+            ...product,
+            subCategoryId: product.subCategoryId ?? "",
+          }))}
+        />
       )}
-      <ProductList data={products} title='New In' limit={4} />
+      <ProductList
+        data={products.map((product) => ({
+          ...product,
+          subCategoryId: product.subCategoryId ?? "",
+        }))}
+        title='New In'
+        limit={4}
+      />
       <ViewAllProducts />
       <DealCountdown />
       <IconBoxes />

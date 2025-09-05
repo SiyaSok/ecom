@@ -1,7 +1,6 @@
 /** @format */
 
 import ProductForm from "@/components/admin/product-form";
-import { getCategories } from "@/lib/actions/category-action";
 import { getAllCollections } from "@/lib/actions/collection-action";
 import { getSingleProductById } from "@/lib/actions/products.actions";
 import { notFound } from "next/navigation";
@@ -12,16 +11,9 @@ const EditProductPage = async (props: {
 }) => {
   const { id } = await props.params;
 
-  // const { page, query } = await props.searchParams;
-
   const product = await getSingleProductById(id);
 
-  const collections = await getAllCollections({
-    // page: Number(page),
-    // query,
-  });
-
-  const categories = await getCategories({});
+  const collections = await getAllCollections({});
 
   if (
     !product ||
@@ -40,7 +32,6 @@ const EditProductPage = async (props: {
           product={product}
           productId={id}
           collections={collections.data}
-          categories={categories.data}
         />
       </div>
     </div>

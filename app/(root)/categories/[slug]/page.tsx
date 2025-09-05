@@ -8,7 +8,10 @@ const CollectionPage = async (props: { params: Promise<{ slug: string }> }) => {
   const category = await getSingleCategoryBySlug(slug);
   return (
     <ProductList
-      data={category?.data?.products ?? []}
+      data={(category?.data?.products ?? []).map((product) => ({
+        ...product,
+        subCategoryId: product.subCategoryId ?? "",
+      }))}
       title={category?.data?.name}
       productCount={category.dataCount}
     />

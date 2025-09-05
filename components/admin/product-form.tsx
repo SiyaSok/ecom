@@ -36,20 +36,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { getSingleCollectiontById } from "@/lib/actions/collection-action";
+import { useEffect, useState, useTransition } from "react";
+import { getSingleCategoryById } from "@/lib/actions/category-action";
+import { Loader2 } from "lucide-react";
 
 const ProductForm = ({
   type,
   product,
   productId,
-  categories,
   collections,
 }: {
   type: "Create" | "Update";
   product?: Product;
   productId?: string;
-  categories: Category[];
   collections: Collection[];
 }) => {
+  const [collectionData, setCollectionData] = useState<Collection | null>(null);
+  const [categoryData, setcategoryData] = useState<Category | null>(null);
+
+  const [isPendingCollection, startTransitionCollection] = useTransition();
+  const [isPendingCategory, startTransitionCategory] = useTransition();
+
   const router = useRouter();
   const { toast } = useToast();
 
@@ -83,7 +91,6 @@ const ProductForm = ({
 
     // On Update
     if (type === "Update") {
-      console.log("Product ID:", productId);
       if (!productId) {
         router.push("/admin/products");
         return;
@@ -110,8 +117,30 @@ const ProductForm = ({
   const images = form.watch("images");
   const isFeatured = form.watch("isFeatured");
   const banner = form.watch("banner");
+  const selectedCollectionId = form.watch("collectionId");
+  const selectedCategoryId = form.watch("categoryId");
 
-  console.log(categories);
+  useEffect(() => {
+    if (!selectedCollectionId) return;
+
+    startTransitionCollection(async () => {
+      const res = await getSingleCollectiontById(selectedCollectionId);
+      if (res) {
+        setCollectionData(res as Collection);
+      } else {
+        setCollectionData(null);
+      }
+    });
+  }, [selectedCollectionId]);
+
+  useEffect(() => {
+    if (!selectedCategoryId) return;
+
+    startTransitionCategory(async () => {
+      const res = await getSingleCategoryById(selectedCategoryId);
+      setcategoryData(res);
+    });
+  }, [selectedCategoryId]);
 
   return (
     <Form {...form}>
@@ -199,10 +228,13 @@ const ProductForm = ({
                 <FormControl>
                   <Select
                     onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}>
-                    <SelectTrigger className='w-full'>
-                      <SelectValue placeholder='Select a collections' />
+                    value={field.value ?? undefined}
+                    defaultValue={field.value ?? undefined}>
+                    <SelectTrigger className='w-full flex items-center justify-between'>
+                      <SelectValue placeholder='Select a collection' />
+                      {isPendingCollection && (
+                        <Loader2 className='h-4 w-4 animate-spin ml-2' />
+                      )}
                     </SelectTrigger>
                     <SelectContent>
                       {collections.map((collection) => (
@@ -218,33 +250,68 @@ const ProductForm = ({
             )}
           />
 
-          <FormField
-            control={form.control}
-            name='categoryId'
-            render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel>Category</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}>
-                    <SelectTrigger className='w-full'>
-                      <SelectValue placeholder='Select a category' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {collectionData?.categories && (
+            <FormField
+              control={form.control}
+              name='categoryId'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabel>Category</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value ?? undefined}
+                      defaultValue={field.value ?? undefined}>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select a category' />
+                        {isPendingCategory && (
+                          <Loader2 className='h-4 w-4 animate-spin ml-2' />
+                        )}
+                      </SelectTrigger>
+                      <SelectContent>
+                        {collectionData?.categories?.map((category) => (
+                          <SelectItem key={category.id} value={category.id}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
+          {categoryData?.subCategories && (
+            <FormField
+              control={form.control}
+              name='subCategoryId'
+              render={({ field }) => (
+                <FormItem className='w-full'>
+                  <FormLabel>Sub categories</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value ?? undefined}
+                      defaultValue={field.value ?? undefined}>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select a category' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categoryData?.subCategories?.map((category) => (
+                          <SelectItem key={category.id} value={category.id}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
         </div>
         <div className='flex flex-col gap-5 md:flex-row'>
           <FormField

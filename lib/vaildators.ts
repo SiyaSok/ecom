@@ -23,6 +23,7 @@ export const insertProductSchema = z.object({
   price: currency,
   collectionId: z.string().min(1, "Collection is required"),
   categoryId: z.string().min(1, "Category is required"),
+  subCategoryId: z.string().min(1).nullable(),
 });
 
 // Schema for updating products
@@ -181,8 +182,17 @@ export const insertCategorySchema = z.object({
     .min(3, "Slug must be at least 3 characters")
     .nullable()
     .optional(),
-
   description: z.string().optional().nullable(),
+  subcategoryIds: z.array(z.string().uuid()).optional(),
+  subCategories: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        slug: z.string().nullable(),
+      })
+    )
+    .optional(),
 });
 
 export const updateCategorySchema = insertCategorySchema.extend({

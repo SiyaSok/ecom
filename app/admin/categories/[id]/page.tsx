@@ -2,12 +2,15 @@
 
 import CategoryForm from "@/components/admin/category-form";
 import { getSingleCategoryById } from "@/lib/actions/category-action";
+import { getSubCategories } from "@/lib/actions/subcategory-action";
 import { notFound } from "next/navigation";
 
 const EditProductPage = async (props: { params: Promise<{ id: string }> }) => {
   const { id } = await props.params;
 
   const category = await getSingleCategoryById(id);
+  const SubCategory = await getSubCategories({});
+
   if (
     !category ||
     (typeof category === "object" &&
@@ -20,7 +23,12 @@ const EditProductPage = async (props: { params: Promise<{ id: string }> }) => {
     <div className='space-y-8 max-w-5xl mx-auto'>
       <h2 className='h2-bold'>Update Category</h2>
       <div className='mt-8'>
-        <CategoryForm type='Update' category={category} categoryId={id} />
+        <CategoryForm
+          type='Update'
+          category={category}
+          categoryId={id}
+          subcategory={SubCategory.data}
+        />
       </div>
     </div>
   );

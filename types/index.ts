@@ -9,6 +9,7 @@ import {
   insertOrderSchema,
   insertProductSchema,
   insertReviewSchema,
+  insertSubCategorySchema,
   paymentResultSchema,
   shippingAddressSchema,
 } from "@/lib/vaildators";
@@ -21,6 +22,7 @@ export type Product = z.infer<typeof insertProductSchema> & {
   createdAt: Date;
   collection?: { name: string; slug: string | null };
   category_?: { name: string; slug: string | null };
+  Subcategory?: { name: string; slug: string | null };
 };
 
 export type Cart = z.infer<typeof insertCartSchema>;
@@ -48,5 +50,8 @@ export type Collection = z.infer<typeof insertCollectionSchema> & {
   id: string;
 };
 export type Category = z.infer<typeof insertCategorySchema> & {
+  id: string;
+};
+export type SubCategory = z.infer<typeof insertSubCategorySchema> & {
   id: string;
 };

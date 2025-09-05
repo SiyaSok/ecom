@@ -81,8 +81,16 @@ export async function getAllCollections({
 }) {
   const data = await prisma.collection.findMany({
     include: {
-      categories: true,
+      categories: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          subCategories: true,
+        },
+      },
     },
+    orderBy: { createdAt: "asc" },
   });
 
   const dataCount = await prisma.collection.count({});
@@ -99,7 +107,11 @@ export async function getSingleCollectiontById(id: string) {
     const data = await prisma.collection.findFirst({
       where: { id: id },
       include: {
-        categories: true,
+        categories: {
+          include: {
+            subCategories: true,
+          },
+        },
       },
     });
     return convertToPlainObject(data);

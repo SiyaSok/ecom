@@ -39,6 +39,7 @@ const ProductDatailsPage = async (props: {
       <Breadcrumbs
         collectionName={product?.collection?.name}
         categoryName={product?.category_?.name}
+        subCategoryName={product?.SubCategory?.name}
         productName={product.name}
       />
       <section>

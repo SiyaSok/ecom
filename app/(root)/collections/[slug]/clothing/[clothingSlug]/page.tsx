@@ -12,7 +12,10 @@ const CategoryPage = async (props: {
 
   return (
     <ProductList
-      data={collection?.data?.products ?? []}
+      data={(collection?.data?.products ?? []).map((product) => ({
+        ...product,
+        subCategoryId: product.subCategoryId ?? "",
+      }))}
       title={collection?.data?.name}
       productCount={collection.dataCount}
     />

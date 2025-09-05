@@ -76,8 +76,6 @@ const SubCategoryForm = ({
       }
       const res = await updateSubCategory({ ...values, id: categoryId });
 
-      console.log(res.message);
-
       if (!res.success) {
         toast({
           variant: "destructive",

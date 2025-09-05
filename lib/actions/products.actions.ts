@@ -18,7 +18,7 @@ export async function getLatestProducts() {
         select: { name: true, slug: true },
       },
       category_: {
-        select: { name: true, slug: true },
+        select: { name: true, slug: true, subCategories: true },
       },
     },
   });
@@ -31,8 +31,15 @@ export async function getSingleProductBySlug(slug: string) {
   return await prisma.product.findFirst({
     where: { slug: slug },
     include: {
+      SubCategory: true,
       collection: { select: { name: true, slug: true } },
-      category_: { select: { name: true, slug: true } },
+      category_: {
+        select: {
+          name: true,
+          slug: true,
+          subCategories: { select: { name: true, id: true, slug: true } },
+        },
+      },
     },
   });
 }
@@ -45,7 +52,7 @@ export async function getSingleProductById(id: string) {
       where: { id: id },
       include: {
         collection: { select: { name: true, slug: true } },
-        category_: { select: { name: true, slug: true } },
+        category_: { select: { name: true, slug: true, subCategories: true } },
       },
     });
     return convertToPlainObject(data);
@@ -125,7 +132,7 @@ export async function getAllProducts({
     take: limit,
     skip: (page - 1) * limit,
     include: {
-      category_: { select: { name: true, slug: true } },
+      category_: { select: { name: true, slug: true, subCategories: true } },
       collection: { select: { name: true, slug: true } },
     },
   });
@@ -224,10 +231,10 @@ export async function getFeaturedProducts() {
     orderBy: { createdAt: "desc" },
     include: {
       collection: { select: { name: true, slug: true } },
-      category_: { select: { name: true, slug: true } },
+      category_: { select: { name: true, slug: true, subCategories: true } },
     },
     take: 4,
   });
 
-  return convertToPlainObject(data);
+  return data;
 }

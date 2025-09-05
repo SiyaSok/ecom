@@ -4,7 +4,7 @@
 import { useToast } from "@/hooks/use-toast";
 import { productDefaultValues } from "@/lib/constants";
 import { insertCategorySchema, updateCategorySchema } from "@/lib/vaildators";
-import { Category } from "@/types";
+import { Category, SubCategory } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -23,13 +23,16 @@ import { Textarea } from "../ui/textarea";
 import slugify from "slugify";
 
 import { createCategory, updateCategory } from "@/lib/actions/category-action";
+import { Checkbox } from "../ui/checkbox";
 
 const CategoryForm = ({
   type,
   category,
   categoryId,
+  subcategory,
 }: {
   type: "Create" | "Update";
+  subcategory?: SubCategory[];
   category?: Category;
   categoryId?: string;
 }) => {
@@ -47,6 +50,7 @@ const CategoryForm = ({
   const onSubmit: SubmitHandler<z.infer<typeof insertCategorySchema>> = async (
     values
   ) => {
+    console.log(values);
     // On Create
     if (type === "Create") {
       const res = await createCategory(values);
@@ -69,9 +73,6 @@ const CategoryForm = ({
         return;
       }
       const res = await updateCategory({ ...values, id: categoryId });
-
-      console.log(res.message);
-
       if (!res.success) {
         toast({
           variant: "destructive",
@@ -147,7 +148,7 @@ const CategoryForm = ({
             name='description'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Category</FormLabel>
+                <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
                     className='resize-none'
@@ -156,6 +157,42 @@ const CategoryForm = ({
                     value={field.value ?? ""}
                   />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className='flex flex-col gap-5 md:flex-row'>
+          <FormField
+            control={form.control}
+            name='subcategoryIds'
+            render={({ field }) => (
+              <FormItem className='w-full'>
+                <FormLabel>Subcategories</FormLabel>
+                <div className='space-y-2 grid md:grid-cols-4'>
+                  {subcategory?.map((item) => (
+                    <FormItem
+                      key={item.id}
+                      className='flex items-center gap-2  space-y-0'>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value?.includes(item.id)}
+                          onCheckedChange={(checked) => {
+                            const newValue = checked
+                              ? [...(field.value ?? []), item.id]
+                              : (field.value ?? []).filter(
+                                  (id) => id !== item.id
+                                );
+                            field.onChange(newValue);
+                          }}
+                        />
+                      </FormControl>
+                      <FormLabel className='text-sm font-normal'>
+                        {item.name}
+                      </FormLabel>
+                    </FormItem>
+                  ))}
+                </div>
                 <FormMessage />
               </FormItem>
             )}

@@ -16,7 +16,18 @@ export async function createCategory(
   try {
     const category = insertCategorySchema.parse(data);
 
-    await prisma.category.create({ data: category });
+    console.log(category);
+
+    const { subcategoryIds, ...rest } = category;
+
+    await prisma.category.create({
+      data: {
+        ...rest,
+        subCategories: {
+          connect: subcategoryIds?.map((id) => ({ id })),
+        },
+      },
+    });
 
     revalidatePath("/adminn/categories");
 
@@ -28,12 +39,12 @@ export async function createCategory(
 }
 
 // update category
-
 export async function updateCategory(
   data: z.infer<typeof updateCategorySchema>
 ) {
   try {
     const category = updateCategorySchema.parse(data);
+    const { subcategoryIds, ...rest } = category;
 
     const existingCategory = await prisma.category.findFirst({
       where: { id: category.id },
@@ -43,7 +54,12 @@ export async function updateCategory(
 
     await prisma.category.update({
       where: { id: category.id },
-      data: category,
+      data: {
+        ...rest,
+        subCategories: {
+          connect: subcategoryIds?.map((id) => ({ id })),
+        },
+      },
     });
 
     revalidatePath("/adminn/categories");
@@ -56,7 +72,11 @@ export async function updateCategory(
 
 // Get all categories
 export async function getCategories({ limit = PAGE_SIZE }: { limit?: number }) {
-  const data = await prisma.category.findMany();
+  const data = await prisma.category.findMany({
+    include: {
+      subCategories: true,
+    },
+  });
 
   const dataCount = await prisma.category.count({});
 
@@ -71,6 +91,7 @@ export async function getSingleCategoryById(id: string) {
   return await prisma.category.findFirst({
     where: { id: id.toLowerCase() },
     include: {
+      subCategories: true,
       products: {
         include: {
           collection: {

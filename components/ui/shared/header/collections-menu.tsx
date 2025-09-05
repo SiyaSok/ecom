@@ -3,7 +3,7 @@
 import { getAllCollections } from "@/lib/actions/collection-action";
 import Link from "next/link";
 const CollectionsMenu = async () => {
-  const collections = await getAllCollections({ limit: 10 });
+  const collections = await getAllCollections({});
 
   return (
     <div
@@ -30,27 +30,29 @@ const CollectionsMenu = async () => {
                   {collection.categories && (
                     <div className='custom-scrollbar  border-gray-100 bg-white absolute inset-x-0 top-16 z-[1] hidden max-h-[566px] w-full overflow-y-auto overscroll-y-none border-t p-3 pb-8 pt-4 shadow-md transition duration-300 ease-out lg:group-hover:block'>
                       <div className='mx-auto h-full transition duration-300 ease-out'>
-                        <div className='flex flex-col'>
-                          <div className='font-bold text-lg mb-2'>Clothing</div>
+                        <div className='flex flex-row space-x-10'>
+                          {/* <div className='font-bold text-lg mb-2'>Clothing</div> */}
                           {collection.categories.map((navItem, navIndex) => (
                             <div key={navIndex} className='leading-[18px]'>
                               <Link
                                 data-testid='link'
-                                className='cursor-pointer text-wrap text-base font-bold leading-[18px] no-underline text-gray-500 hover:underline block mb-3'
+                                className='cursor-pointer text-wrap text-base font-bold leading-[18px] no-underline hover:underline block mb-3'
                                 href={`/collections/${collection.name.toLowerCase()}/clothing/${navItem.slug}`}>
                                 {navItem.name}
                               </Link>
-                              {/* <div className='flex flex-col leading-[18px]'>
-                                {navItem.links.map((link, linkIndex) => (
-                                  <a
-                                    key={linkIndex}
-                                    data-testid='link'
-                                    className='text-gray-600 hover:text-black mt-2 cursor-pointer text-wrap text-sm leading-[18px] no-underline hover:underline'
-                                    href={`/${department.name.toLowerCase()}/${link.toLowerCase().replace(/\s+/g, "-").replace(/&/g, "and")}`}>
-                                    {link}
-                                  </a>
-                                ))}
-                              </div> */}
+                              <div className='flex flex-col leading-[18px]'>
+                                {navItem.subCategories.map(
+                                  (link, linkIndex) => (
+                                    <a
+                                      key={linkIndex}
+                                      data-testid='link'
+                                      className='text-gray-600 hover:text-black mt-2 cursor-pointer text-wrap text-sm leading-[18px] no-underline hover:underline'
+                                      href={`/${link.name.toLowerCase()}/${link.name.toLowerCase().replace(/\s+/g, "-").replace(/&/g, "and")}`}>
+                                      {link.name}
+                                    </a>
+                                  )
+                                )}
+                              </div>
                             </div>
                           ))}
                         </div>
