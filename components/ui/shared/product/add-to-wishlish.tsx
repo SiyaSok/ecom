@@ -140,10 +140,13 @@ const AddToWishList = ({
   }
 
   return heart ? (
-    <Heart
-      onClick={handleAddToWishList}
-      className={`h-5 w-5 ${isBookmarked ? "fill-red-500  text-red-500" : ""} hover:fill-red-500 cursor-pointer`}
-    />
+    <div
+      className={`${isBookmarked ? "opacity-100" : "opacity-50"} bg-white rounded-md p-2 shadow-md flex items-center justify-center opacity-50 hover:opacity-100 transition-opacity`}>
+      <Heart
+        onClick={handleAddToWishList}
+        className={`h-4 w-4 ${isBookmarked ? "fill-red-500  text-red-500" : ""} hover:fill-red-500 cursor-pointer`}
+      />
+    </div>
   ) : (
     <Button
       variant='outline'

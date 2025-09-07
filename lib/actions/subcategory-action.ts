@@ -95,16 +95,20 @@ export async function getSubSingleCategoryById(id: string) {
 //get single category  by id
 export async function getSingleSubCategoryBySlug(
   slug: string,
-  subSlug?: string
+  categorySlug?: string,
+  subcategorySlug?: string
 ) {
+  console.log(slug, categorySlug, subcategorySlug);
+
   const data = await prisma.subCategory.findFirst({
     where: {
-      slug: subSlug,
+      slug: subcategorySlug,
     },
     include: {
       products: {
         where: {
           collection: { slug: slug },
+          category_: { slug: categorySlug },
         },
         include: {
           collection: {
@@ -121,7 +125,7 @@ export async function getSingleSubCategoryBySlug(
   const dataCount = await prisma.product.count({
     where: {
       category_: {
-        slug: subSlug,
+        slug: categorySlug,
       },
       collection: {
         slug: slug,

@@ -80,13 +80,34 @@ export async function getAllCollections({
   limit?: number;
 }) {
   const data = await prisma.collection.findMany({
+    where: {
+      categories: {
+        some: {
+          subCategories: {
+            some: {
+              products: {
+                some: {}, // checks that at least one product exists
+              },
+            },
+          },
+        },
+      },
+    },
     include: {
       categories: {
         select: {
           id: true,
           name: true,
           slug: true,
-          subCategories: true,
+          products: true,
+          subCategories: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              products: true,
+            },
+          },
         },
       },
     },

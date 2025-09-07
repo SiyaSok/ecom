@@ -51,7 +51,7 @@ const Breadcrumbs = ({
             </>
           )}
 
-          {categoryName && (
+          {categoryName && collectionName && (
             <>
               <BreadcrumbSeparator>
                 <ChevronsRight />
@@ -60,7 +60,7 @@ const Breadcrumbs = ({
                 <BreadcrumbPage>
                   <Link
                     className='text-xs'
-                    href={`/collections/${categoryName.toLowerCase()}`}>
+                    href={`/collections/${collectionName.toLowerCase()}/${categoryName.toLowerCase()}`}>
                     {categoryName}
                   </Link>
                 </BreadcrumbPage>
@@ -68,7 +68,7 @@ const Breadcrumbs = ({
             </>
           )}
 
-          {subCategoryName && (
+          {subCategoryName && collectionName && categoryName && (
             <>
               <BreadcrumbSeparator>
                 <ChevronsRight />
@@ -77,7 +77,7 @@ const Breadcrumbs = ({
                 <BreadcrumbPage>
                   <Link
                     className='text-xs'
-                    href={`/collections/${subCategoryName.toLowerCase()}`}>
+                    href={`/collections/${collectionName.toLowerCase()}/${categoryName.toLowerCase()}/${subCategoryName.toLowerCase()}`}>
                     {subCategoryName}
                   </Link>
                 </BreadcrumbPage>

@@ -24,7 +24,7 @@ const ProductCard = async ({ product }: { product: Product }) => {
             height={400}
           />
         </Link>
-        <div className='absolute top-[10px] right-[10px] z-10'>
+        <div className='absolute top-[68%] right-[10px] z-10'>
           <AddToWishList
             productSlug={product.slug}
             userId={userId || null}

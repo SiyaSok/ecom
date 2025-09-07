@@ -19,7 +19,7 @@ const ProductList = ({
   return (
     <div className='my-10'>
       {title && (
-        <h2 className='h2-bold mb-4'>
+        <h2 className='text-xl font-bold mb-4'>
           {title}{" "}
           {productCount && (
             <span className='text-xl text-gray-400 font-normal'>
