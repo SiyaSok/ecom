@@ -21,9 +21,9 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import slugify from "slugify";
+import Select from "react-select";
 
 import { createCategory, updateCategory } from "@/lib/actions/category-action";
-import { Checkbox } from "../ui/checkbox";
 
 const CategoryForm = ({
   type,
@@ -44,13 +44,17 @@ const CategoryForm = ({
       type === "Update" ? updateCategorySchema : insertCategorySchema
     ),
     defaultValues:
-      category && type === "Update" ? category : productDefaultValues,
+      category && type === "Update"
+        ? {
+            ...category,
+            subcategoryIds: category.subCategories?.map((sc) => sc.id) ?? [],
+          }
+        : productDefaultValues,
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof insertCategorySchema>> = async (
     values
   ) => {
-    console.log(values);
     // On Create
     if (type === "Create") {
       const res = await createCategory(values);
@@ -162,6 +166,7 @@ const CategoryForm = ({
             )}
           />
         </div>
+
         <div className='flex flex-col gap-5 md:flex-row'>
           <FormField
             control={form.control}
@@ -169,35 +174,32 @@ const CategoryForm = ({
             render={({ field }) => (
               <FormItem className='w-full'>
                 <FormLabel>Subcategories</FormLabel>
-                <div className='space-y-2 grid md:grid-cols-4'>
-                  {subcategory?.map((item) => (
-                    <FormItem
-                      key={item.id}
-                      className='flex items-center gap-2  space-y-0'>
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value?.includes(item.id)}
-                          onCheckedChange={(checked) => {
-                            const newValue = checked
-                              ? [...(field.value ?? []), item.id]
-                              : (field.value ?? []).filter(
-                                  (id) => id !== item.id
-                                );
-                            field.onChange(newValue);
-                          }}
-                        />
-                      </FormControl>
-                      <FormLabel className='text-sm font-normal'>
-                        {item.name}
-                      </FormLabel>
-                    </FormItem>
-                  ))}
-                </div>
+                <FormControl>
+                  <Select
+                    isMulti
+                    options={subcategory?.map((item) => ({
+                      value: item.id,
+                      label: item.name,
+                    }))}
+                    value={subcategory
+                      ?.filter((item) => field.value?.includes(item.id))
+                      .map((item) => ({
+                        value: item.id,
+                        label: item.name,
+                      }))}
+                    onChange={(selected) =>
+                      field.onChange(selected.map((option) => option.value))
+                    }
+                    className='react-select-container'
+                    classNamePrefix='react-select'
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
+
         <div>
           <Button
             type='submit'

@@ -112,14 +112,15 @@ export async function getAllCollections({
       },
     },
     orderBy: { createdAt: "asc" },
+    take: limit,
   });
 
   const dataCount = await prisma.collection.count({});
 
-  return {
+  return convertToPlainObject({
     data,
     totalPages: Math.ceil(dataCount / limit),
-  };
+  });
 }
 
 //get single collection  by id

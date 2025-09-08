@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card } from "../../card";
 const CollectionsImages = async () => {
-  const collections = await getAllCollections({});
+  const collections = await getAllCollections({ limit: 4 });
 
   return (
     <div className='grid gap-3 grid-cols-2 md:grid-cols-4 '>

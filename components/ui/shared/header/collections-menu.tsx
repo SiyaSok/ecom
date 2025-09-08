@@ -31,7 +31,7 @@ const CollectionsMenu = async () => {
                 All
               </Link>
             </div>
-            <div className='flex justify-center w-full overflow-x-auto lg:overflow-x-visible lg:w-auto'>
+            <div className='flex  w-full overflow-x-auto lg:overflow-x-visible lg:w-auto justify-between'>
               {collectionsWithProducts.map((collection, index) => (
                 <div
                   key={index}
@@ -53,7 +53,7 @@ const CollectionsMenu = async () => {
                           {collection.categories
                             .filter((category) => category.products?.length > 0)
                             .map((navItem, navIndex) => (
-                              <div key={navIndex} className='leading-[18px]'>
+                              <div key={navIndex} className='leading-[18px] '>
                                 <Link
                                   data-testid='link'
                                   className='cursor-pointer text-wrap text-base font-bold leading-[18px] no-underline hover:underline block mb-3'

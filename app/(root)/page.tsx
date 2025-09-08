@@ -16,7 +16,7 @@ import { getAllSubCategories } from "@/lib/actions/subcategory-action";
 const HomePage = async () => {
   const products = await getLatestProducts();
   const featuredProducts = await getFeaturedProducts();
-  const SubCategories = await getAllSubCategories({ limit: 6 });
+  const SubCategories = await getAllSubCategories({ limit: 10 });
 
   return (
     <>

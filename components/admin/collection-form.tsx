@@ -28,10 +28,10 @@ import {
   createCollection,
   updateCollection,
 } from "@/lib/actions/collection-action";
-import { Checkbox } from "../ui/checkbox";
 import { UploadButton } from "@/lib/uploadthing";
 import Image from "next/image";
 import { Card, CardContent } from "../ui/card";
+import Select from "react-select";
 
 const CollectionForm = ({
   type,
@@ -184,35 +184,30 @@ const CollectionForm = ({
             render={({ field }) => (
               <FormItem className='w-full'>
                 <FormLabel>Categories</FormLabel>
-                <div className='space-y-2'>
-                  {categories?.map((item) => (
-                    <FormItem
-                      key={item.id}
-                      className='flex items-center gap-2 space-y-0'>
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value?.includes(item.id)}
-                          onCheckedChange={(checked) => {
-                            const newValue = checked
-                              ? [...(field.value ?? []), item.id]
-                              : (field.value ?? []).filter(
-                                  (id) => id !== item.id
-                                );
-                            field.onChange(newValue);
-                          }}
-                        />
-                      </FormControl>
-                      <FormLabel className='text-sm font-normal'>
-                        {item.name}
-                      </FormLabel>
-                    </FormItem>
-                  ))}
-                </div>
+                <FormControl>
+                  <Select
+                    isMulti
+                    options={categories?.map((category) => ({
+                      value: category.id,
+                      label: category.name,
+                    }))}
+                    value={categories
+                      ?.filter((cat) => field.value?.includes(cat.id))
+                      .map((cat) => ({
+                        value: cat.id,
+                        label: cat.name,
+                      }))}
+                    onChange={(selected) => {
+                      field.onChange(selected.map((option) => option.value));
+                    }}
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
+
         <div className='upload-field flex flex-col md:flex-row gap-5'>
           <FormField
             control={form.control}
