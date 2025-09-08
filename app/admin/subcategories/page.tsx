@@ -10,7 +10,7 @@ import {
   TableRow,
   Table,
 } from "@/components/ui/table";
-import { getSubCategories } from "@/lib/actions/subcategory-action";
+import { getAllSubCategories } from "@/lib/actions/subcategory-action";
 
 import { rquireAdmin } from "@/lib/auth-guard";
 import { formatDateTime, formatId } from "@/lib/utils";
@@ -27,7 +27,7 @@ const SubCategoriesPage = async (props: {
   const page = Number(searchParams.page) || 1;
   const searchText = searchParams.query || "";
 
-  const categories = await getSubCategories({});
+  const categories = await getAllSubCategories({});
 
   return (
     <div className='space-y-2'>

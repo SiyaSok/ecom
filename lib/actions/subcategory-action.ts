@@ -58,7 +58,7 @@ export async function updateSubCategory(
 }
 
 // Get all categories
-export async function getSubCategories({
+export async function getAllSubCategories({
   limit = PAGE_SIZE,
 }: {
   limit?: number;

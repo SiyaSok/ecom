@@ -158,6 +158,7 @@ export const insertCollectionSchema = z.object({
     .nullable()
     .optional(),
   description: z.string().optional().nullable(),
+  images: z.array(z.string()).min(1, "Collection must have at least one image"),
   categoryIds: z.array(z.string().uuid()).optional(),
   categories: z
     .array(
@@ -206,7 +207,6 @@ export const insertSubCategorySchema = z.object({
     .min(3, "Slug must be at least 3 characters")
     .nullable()
     .optional(),
-
   description: z.string().optional().nullable(),
 });
 

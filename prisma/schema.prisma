@@ -170,6 +170,7 @@ model Collection {
   createdAt   DateTime   @default(now()) @db.Timestamp(6)
   categories  Category[] @relation("CategoryCollections")
   updatedAt   DateTime?  @updatedAt
+  images      String[]
 }
 
 model Category {

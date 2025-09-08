@@ -81,17 +81,17 @@ export async function getAllCollections({
 }) {
   const data = await prisma.collection.findMany({
     where: {
-      categories: {
-        some: {
-          subCategories: {
-            some: {
-              products: {
-                some: {}, // checks that at least one product exists
-              },
-            },
-          },
-        },
-      },
+      // categories: {
+      //   some: {
+      //     subCategories: {
+      //       some: {
+      //         products: {
+      //           some: {}, // checks that at least one product exists
+      //         },
+      //       },
+      //     },
+      //   },
+      // },
     },
     include: {
       categories: {

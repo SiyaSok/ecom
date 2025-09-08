@@ -1,10 +1,10 @@
 /** @format */
 
 import CategoryForm from "@/components/admin/category-form";
-import { getSubCategories } from "@/lib/actions/subcategory-action";
+import { getAllSubCategories } from "@/lib/actions/subcategory-action";
 
 const CreateProduct = async () => {
-  const SubCategory = await getSubCategories({});
+  const SubCategory = await getAllSubCategories({});
 
   return (
     <>
