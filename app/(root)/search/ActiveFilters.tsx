@@ -14,7 +14,7 @@ const ActiveFilters = ({
   if (filters.length === 0) return null;
 
   return (
-    <div className='flex flex-wrap items-center gap-2 mb-4'>
+    <div className='flex flex-wrap items-center gap-2 my-4 '>
       <span className='text-sm text-muted-foreground'>Active filters:</span>
       {filters.map((filter) => (
         <Badge

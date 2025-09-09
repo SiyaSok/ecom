@@ -21,7 +21,7 @@ const HomePage = async () => {
   return (
     <>
       <CollectionsImages />
-      <ProductList data={products} title='New In' limit={4} />
+      <ProductList data={products} title='New In' limit={10} />
       <ViewAllProducts />
       <CategorytCarousel data={SubCategories.data} />
       <DealCountdown />
