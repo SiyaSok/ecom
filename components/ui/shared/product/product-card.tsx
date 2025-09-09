@@ -24,7 +24,7 @@ const ProductCard = async ({ product }: { product: Product }) => {
             height={400}
           />
         </Link>
-        <div className='absolute top-1 right-[5px] z-10'>
+        <div className='absolute top-1 right-[5px] z-2'>
           <AddToWishList
             productSlug={product.slug}
             userId={userId || null}
@@ -40,7 +40,7 @@ const ProductCard = async ({ product }: { product: Product }) => {
           </h2>
         </Link>
 
-        <div className='flex md:items-center justify-between gap-2 md:gap-4 flex-col md:flex-row  items-start'>
+        <div className='flex md:items-center justify-between gap-2 flex-col md:flex-row items-start'>
           {/* <p>{product.rating} Stars</p> */}
           <Rating value={Number(product.rating)} />
           {product.stock > 0 ? (

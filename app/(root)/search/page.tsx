@@ -1,5 +1,4 @@
 /** @format */
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/ui/shared/product/product-card";
 import {
@@ -7,22 +6,21 @@ import {
   getAllCategories,
 } from "@/lib/actions/products.actions";
 import { Product } from "@/types";
-import { ArrowDownWideNarrow, CircleX, SlidersHorizontal } from "lucide-react";
 import Link from "next/link";
+
+import { Suspense } from "react";
+import ActiveFilters from "./ActiveFilters";
+import MobileFilterDrawer from "./MobileFilterDrawer";
+import MobileSortDrawer from "./MobileSortDrawer";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+import Pagination from "@/components/ui/shared/pagination";
+import SearchResultsSkeleton from "@/components/ui/shared/product/SearchResultsSkeleton";
+import FilterSkeleton from "@/components/ui/shared/product/FilterSkeleton";
 
 const prices = [
   {
@@ -45,7 +43,12 @@ const prices = [
 
 const ratings = [4, 3, 2, 1];
 
-const sortOrders = ["newest", "lowest", "highest", "rating"];
+const sortOrders = [
+  { value: "newest", label: "Newest" },
+  { value: "lowest", label: "Price: Low to High" },
+  { value: "highest", label: "Price: High to Low" },
+  { value: "rating", label: "Highest Rated" },
+];
 
 export async function generateMetadata(props: {
   searchParams: Promise<{
@@ -79,7 +82,7 @@ export async function generateMetadata(props: {
   }
 
   return {
-    title: "Search Page",
+    title: "Search Products",
   };
 }
 
@@ -102,9 +105,7 @@ const SearchPage = async (props: {
     sort = "newest",
   } = await props.searchParams;
 
-  // create a  filter url
-
-  const getFilerUrl = ({
+  const getFilterUrl = ({
     c,
     s,
     p,
@@ -128,295 +129,241 @@ const SearchPage = async (props: {
     return `/search?${new URLSearchParams(params).toString()}`;
   };
 
-  const products = await getAllProducts({
-    page: Number(page),
-    query: q,
-    category,
-    price,
-    rating,
-    sort,
-  });
+  const [products, categories] = await Promise.all([
+    getAllProducts({
+      page: Number(page),
+      query: q,
+      category,
+      price,
+      rating,
+      sort,
+    }),
+    getAllCategories(),
+  ]);
 
-  const categories = await getAllCategories();
+  // Prepare active filters for display
+  const activeFilters = [];
+  if (q !== "all" && q.trim() !== "") {
+    activeFilters.push({ key: "q", value: q, label: "Query" });
+  }
+  if (category !== "all" && category.trim() !== "") {
+    activeFilters.push({ key: "category", value: category, label: "Category" });
+  }
+  if (price !== "all" && price.trim() !== "") {
+    const priceLabel = prices.find((p) => p.value === price)?.name || price;
+    activeFilters.push({ key: "price", value: priceLabel, label: "Price" });
+  }
+  if (rating !== "all" && rating.trim() !== "") {
+    activeFilters.push({
+      key: "rating",
+      value: `${rating} stars & up`,
+      label: "Rating",
+    });
+  }
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-5 md:gap-2'>
-      <div className='hidden md:block filter-links mt-10'>
-        {/* Categories Links */}
-        <Accordion type='single' collapsible>
-          <AccordionItem value='item-1'>
-            <AccordionTrigger>Department</AccordionTrigger>
-            <AccordionContent>
-              <div>
-                <ul className='space-y-1'>
-                  <li>
-                    <Link
-                      className={`${
-                        (category === "all" || category === "") && "font-bold"
-                      }`}
-                      href={getFilerUrl({ c: "all" })}>
-                      Any
-                    </Link>
-                  </li>
-                  {categories.map((x) => (
-                    <li key={x.category}>
-                      <Link
-                        className={`${category === x.category && "font-bold"}`}
-                        href={getFilerUrl({ c: `${x.category}` })}>
-                        {x.category}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+    <div className='container mx-auto px-4 py-6'>
+      <div className='grid grid-cols-1 lg:grid-cols-4 gap-3'>
+        {/* Desktop Filters */}
+        <aside className='hidden lg:block'>
+          <Suspense fallback={<FilterSkeleton />}>
+            <div className='bg-white rounded-lg border p-4 shadow-sm sticky top-4'>
+              <h2 className='text-xl font-bold mb-4'>Filters</h2>
 
-        {/* Price Links */}
-        <Accordion type='single' collapsible>
-          <AccordionItem value='item-1'>
-            <AccordionTrigger>Price</AccordionTrigger>
-            <AccordionContent>
-              <div>
-                <ul className='space-y-1'>
-                  <li>
-                    <Link
-                      className={`${price === "all" && "font-bold"}`}
-                      href={getFilerUrl({ p: "all" })}>
-                      Any
-                    </Link>
-                  </li>
-                  {prices.map((x) => (
-                    <li key={x.value}>
-                      <Link
-                        className={`${price === x.value && "font-bold"}`}
-                        href={getFilerUrl({ p: `${x.value}` })}>
-                        {x.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+              {/* Categories Accordion */}
+              <Accordion
+                type='single'
+                collapsible
+                defaultValue='department'
+                className='mb-4'>
+                <AccordionItem value='department'>
+                  <AccordionTrigger className='font-medium'>
+                    Department
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div>
+                      <ul className='space-y-2'>
+                        <li>
+                          <Link
+                            className={`block py-1 ${category === "all" || category === "" ? "font-bold text-black" : "text-gray-700 hover:text-black"}`}
+                            href={getFilterUrl({ c: "all" })}>
+                            Any
+                          </Link>
+                        </li>
+                        {categories.map((x) => (
+                          <li key={x.category}>
+                            <Link
+                              className={`block py-1 ${category === x.category ? "font-bold text-black" : "text-gray-700 hover:text-black"}`}
+                              href={getFilterUrl({ c: `${x.category}` })}>
+                              {x.category}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
 
-        {/* Rating Links */}
-        <Accordion type='single' collapsible>
-          <AccordionItem value='item-1'>
-            <AccordionTrigger>Customer Rating</AccordionTrigger>
-            <AccordionContent>
-              <div>
-                <ul className='space-y-1'>
-                  <li>
-                    <Link
-                      className={`${rating === "all" && "font-bold"}`}
-                      href={getFilerUrl({ r: "all" })}>
-                      Any
-                    </Link>
-                  </li>
-                  {ratings.map((r) => (
-                    <li key={r}>
-                      <Link
-                        className={`${rating === r.toString() && "font-bold"}`}
-                        href={getFilerUrl({ r: `${r}` })}>
-                        {`${r} stars & up`}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </div>
+              {/* Price Accordion */}
+              <Accordion
+                type='single'
+                collapsible
+                defaultValue='price'
+                className='mb-4'>
+                <AccordionItem value='price'>
+                  <AccordionTrigger className='font-medium'>
+                    Price
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div>
+                      <ul className='space-y-2'>
+                        <li>
+                          <Link
+                            className={`block py-1 ${price === "all" ? "font-bold text-black" : "text-gray-700 hover:text-black"}`}
+                            href={getFilterUrl({ p: "all" })}>
+                            Any
+                          </Link>
+                        </li>
+                        {prices.map((x) => (
+                          <li key={x.value}>
+                            <Link
+                              className={`block py-1 ${price === x.value ? "font-bold text-black" : "text-gray-700 hover:text-black"}`}
+                              href={getFilterUrl({ p: `${x.value}` })}>
+                              {x.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
 
-      <div className='space-y-4 md:col-span-4'>
-        <div className='flex gap-4 items-center justify-end px-4 mt-2'>
-          <div className='md:hidden relative'>
-            <Drawer direction='left'>
-              <DrawerTrigger className='flex rounded-full gap-2 bg-black py-1 px-2 text-white items-center text-xs justify-between'>
-                Filters
-                <SlidersHorizontal size={15} />
-              </DrawerTrigger>
-              <DrawerContent className='h-full max-w-[80%]'>
-                <DrawerHeader>
-                  <DrawerTitle>Filers</DrawerTitle>
-                </DrawerHeader>
-                <div className='px-4'>
-                  {/* Categories Links */}
-                  <Accordion type='single' collapsible>
-                    <AccordionItem value='item-1'>
-                      <AccordionTrigger>Department</AccordionTrigger>
-                      <AccordionContent>
-                        <div>
-                          <ul className='space-y-1'>
-                            <li>
-                              <Link
-                                className={`${
-                                  (category === "all" || category === "") &&
-                                  "font-bold"
-                                }`}
-                                href={getFilerUrl({ c: "all" })}>
-                                Any
-                              </Link>
-                            </li>
-                            {categories.map((x) => (
-                              <li key={x.category}>
-                                <Link
-                                  className={`${category === x.category && "font-bold"}`}
-                                  href={getFilerUrl({ c: `${x.category}` })}>
-                                  {x.category}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-
-                  {/* Price Links */}
-                  <Accordion type='single' collapsible>
-                    <AccordionItem value='item-1'>
-                      <AccordionTrigger>Price</AccordionTrigger>
-                      <AccordionContent>
-                        <div>
-                          <ul className='space-y-1'>
-                            <li>
-                              <Link
-                                className={`${price === "all" && "font-bold"}`}
-                                href={getFilerUrl({ p: "all" })}>
-                                Any
-                              </Link>
-                            </li>
-                            {prices.map((x) => (
-                              <li key={x.value}>
-                                <Link
-                                  className={`${price === x.value && "font-bold"}`}
-                                  href={getFilerUrl({ p: `${x.value}` })}>
-                                  {x.name}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-
-                  {/* Rating Links */}
-                  <Accordion type='single' collapsible>
-                    <AccordionItem value='item-1'>
-                      <AccordionTrigger>Customer Rating</AccordionTrigger>
-                      <AccordionContent>
-                        <div>
-                          <ul className='space-y-1'>
-                            <li>
-                              <Link
-                                className={`${rating === "all" && "font-bold"}`}
-                                href={getFilerUrl({ r: "all" })}>
-                                Any
-                              </Link>
-                            </li>
-                            {ratings.map((r) => (
-                              <li key={r}>
-                                <Link
-                                  className={`${rating === r.toString() && "font-bold"}`}
-                                  href={getFilerUrl({ r: `${r}` })}>
-                                  {`${r} stars & up`}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </div>
-                <DrawerClose className='absolute top-1 right-1'>
-                  <Button variant='outline' className='text-black'>
-                    <CircleX />
-                  </Button>
-                </DrawerClose>
-              </DrawerContent>
-            </Drawer>
-          </div>
-
-          <div className='md:hidden relative'>
-            <Drawer direction='left'>
-              <DrawerTrigger className='flex rounded-full gap-2 bg-black py-1 px-2 text-white items-center text-xs justify-between'>
-                Sort <ArrowDownWideNarrow size={15} />
-              </DrawerTrigger>
-              <DrawerContent className='h-full max-w-[80%]'>
-                <DrawerHeader>
-                  <DrawerTitle>Sort</DrawerTitle>
-                </DrawerHeader>
-                <div className='px-4 flex flex-col'>
-                  {sortOrders.map((s) => (
-                    <Link
-                      key={s}
-                      className={`mx-2 ${sort === s && "font-bold"}`}
-                      href={getFilerUrl({ s: `${s}` })}>
-                      {s}
-                    </Link>
-                  ))}
-                </div>
-                <DrawerClose className='absolute top-1 right-1'>
-                  <Button variant='outline'>
-                    <CircleX className='text-black' />
-                  </Button>
-                </DrawerClose>
-              </DrawerContent>
-            </Drawer>
-          </div>
-        </div>
-
-        <div className='flex-between flex-col md:flex-row my-4'>
-          <div className='flex items-center gap-2'>
-            {q !== "all" && q !== "" && <Badge>{"Query: " + q}</Badge>}
-            {category !== "all" && <Badge>{"Category: " + category}</Badge>}
-            {price !== "all" && <Badge>{"Price: " + price}</Badge>}{" "}
-            {rating !== "all" && (
-              <Badge>{"Rating: " + rating + " stars & up"}</Badge>
-            )}{" "}
-            {(q !== "all" && q !== "") ||
-            (category !== "all" && category !== "") ||
-            price !== "all" ||
-            rating !== "all" ? (
-              <Button asChild variant='outline' className='ml-3 py-1'>
-                <Link href='/search'>
-                  <CircleX />
-                </Link>
-              </Button>
-            ) : (
-              ""
-            )}
-          </div>
-          <div className='hidden md:block'>
-            {/* Sort */}
-            Sort by{" "}
-            {sortOrders.map((s) => (
-              <Link
-                key={s}
-                className={`mx-2 ${sort === s && "font-bold"}`}
-                href={getFilerUrl({ s: `${s}` })}>
-                {s}
-              </Link>
-            ))}
-          </div>
-        </div>
-        <div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
-          {products.data.length > 0 ? (
-            products.data.map((product: Product) => (
-              <ProductCard key={product.slug} product={product} />
-            ))
-          ) : (
-            <div>
-              <p>No product found</p>
+              {/* Rating Accordion */}
+              <Accordion type='single' collapsible defaultValue='rating'>
+                <AccordionItem value='rating'>
+                  <AccordionTrigger className='font-medium'>
+                    Customer Rating
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div>
+                      <ul className='space-y-2'>
+                        <li>
+                          <Link
+                            className={`block py-1 ${rating === "all" ? "font-bold text-black" : "text-gray-700 hover:text-black"}`}
+                            href={getFilterUrl({ r: "all" })}>
+                            Any
+                          </Link>
+                        </li>
+                        {ratings.map((r) => (
+                          <li key={r}>
+                            <Link
+                              className={`block py-1 ${rating === r.toString() ? "font-bold text-black" : "text-gray-700 hover:text-black"}`}
+                              href={getFilterUrl({ r: `${r}` })}>
+                              {`${r} stars & up`}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
-          )}
+          </Suspense>
+        </aside>
+
+        {/* Main Content */}
+        <div className='lg:col-span-3 space-y-6'>
+          {/* Header with filters and sorting */}
+          <div className='bg-white rounded-lg border p-4 shadow-sm'>
+            <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4'>
+              <div>
+                <h1 className='text-2xl font-bold'>Search Results</h1>
+                {products.data.length > 0 && (
+                  <p className='text-sm text-muted-foreground my-1'>
+                    {products.data.length} products found
+                  </p>
+                )}
+              </div>
+
+              <div className='flex items-center gap-2'>
+                {/* Mobile Filters */}
+                <div className='lg:hidden flex gap-2'>
+                  <MobileFilterDrawer
+                    categories={categories}
+                    getFilterUrl={getFilterUrl}
+                    currentCategory={category}
+                    currentPrice={price}
+                    currentRating={rating}
+                  />
+                  <MobileSortDrawer
+                    getFilterUrl={getFilterUrl}
+                    currentSort={sort}
+                  />
+                </div>
+
+                {/* Desktop Sort */}
+                <div className='hidden lg:flex items-center gap-2'>
+                  <span className='text-sm font-medium'>Sort by:</span>
+                  <div className='flex gap-1'>
+                    {sortOrders.map((s) => (
+                      <Link
+                        key={s.value}
+                        className={`px-3 py-1 text-sm rounded-full ${sort === s.value ? "bg-black text-white font-medium" : "text-gray-600 hover:bg-gray-100"}`}
+                        href={getFilterUrl({ s: `${s.value}` })}>
+                        {s.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Active Filters */}
+            <ActiveFilters filters={activeFilters} clearUrl='/search' />
+          </div>
+
+          {/* Products Grid */}
+          <Suspense fallback={<SearchResultsSkeleton />}>
+            {products.data.length > 0 ? (
+              <>
+                <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+                  {products.data.map((product: Product) => (
+                    <ProductCard key={product.slug} product={product} />
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {products.totalPages > 1 && (
+                  <div className='mt-8'>
+                    {products.totalPages > 1 && (
+                      <Pagination
+                        page={Number(page) || 1}
+                        totalPages={products.totalPages}
+                      />
+                    )}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className='bg-white rounded-lg border p-8 text-center shadow-sm mb-2'>
+                <div className='mx-auto max-w-md'>
+                  <h3 className='text-xl font-semibold mb-2'>
+                    No products found
+                  </h3>
+                  <p className='text-muted-foreground mb-4'>
+                    Try adjusting your search filters or search for something
+                    else.
+                  </p>
+                  <Link href='/search'>
+                    <Button>Clear all filters</Button>
+                  </Link>
+                </div>
+              </div>
+            )}
+          </Suspense>
         </div>
       </div>
     </div>
