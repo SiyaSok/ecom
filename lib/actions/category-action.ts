@@ -109,7 +109,8 @@ export async function getSingleCategoryById(id: string) {
 //get single category  by id
 export async function getSingleCategoryBySlug(
   slug: string,
-  categorySlug?: string
+  categorySlug?: string,
+  limit?: number
 ) {
   const data = await prisma.category.findFirst({
     where: {
@@ -130,6 +131,7 @@ export async function getSingleCategoryBySlug(
         },
       },
     },
+    take: limit,
   });
 
   const dataCount = await prisma.product.count({

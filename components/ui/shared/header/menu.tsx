@@ -1,25 +1,24 @@
 /** @format */
 
 import Link from "next/link";
-import ModeToggle from "./mode-toggle";
-import { EllipsisVertical, ShoppingBag, ShoppingCart } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+// import {
+//   Sheet,
+//   SheetContent,
+//   SheetDescription,
+//   SheetHeader,
+//   SheetTitle,
+//   SheetTrigger,
+// } from "@/components/ui/sheet";
 import UserButton from "./user-button";
 import CartCount from "./cart-count";
 
 const Menu = () => {
   return (
     <div className='flex justify-end gap-4 items-center'>
-      <nav className='hidden md:flex w-full max-w-xs gap-4 items-center'>
-        <ModeToggle />
+      <nav className='flex w-full max-w-xs gap-4 items-center'>
+        {/* <ModeToggle /> */}
 
         {/* Cart Link with Improved Styling */}
         <Link href='/cart' className='relative group'>
@@ -36,7 +35,7 @@ const Menu = () => {
       </nav>
 
       {/* Mobile Menu */}
-      <nav className='md:hidden'>
+      {/* <nav className='md:hidden'>
         <Sheet>
           <SheetTrigger asChild>
             <Button
@@ -80,7 +79,7 @@ const Menu = () => {
             </div>
           </SheetContent>
         </Sheet>
-      </nav>
+      </nav> */}
     </div>
   );
 };

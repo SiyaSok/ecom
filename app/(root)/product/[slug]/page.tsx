@@ -20,6 +20,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import RelatedProducts from "@/components/ui/shared/product/related-products";
 
 const ProductDatailsPage = async (props: {
   params: Promise<{ slug: string }>;
@@ -42,6 +43,7 @@ const ProductDatailsPage = async (props: {
         subCategoryName={product?.SubCategory?.name}
         productName={product.name}
       />
+
       <section>
         <div className='grid grid-cols-1 md:grid-cols-4 gap-10'>
           <div className='col-span-2'>
@@ -157,6 +159,10 @@ const ProductDatailsPage = async (props: {
           productSlug={product.slug}
         />
       </section>
+      <RelatedProducts
+        collectionSlug={product?.collection.slug ?? ""}
+        categorySlug={product?.category_?.slug ?? ""}
+      />
     </>
   );
 };

@@ -3,44 +3,24 @@
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerHeader,
-  DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { getAllCategories } from "@/lib/actions/products.actions";
 import { MenuIcon } from "lucide-react";
-import Link from "next/link";
+import MobileCollectionsNav from "./MobileCollectionsNav";
 
-const CategoryDrawer = async () => {
-  const categories = await getAllCategories();
-
+const CategoryDrawer = () => {
   return (
     <Drawer direction='left'>
-      <DrawerTrigger asChild>
+      <DrawerTrigger asChild className='md:hidden'>
         <Button variant='ghost'>
           <MenuIcon />
         </Button>
       </DrawerTrigger>
       <DrawerContent className='h-full max-w-sm'>
         <DrawerHeader>
-          <DrawerTitle>Select a category</DrawerTitle>
-          <div className='space-y-1 mt-4'>
-            {categories.map((x) => (
-              <Button
-                variant='ghost'
-                className='w-full justify-start'
-                key={x.category}
-                asChild>
-                <DrawerClose asChild>
-                  <Link href={`/search?category=${x.category}`}>
-                    {x.category} ({x._count})
-                  </Link>
-                </DrawerClose>
-              </Button>
-            ))}
-          </div>
+          <MobileCollectionsNav />
         </DrawerHeader>
       </DrawerContent>
     </Drawer>

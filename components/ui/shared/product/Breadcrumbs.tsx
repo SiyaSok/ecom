@@ -1,7 +1,7 @@
 /** @format */
 
 import Link from "next/link";
-import { ChevronsRight } from "lucide-react";
+import { ChevronsRight, CircleArrowLeft } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -29,7 +29,8 @@ const Breadcrumbs = ({
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
               <Link className='text-xs' href='/'>
-                Home
+                <span className='hidden md:block'>Home</span>
+                <CircleArrowLeft size={20} className='md:hidden' />
               </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
@@ -86,7 +87,7 @@ const Breadcrumbs = ({
           )}
 
           {productName && (
-            <>
+            <div className='hidden md:contents'>
               <BreadcrumbSeparator>
                 <ChevronsRight />
               </BreadcrumbSeparator>
@@ -95,7 +96,7 @@ const Breadcrumbs = ({
                   {productName}
                 </BreadcrumbPage>
               </BreadcrumbItem>
-            </>
+            </div>
           )}
         </BreadcrumbList>
       </Breadcrumb>

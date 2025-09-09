@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
-const Search = async () => {
+const Search = () => {
   return (
     <form action={"/search"} method='GET'>
       <div className='flex w-full max-w-sm items-center space-x-2 relative'>
@@ -11,7 +11,7 @@ const Search = async () => {
           name='q'
           type='text'
           placeholder='Search...'
-          className='md:w-[500px] lg:w-[600px] rounded-full'
+          className='md:w-[500px] lg:w-[600px] rounded-full hidden md:block'
         />
         <Button variant='ghost' className='absolute top-0 right-0 rounded-full'>
           <SearchIcon className=' text-black' />

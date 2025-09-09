@@ -10,10 +10,9 @@ import { ToastAction } from "@/components/ui/toast";
 import { addItemToCart } from "@/lib/actions/cart.action";
 import { useTransition } from "react";
 
-const AddToCart = ({ cart, item }: { cart?: Cart; item: CartItem }) => {
+const AddToCart = ({ item }: { cart?: Cart; item: CartItem }) => {
   const router = useRouter();
   const { toast } = useToast();
-  console.log(cart);
   const [isPending, startTransition] = useTransition();
 
   const handleAddToCart = async () => {
