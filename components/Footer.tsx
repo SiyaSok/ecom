@@ -4,20 +4,12 @@ const Footer = () => {
   return (
     <footer className='bg-black text-white'>
       {/* Top Section */}
-      <div className='w-full px-12 py-6'>
+      <div className='w-full px-6 md:px-12 py-6'>
         {/* Logo */}
-        <div className='mb-4'>
-          <svg
-            className='h-[18px] mb-4'
-            viewBox='0 0 616.83 74.28'
-            fill='white'>
-            <path d='M0,51.15h14.43c1.64,8.08,5.12,11.25,12.48,11.25c6.96,0,11.05-2.86,11.05-7.98v-1.94c0-3.79-2.05-7.06-10.74-8.8 l-6.55-1.33C8.9,40.11,1.64,32.43,1.64,21.28C1.64,8.49,11.56,0,26.09,0c14.32,0,23.22,8.29,25.27,22.92H36.83 c-1.53-7.88-4.81-11.05-10.84-11.05c-6.24,0-9.92,2.86-9.92,7.67v1.94c0,4.3,2.76,7.16,10.74,8.8l6.45,1.33 c11.56,2.25,19.13,9.72,19.13,20.97c0,13.5-9.92,21.69-25.58,21.69C11.46,74.28,1.43,65.68,0,51.15z' />
-            {/* Additional paths from the original SVG would go here */}
-          </svg>
-        </div>
+        <div className='mb-4'>The Hanger</div>
 
         {/* Navigation Sections */}
-        <div className='flex flex-row flex-wrap justify-between gap-4'>
+        <div className=' grid grid-cols-2 md:flex md:flex-row md:flex-wrap justify-between gap-4'>
           {/* Account Section */}
           <section className='w-52'>
             <div className='mb-4 font-bold text-p3'>Account</div>

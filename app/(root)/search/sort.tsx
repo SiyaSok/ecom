@@ -1,42 +1,29 @@
 /** @format */
-
 "use client";
 
 import {
   Select,
-  SelectContent,
-  SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectContent,
+  SelectItem,
 } from "@/components/ui/select";
-import { useRouter } from "next/navigation";
 
-interface SortProps {
-  sort: string;
+type SortSelectProps = {
   sortOrders: string[];
-}
+  onChange: (value: string) => void;
+};
 
-export default function Sort({ sort, sortOrders }: SortProps) {
-  const router = useRouter();
-
-  const handleSortChange = (value: string) => {
-    // Get current URL search params
-    const params = new URLSearchParams(window.location.search);
-    params.set("sort", value);
-
-    // Navigate to the new URL
-    router.push(`/search?${params.toString()}`);
-  };
-
+export default function SortSelect({ sortOrders, onChange }: SortSelectProps) {
   return (
-    <Select value={sort} onValueChange={handleSortChange}>
-      <SelectTrigger className='w-[180px]'>
+    <Select onValueChange={onChange}>
+      <SelectTrigger>
         <SelectValue placeholder='Sort by' />
       </SelectTrigger>
       <SelectContent>
         {sortOrders.map((s) => (
           <SelectItem key={s} value={s}>
-            <span className={`mx-2 ${sort === s ? "font-bold" : ""}`}>{s}</span>
+            {s}
           </SelectItem>
         ))}
       </SelectContent>
