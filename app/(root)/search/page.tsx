@@ -21,6 +21,13 @@ import {
 import Pagination from "@/components/ui/shared/pagination";
 import SearchResultsSkeleton from "@/components/ui/shared/product/SearchResultsSkeleton";
 import FilterSkeleton from "@/components/ui/shared/product/FilterSkeleton";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown, GripHorizontal } from "lucide-react";
 
 const prices = [
   {
@@ -40,7 +47,6 @@ const prices = [
     value: "2001-3000",
   },
 ];
-
 const ratings = [4, 3, 2, 1];
 
 const sortOrders = [
@@ -94,6 +100,7 @@ const SearchPage = async (props: {
     rating?: string;
     sort?: string;
     page?: string;
+    grid?: string;
   }>;
 }) => {
   const {
@@ -103,6 +110,7 @@ const SearchPage = async (props: {
     price = "all",
     rating = "all",
     sort = "newest",
+    grid = "4",
   } = await props.searchParams;
 
   const getFilterUrl = ({
@@ -111,20 +119,23 @@ const SearchPage = async (props: {
     p,
     r,
     pg,
+    g,
   }: {
     c?: string;
     s?: string;
     p?: string;
     r?: string;
     pg?: string;
+    g?: string;
   }) => {
-    const params = { q, category, page, price, rating, sort };
+    const params = { q, category, page, price, rating, sort, grid };
 
     if (c) params.category = c;
     if (s) params.sort = s;
     if (p) params.price = p;
     if (r) params.rating = r;
     if (pg) params.page = pg;
+    if (g) params.grid = g;
 
     return `/search?${new URLSearchParams(params).toString()}`;
   };
@@ -304,18 +315,46 @@ const SearchPage = async (props: {
                   />
                 </div>
 
-                {/* Desktop Sort */}
+                {/* Desktop Sort - Now as Dropdown */}
                 <div className='hidden lg:flex items-center gap-2'>
-                  <span className='text-sm font-medium'>Sort by:</span>
-                  <div className='flex gap-1'>
-                    {sortOrders.map((s) => (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant='outline'
+                        className='flex items-center gap-2'>
+                        {sortOrders.find((s) => s.value === sort)?.label ||
+                          "Newest"}
+                        <ChevronDown size={16} />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align='end' className='w-48'>
+                      {sortOrders.map((s) => (
+                        <DropdownMenuItem key={s.value} asChild>
+                          <Link
+                            className={`w-full ${sort === s.value ? "bg-accent font-medium" : ""}`}
+                            href={getFilterUrl({ s: s.value })}>
+                            {s.label}
+                          </Link>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+                <div className='hidden md:block'>
+                  <div>
+                    {Number(grid) === 3 ? (
                       <Link
-                        key={s.value}
-                        className={`px-3 py-1 text-sm rounded-full ${sort === s.value ? "bg-black text-white font-medium" : "text-gray-600 hover:bg-gray-100"}`}
-                        href={getFilterUrl({ s: `${s.value}` })}>
-                        {s.label}
+                        className='p-2  w-20'
+                        href={getFilterUrl({ g: `${4}` })}>
+                        <GripHorizontal />
                       </Link>
-                    ))}
+                    ) : (
+                      <Link
+                        className='p-2  w-20'
+                        href={getFilterUrl({ g: `${3}` })}>
+                        <GripHorizontal />
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
@@ -329,7 +368,7 @@ const SearchPage = async (props: {
           <Suspense fallback={<SearchResultsSkeleton />}>
             {products.data.length > 0 ? (
               <>
-                <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+                <div className={`grid grid-cols-2 md:grid-cols-${grid} gap-4`}>
                   {products.data.map((product: Product) => (
                     <ProductCard key={product.slug} product={product} />
                   ))}

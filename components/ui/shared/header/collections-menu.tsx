@@ -18,9 +18,9 @@ const CollectionsMenu = async () => {
 
   return (
     <div
-      className='z-[4] w-full max-w-[1200px] m-auto bg-white border-b border-gray-100'
+      className='z-[4] w-full max-w-[1200px] m-auto bg-white border-b border-gray-100 '
       id='collections'>
-      <div className='relative h-full'>
+      <div className='relative h-full overflow-hidden'>
         <div className='z-[1] bg-white relative sm:px-4 md:px-6 lg:z-10 lg:p-0'>
           <div className='flex items-center justify-start whitespace-nowrap lg:p-0'>
             <div className='flex w-max items-center py-4'>

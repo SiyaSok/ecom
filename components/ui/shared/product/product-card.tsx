@@ -22,6 +22,7 @@ const ProductCard = async ({ product }: { product: Product }) => {
             alt={product.name}
             width={400}
             height={400}
+            className='hover:opacity-80'
           />
         </Link>
         <div className='absolute top-1 right-[5px] z-2'>
@@ -41,7 +42,6 @@ const ProductCard = async ({ product }: { product: Product }) => {
         </Link>
 
         <div className='flex md:items-center justify-between gap-2 flex-col md:flex-row items-start'>
-          {/* <p>{product.rating} Stars</p> */}
           <Rating value={Number(product.rating)} />
           {product.stock > 0 ? (
             <ProductPrice value={Number(product.price)} />

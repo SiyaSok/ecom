@@ -2,7 +2,7 @@
 
 const Footer = () => {
   return (
-    <footer className='bg-black text-white'>
+    <footer className='bg-black text-white overflow-hidden'>
       {/* Top Section */}
       <div className='w-full px-6 md:px-12 py-6'>
         {/* Logo */}
@@ -177,9 +177,6 @@ const Footer = () => {
               </li>
               {/* Additional social icons would go here */}
             </ul>
-            <button className='w-full px-3 py-2 text-center border-2 border-white transition-transform hover:scale-110 active:scale-95'>
-              <span className='uppercase font-bold text-p3'>read our blog</span>
-            </button>
           </section>
         </div>
       </div>
