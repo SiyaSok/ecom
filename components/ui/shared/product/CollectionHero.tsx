@@ -1,27 +1,29 @@
 /** @format */
 
-import { Collection, Product } from "@/types";
+import { Category, Collection, Product } from "@/types";
 import Image from "next/image";
 
 interface CollectionHeroProps {
-  collection: Collection | null;
+  collection?: Collection | null;
   products: Product[] | null;
+  category?: Category | null;
 }
 
 export default function CollectionHero({
   collection,
   products,
+  category,
 }: CollectionHeroProps) {
   // Get featured products or first few products for display
   const featuredProducts = products
     ?.filter((product) => product.isFeatured)
-    .slice(0, 3);
+    .slice(0, 2);
 
   // Fallback to first 3 products if no featured ones
   const displayProducts =
     (featuredProducts?.length ?? 0 > 0)
       ? featuredProducts
-      : products?.slice(0, 3);
+      : products?.slice(0, 2);
 
   return (
     <section className='relative min-h-[500px] bg-black overflow-hidden mb-10'>
@@ -35,16 +37,18 @@ export default function CollectionHero({
           <div className='space-y-8'>
             <div className='space-y-4'>
               <h1 className='text-5xl lg:text-6xl font-bold text-gray-100 tracking-tight'>
-                {collection?.name}
-                <span className='block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-600'>
-                  Collection
-                </span>
+                {collection?.name ? collection?.name : category?.name}
+                {collection?.name && (
+                  <span className='block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-600'>
+                    Collection
+                  </span>
+                )}
               </h1>
 
               <p className='text-lg text-gray-100 max-w-lg'>
-                Discover the latest trends in women&apos;s fashion. From stylish
-                bags to comfortable sneakers and elegant clothing, find
-                everything you need to express your unique style.
+                {collection?.description
+                  ? collection?.description
+                  : category?.description}
               </p>
             </div>
 
@@ -71,14 +75,14 @@ export default function CollectionHero({
             </div>
 
             {/* CTA Buttons */}
-            <div className='flex gap-4'>
+            {/* <div className='flex gap-4'>
               <button className='bg-gradient-to-r  from-indigo-400 to-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200'>
                 Shop Collection
               </button>
               <button className='border-2 border-gray-300 bg-gray-300 text-gray-900 px-8 py-3 rounded-full font-semibold hover:border-gray-400 transition-all duration-200'>
                 View All
               </button>
-            </div>
+            </div> */}
           </div>
 
           {/* Product Showcase */}

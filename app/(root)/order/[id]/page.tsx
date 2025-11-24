@@ -37,6 +37,9 @@ const OrderDetailsPage = async (props: { params: Promise<{ id: string }> }) => {
 
     client_secret = paymentIntent.client_secret;
   }
+
+  console.log();
+
   return (
     <>
       <OrderDetailsTable

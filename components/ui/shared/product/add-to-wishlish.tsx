@@ -113,7 +113,7 @@ const AddToWishList = ({
               ) : (
                 <Heart
                   className={`h-6 w-6 ${
-                    isBookmarked ? "fill-red-500 text-red-500" : ""
+                    isBookmarked ? "fill-red-500 text-red-500" : "fill-black"
                   }`}
                 />
               )}
@@ -141,13 +141,13 @@ const AddToWishList = ({
 
   return heart ? (
     <div
-      className={`${isBookmarked ? "opacity-100" : "opacity-50"} bg-white rounded-md p-2 shadow-md flex items-center justify-center opacity-50 hover:opacity-100 transition-opacity`}>
+      className={` bg-white rounded-md p-2 shadow-md flex items-center justify-center  hover:opacity-100 transition-opacity`}>
       {isPending ? (
         <Loader className='h-4 w-4 animate-spin' />
       ) : (
         <Heart
           onClick={handleAddToWishList}
-          className={`h-4 w-4 ${isBookmarked ? "fill-red-500  text-red-500" : ""} hover:fill-red-500 cursor-pointer`}
+          className={`h-4 w-4 ${isBookmarked ? "fill-red-500  text-red-500" : "fill-black"} hover:fill-red-500 cursor-pointer`}
         />
       )}
     </div>

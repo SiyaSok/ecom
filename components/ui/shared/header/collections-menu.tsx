@@ -17,6 +17,22 @@ const CollectionsMenu = async () => {
     );
   }
 
+  const cleanName = (name: string): string => {
+    const patterns = [
+      "Ladies ",
+      "Women's ",
+      "Mens ",
+      "for Women ",
+      "for Men ",
+      "for Women",
+    ];
+
+    return patterns.reduce(
+      (cleanedName, pattern) => cleanedName.replaceAll(pattern, ""),
+      name
+    );
+  };
+
   return (
     <div className='w-full max-w-[1200px] mx-auto bg-white border-b border-gray-100'>
       <div className='relative'>
@@ -41,7 +57,7 @@ const CollectionsMenu = async () => {
                     <Link
                       href={`/collections/${collection.slug}`}
                       className='flex h-8 items-center rounded-full px-3 text-base font-bold no-underline transition-all duration-300 hover:bg-black hover:text-white'>
-                      {collection.name}
+                      {cleanName(collection.name)}
                     </Link>
                   </div>
 
@@ -58,7 +74,7 @@ const CollectionsMenu = async () => {
                                 <Link
                                   href={`/collections/${collection.slug}/${category.slug}`}
                                   className='mb-4 block text-lg font-bold text-black no-underline hover:underline'>
-                                  {category.name}
+                                  {cleanName(category.name)}
                                 </Link>
 
                                 {/* Subcategories */}
@@ -69,7 +85,7 @@ const CollectionsMenu = async () => {
                                         key={subCategory.id}
                                         href={`/collections/${collection.slug}/${category.slug}/${subCategory.slug}`}
                                         className='text-sm text-gray-600 no-underline transition-colors hover:text-black hover:underline'>
-                                        {subCategory.name}
+                                        {cleanName(subCategory.name)}
                                       </Link>
                                     )
                                   )}

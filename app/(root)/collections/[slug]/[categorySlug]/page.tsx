@@ -1,7 +1,8 @@
 /** @format */
 
-import ProductList from "@/components/ui/shared/product/product-list";
+import ProductCard from "@/components/ui/shared/product/product-card";
 import { getSingleCategoryBySlug } from "@/lib/actions/category-action";
+import { Product } from "@/types";
 
 const CollectionPage = async (props: {
   params: Promise<{ slug: string; categorySlug: string }>;
@@ -10,14 +11,13 @@ const CollectionPage = async (props: {
   const category = await getSingleCategoryBySlug(slug, categorySlug);
 
   return (
-    <ProductList
-      data={(category?.data?.products ?? []).map((product) => ({
-        ...product,
-        subCategoryId: product.subCategoryId ?? "",
-      }))}
-      title={category?.data?.name}
-      productCount={category.dataCount}
-    />
+    <div className='wrapper'>
+      <div className={`grid grid-cols-2 md:grid-cols-${4} gap-4`}>
+        {(category?.data?.products ?? []).map((product: Product) => (
+          <ProductCard key={product.slug} product={product} />
+        ))}
+      </div>
+    </div>
   );
 };
 
