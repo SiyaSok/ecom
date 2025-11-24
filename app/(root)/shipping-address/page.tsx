@@ -28,10 +28,10 @@ const ShippingAddressPage = async () => {
   if (!user) throw new Error("User not found!!!");
 
   return (
-    <>
+    <div className='wrapper'>
       <CheckoutSteps current={1} />
       <ShippingAddressForm address={user.address as ShippingAddress} />;
-    </>
+    </div>
   );
 };
 

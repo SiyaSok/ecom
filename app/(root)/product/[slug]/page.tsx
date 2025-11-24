@@ -36,7 +36,7 @@ const ProductDatailsPage = async (props: {
   if (!product) notFound();
 
   return (
-    <>
+    <div className='wrapper'>
       <Breadcrumbs
         collectionName={product?.collection?.name}
         categoryName={product?.category_?.name}
@@ -163,7 +163,7 @@ const ProductDatailsPage = async (props: {
         collectionSlug={product?.collection.slug ?? ""}
         categorySlug={product?.category_?.slug ?? ""}
       />
-    </>
+    </div>
   );
 };
 

@@ -19,7 +19,7 @@ const HomePage = async () => {
   const SubCategories = await getAllSubCategories({ limit: 10 });
 
   return (
-    <>
+    <div className='wrapper'>
       <CollectionsImages />
       <ProductList data={products} title='New In' limit={10} />
       <ViewAllProducts />
@@ -27,7 +27,7 @@ const HomePage = async () => {
       <DealCountdown />
       <ProductCarousel data={featuredProducts} />
       <IconBoxes />
-    </>
+    </div>
   );
 };
 

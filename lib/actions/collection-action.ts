@@ -122,7 +122,153 @@ export async function getAllCollections({
     totalPages: Math.ceil(dataCount / limit),
   });
 }
+export async function getAllCollectionsSimple() {
+  try {
+    const collections = await prisma.collection.findMany({
+      where: {
+        // Only include collections that have categories with products
+        categories: {
+          some: {
+            // Category must have either direct products or subcategories with products
+            OR: [
+              {
+                products: {
+                  some: {
+                    // Add any product status filters if needed
+                    // status: "ACTIVE"
+                  },
+                },
+              },
+              {
+                subCategories: {
+                  some: {
+                    products: {
+                      some: {
+                        // status: "ACTIVE"
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+      },
+      include: {
+        categories: {
+          where: {
+            // Only include categories that have products
+            OR: [
+              {
+                products: {
+                  some: {},
+                },
+              },
+              {
+                subCategories: {
+                  some: {
+                    products: {
+                      some: {},
+                    },
+                  },
+                },
+              },
+            ],
+          },
+          include: {
+            products: {
+              take: 1, // We only need to know if products exist, not the actual products
+              select: {
+                id: true,
+              },
+            },
+            subCategories: {
+              where: {
+                products: {
+                  some: {},
+                },
+              },
+              include: {
+                products: {
+                  take: 1,
+                  select: {
+                    id: true,
+                  },
+                },
+              },
+              orderBy: {
+                name: "asc",
+              },
+            },
+          },
+          orderBy: {
+            name: "asc",
+          },
+        },
+        // images: true,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+      take: PAGE_SIZE,
+    });
 
+    const totalCount = await prisma.collection.count({
+      where: {
+        categories: {
+          some: {
+            OR: [
+              {
+                products: {
+                  some: {},
+                },
+              },
+              {
+                subCategories: {
+                  some: {
+                    products: {
+                      some: {},
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    // Convert to plain object to handle Date objects and other non-serializable types
+    const serializableCollections = collections.map((collection) => ({
+      ...collection,
+      createdAt: collection.createdAt.toISOString(),
+      updatedAt: collection.updatedAt?.toISOString() || null,
+      categories: collection.categories.map((category) => ({
+        ...category,
+        createdAt: category.createdAt.toISOString(),
+        updatedAt: category.updatedAt?.toISOString() || null,
+        subCategories: category.subCategories.map((subCategory) => ({
+          ...subCategory,
+          createdAt: subCategory.createdAt.toISOString(),
+          updatedAt: subCategory.updatedAt?.toISOString() || null,
+        })),
+      })),
+    }));
+
+    return {
+      data: serializableCollections,
+      totalPages: Math.ceil(totalCount / PAGE_SIZE),
+      totalCount,
+    };
+  } catch (error) {
+    console.error("Error fetching collections:", error);
+    return {
+      data: [],
+      totalPages: 0,
+      totalCount: 0,
+    };
+  }
+}
 //get single collection  by id
 export async function getSingleCollectiontById(id: string) {
   try {

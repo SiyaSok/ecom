@@ -20,7 +20,7 @@ const Wishlist = async () => {
   const user = await getUserById(session?.user?.id || "");
 
   return (
-    <div>
+    <div className='wrapper'>
       {user.Wishlist.length > 0 ? (
         <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4'>
           {user.Wishlist.map((product: WishlistItem) => (
