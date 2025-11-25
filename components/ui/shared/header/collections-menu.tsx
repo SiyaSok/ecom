@@ -34,7 +34,7 @@ const CollectionsMenu = async () => {
   };
 
   return (
-    <div className='w-full max-w-[1200px] mx-auto bg-white border-b border-gray-100'>
+    <div className='hidden md:block w-full max-w-[1200px] mx-auto bg-white border-b border-gray-100'>
       <div className='relative'>
         <div className='px-4 md:px-6'>
           <div className='flex items-center justify-start whitespace-nowrap'>

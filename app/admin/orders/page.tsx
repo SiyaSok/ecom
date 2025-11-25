@@ -169,7 +169,7 @@ const OrdersPage = async (props: {
               <div className='flex gap-4'>
                 <Button
                   asChild
-                  className='bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 border-0 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200'>
+                  className='bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 border-0 text-white px-8 py-3  font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200'>
                   <Link href={"/admin/orders/analytics"}>View Analytics</Link>
                 </Button>
                 {/* <Button

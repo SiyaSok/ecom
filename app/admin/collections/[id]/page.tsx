@@ -22,17 +22,12 @@ const EditCollectiontPage = async (props: {
   }
 
   return (
-    <div className='space-y-8 max-w-5xl mx-auto'>
-      <h2 className='h2-bold'>Update Collection</h2>
-      <div className='mt-8'>
-        <CollectionForm
-          type='Update'
-          collection={collection}
-          collectionId={id}
-          categories={category.data}
-        />
-      </div>
-    </div>
+    <CollectionForm
+      type='Update'
+      collection={collection}
+      collectionId={id}
+      categories={category.data}
+    />
   );
 };
 

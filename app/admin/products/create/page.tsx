@@ -8,15 +8,12 @@ const CreateProduct = async () => {
   const collections = await getAllCollections({});
 
   return (
-    <>
-      <h2 className='h2-bold'>Create Product</h2>
-      <div className='mt-8'>
-        <ProductForm
-          type='Create'
-          collections={collections?.data as Collection[]}
-        />
-      </div>
-    </>
+    <div>
+      <ProductForm
+        type='Create'
+        collections={collections?.data as Collection[]}
+      />
+    </div>
   );
 };
 

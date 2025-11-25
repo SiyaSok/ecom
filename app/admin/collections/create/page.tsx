@@ -8,10 +8,7 @@ const CreateProduct = async () => {
 
   return (
     <>
-      <h2 className='h2-bold'>Create Collection</h2>
-      <div className='mt-8'>
-        <CollectionForm type='Create' categories={category.data} />
-      </div>
+      <CollectionForm type='Create' categories={category.data} />
     </>
   );
 };

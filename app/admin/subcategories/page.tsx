@@ -131,8 +131,8 @@ const SubCategoriesPage = async (props: {
             <div className='space-y-6'>
               <div className='space-y-4'>
                 <div className='inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2'>
-                  <Tags className='w-4 h-4 text-teal-300' />
-                  <span className='text-sm text-teal-200 font-medium'>
+                  <Tags className='w-4 h-4 text-green-300' />
+                  <span className='text-sm text-green-200 font-medium'>
                     Subcategory Management
                   </span>
                 </div>
@@ -187,9 +187,9 @@ const SubCategoriesPage = async (props: {
               <div className='flex gap-4'>
                 <Button
                   asChild
-                  className='bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 border-0 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200'>
+                  className='bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 border-0 text-white px-8 py-3  font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200'>
                   <Link href={"/admin/subcategories/create"}>
-                    Create New Subcategory
+                    <Tags className='w-4 h-4' /> Create New Subcategory
                   </Link>
                 </Button>
                 {/* <Button
@@ -271,7 +271,6 @@ const SubCategoriesPage = async (props: {
       <div className='space-y-4'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-3'>
-            <h1 className='h2-bold'>All Subcategories</h1>
             {searchText && (
               <div className='flex items-center gap-2'>
                 <span className='text-sm text-gray-600'>
@@ -286,7 +285,7 @@ const SubCategoriesPage = async (props: {
             )}
           </div>
 
-          <div className='flex items-center gap-4'>
+          {/* <div className='flex items-center gap-4'>
             <div className='text-sm text-gray-600'>
               Showing {categories.data.length} of {totalSubCategories}{" "}
               subcategories
@@ -299,7 +298,7 @@ const SubCategoriesPage = async (props: {
                 Create Subcategory
               </Link>
             </Button>
-          </div>
+          </div> */}
         </div>
 
         <div className='overflow-x-auto'>

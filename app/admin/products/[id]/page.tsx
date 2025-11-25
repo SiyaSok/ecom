@@ -24,17 +24,12 @@ const EditProductPage = async (props: {
   }
 
   return (
-    <div className='space-y-8 max-w-5xl mx-auto'>
-      <h2 className='h2-bold'>Update Product</h2>
-      <div className='mt-8'>
-        <ProductForm
-          type='Update'
-          product={product}
-          productId={id}
-          collections={collections.data}
-        />
-      </div>
-    </div>
+    <ProductForm
+      type='Update'
+      product={product}
+      productId={id}
+      collections={collections.data}
+    />
   );
 };
 

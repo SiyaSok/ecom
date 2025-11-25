@@ -83,8 +83,8 @@ const CollectionsPage = async (props: {
             <div className='space-y-6'>
               <div className='space-y-4'>
                 <div className='inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2'>
-                  <Layers className='w-4 h-4 text-blue-300' />
-                  <span className='text-sm text-blue-200 font-medium'>
+                  <Layers className='w-4 h-4 text-green-300' />
+                  <span className='text-sm text-green-200 font-medium'>
                     Collection Management
                   </span>
                 </div>
@@ -129,7 +129,7 @@ const CollectionsPage = async (props: {
               <div className='flex gap-4'>
                 <Button
                   asChild
-                  className='bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 border-0 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200'>
+                  className='bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 border-0 text-white px-8 py-3  font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200'>
                   <Link href={"/admin/collections/create"}>
                     Create New Collection
                   </Link>
