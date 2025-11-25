@@ -45,7 +45,7 @@ const ProductDatailsPage = async (props: {
       />
 
       <section>
-        <div className='grid grid-cols-1 md:grid-cols-4 gap-10'>
+        <div className='grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-10'>
           <div className='col-span-2'>
             <ProductImages images={product.images} />
           </div>
@@ -54,7 +54,7 @@ const ProductDatailsPage = async (props: {
               <p>
                 {product.brand} {product.category}
               </p>
-              <h1 className='text-2xl'>{product.name}</h1>
+              <h1 className='text-xl md:text-2xl'>{product.name}</h1>
               <div className='flex flex-col sm:flex-row sm:items-center gap-3'>
                 <ProductPrice
                   value={Number(product.price)}

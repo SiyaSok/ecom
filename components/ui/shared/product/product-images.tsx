@@ -13,7 +13,14 @@ const ProductImages = ({ images }: { images: string[] }) => {
         alt='product-image'
         width={800}
         height={800}
-        className='min-h-[200px] object-cover object-center'
+        className='min-h-[200px] object-cover object-center hidden md:block'
+      />
+      <Image
+        src={images[current]}
+        alt='product-image'
+        width={400}
+        height={400}
+        className='min-h-[200px] object-cover object-center block md:hidden'
       />
       <div className='flex'>
         {images.map((image, index) => (
