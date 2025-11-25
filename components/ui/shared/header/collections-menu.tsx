@@ -1,6 +1,7 @@
 /** @format */
 
 import { getAllCollectionsSimple } from "@/lib/actions/collection-action";
+import { cleanName } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -16,22 +17,6 @@ const CollectionsMenu = async () => {
       </div>
     );
   }
-
-  const cleanName = (name: string): string => {
-    const patterns = [
-      "Ladies ",
-      "Women's ",
-      "Mens ",
-      "for Women ",
-      "for Men ",
-      "for Women",
-    ];
-
-    return patterns.reduce(
-      (cleanedName, pattern) => cleanedName.replaceAll(pattern, ""),
-      name
-    );
-  };
 
   return (
     <div className='hidden md:block w-full max-w-[1200px] mx-auto bg-white border-b border-gray-100'>

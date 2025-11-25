@@ -26,17 +26,17 @@ export default function CollectionHero({
       : products?.slice(0, 2);
 
   return (
-    <section className='relative min-h-[500px] bg-black overflow-hidden mb-10'>
+    <section className='relative min-h-[250px] md:min-h-[500px] bg-black overflow-hidden mb-10'>
       {/* Background Pattern */}
       <div className='absolute inset-0 from-pink-200/20 via-transparent to-transparent'></div>
 
       {/* Main Content */}
-      <div className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20'>
+      <div className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-20'>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 items-center'>
           {/* Text Content */}
           <div className='space-y-8'>
             <div className='space-y-4'>
-              <h1 className='text-5xl lg:text-6xl font-bold text-gray-100 tracking-tight'>
+              <h1 className='text-3xl md:text-5xl lg:text-6xl font-bold text-gray-100 tracking-tight'>
                 {collection?.name ? collection?.name : category?.name}
                 {collection?.name && (
                   <span className='block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-600'>
@@ -45,7 +45,7 @@ export default function CollectionHero({
                 )}
               </h1>
 
-              <p className='text-lg text-gray-100 max-w-lg'>
+              <p className='text-sm md:text-lg text-gray-100 max-w-lg'>
                 {collection?.description
                   ? collection?.description
                   : category?.description}
@@ -86,7 +86,7 @@ export default function CollectionHero({
           </div>
 
           {/* Product Showcase */}
-          <div className='relative'>
+          <div className='relative hidden md:flex'>
             <div className='grid grid-cols-2 gap-4'>
               {displayProducts?.map((product, index) => (
                 <div

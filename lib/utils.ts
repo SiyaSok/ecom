@@ -143,3 +143,19 @@ export function formURLQuery({
     }
   );
 }
+
+export const cleanName = (name: string): string => {
+  const patterns = [
+    "Ladies ",
+    "Women's ",
+    "Mens ",
+    "for Women ",
+    "for Men ",
+    "for Women",
+  ];
+
+  return patterns.reduce(
+    (cleanedName, pattern) => cleanedName.replaceAll(pattern, ""),
+    name
+  );
+};

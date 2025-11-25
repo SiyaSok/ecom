@@ -4,116 +4,74 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, Menu, X, Search, User, ShoppingBag } from "lucide-react";
+import { Collection, Product } from "@/types";
+import { getAllCollectionsSimple } from "@/lib/actions/collection-action";
+import { cleanName } from "@/lib/utils";
 
-const collectionsData = [
-  // Your data here (same as provided)
-  {
-    id: "8cbcf71b-2d9d-4a5c-8690-1c0e6550fc41",
-    name: "Women",
-    slug: "women",
-    images: [
-      "https://utfs.io/f/X55GebA8RFI0npioFusjISmDoVr42YAfdxHytPX5Zb6M7cGF",
-    ],
-    categories: [
-      {
-        id: "61a02bf0-94d8-4145-b09c-5b5e2648bf01",
-        slug: "ladies-accessories",
-        name: "Ladies Accessories",
-        subCategories: [
-          {
-            id: "2fe0fa1c-d26c-4fb0-94ab-4404eb6d6de8",
-            name: "Bags for Women",
-            slug: "bags-for-women",
-            products: [{ id: "9b4c5370-26c7-4505-8465-e218bca92d9f" }],
-          },
-          {
-            id: "c2ee3774-2837-4205-908f-0753057c37be",
-            name: "Purses for Women",
-            slug: "purses-for-women",
-            products: [{ id: "72dac229-9b60-4e0a-8c14-f0db7b04ff93" }],
-          },
-        ],
-      },
-      {
-        id: "3414dd73-1613-45b3-bfd5-4bd2067ce06b",
-        slug: "ladies-clothing",
-        name: "Ladies Clothing",
-        subCategories: [
-          {
-            id: "bcab6197-3016-4bcc-8b56-1feaedfbc8a3",
-            name: "Dresses for Women",
-            slug: "dresses-for-women",
-            products: [{ id: "02aacc82-298e-444d-ad23-601db17aac7a" }],
-          },
-          {
-            id: "58b492e1-b084-48de-bbd9-2d9923dfd9e4",
-            name: "Jeans for Women",
-            slug: "jeans-for-women",
-            products: [{ id: "77210c12-1863-4a17-a30e-c0d8f92163bf" }],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "1d4d9aed-f27e-43de-99c2-94953723962a",
-    name: "Men",
-    slug: "men",
-    images: [
-      "https://utfs.io/f/X55GebA8RFI0c9NDjTPBqK3Rl1ozex86ktpgHIv4VFUM2TXb",
-    ],
-    categories: [
-      {
-        id: "c74fcc59-8f6f-4c8c-92ee-59992b1182c3",
-        slug: "mens-shoes",
-        name: "Men's Shoes",
-        subCategories: [
-          {
-            id: "270b93c2-6137-4f91-ab42-304417de00f6",
-            name: "Sneakers for Men",
-            slug: "sneakers-for-men",
-            products: [{ id: "4859e6aa-8c26-4ee9-a25c-ba15390900d5" }],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "a02c6a3e-3e33-4661-a628-d02a63bd7605",
-    name: "Sports",
-    slug: "sports",
-    images: [
-      "https://utfs.io/f/X55GebA8RFI0VJMPfeGQ1jPpvgwALW3o86RnVBOUdehuyqQM",
-    ],
-    categories: [
-      {
-        id: "sports-category",
-        slug: "sports-gear",
-        name: "Sports Gear",
-        subCategories: [
-          {
-            id: "running-shoes",
-            name: "Running Shoes",
-            slug: "running-shoes",
-            products: [{ id: "running-shoe-1" }],
-          },
-        ],
-      },
-    ],
-  },
-];
+// Define interfaces that match your API response structure
+interface SubCategory {
+  id: string;
+  name: string;
+  slug: string | null;
+  description: string | null;
+  createdAt: string;
+  updatedAt: string | null;
+  products: Product[];
+}
 
-export default function CoolMobileMenu() {
+interface Category {
+  id: string;
+  name: string;
+  slug: string | null;
+  description: string | null;
+  createdAt: string;
+  updatedAt: string | null;
+  products: Product[];
+  subCategories: SubCategory[];
+}
+
+interface CollectionWithCategories extends Collection {
+  id: string;
+  name: string;
+  slug: string | null;
+  description: string | null;
+  images: string[];
+  createdAt: string;
+  updatedAt: string | null;
+  categories: Category[];
+}
+
+export default function MobileDrawer() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeCollection, setActiveCollection] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-
-  const collectionsWithProducts = collectionsData.filter((collection) =>
-    collection.categories?.some((category) => category.subCategories.length > 0)
+  const [collections, setCollections] = useState<CollectionWithCategories[]>(
+    []
   );
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchCollections() {
+      try {
+        const data = await getAllCollectionsSimple();
+        console.log("API Response:", data.data);
+
+        // Type assertion to handle the API response
+        const collectionsData = data.data as CollectionWithCategories[];
+        setCollections(collectionsData || []);
+      } catch (error) {
+        console.error("Failed to fetch collections:", error);
+        setCollections([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCollections();
+  }, []);
 
   const handleCollectionClick = (collectionId: string) => {
     setActiveCollection(collectionId);
@@ -135,10 +93,47 @@ export default function CoolMobileMenu() {
   };
 
   const getCurrentCollection = () =>
-    collectionsWithProducts.find((c) => c.id === activeCollection);
+    collections.find((c) => c.id === activeCollection);
 
-  const getCurrentCategory = () =>
-    getCurrentCollection()?.categories?.find((c) => c.id === activeCategory);
+  const getCurrentCategory = () => {
+    const currentCollection = getCurrentCollection();
+    return currentCollection?.categories?.find((c) => c.id === activeCategory);
+  };
+
+  // Helper function to generate safe URLs
+  // const getCategoryUrl = (
+  //   collectionSlug: string | null,
+  //   categorySlug: string | null
+  // ) => {
+  //   if (!collectionSlug || !categorySlug) return "/search";
+  //   return `/collections/${collectionSlug}/${categorySlug}`;
+  // };
+
+  const getSubCategoryUrl = (
+    collectionSlug: string | null,
+    categorySlug: string | null,
+    subCategorySlug: string | null
+  ) => {
+    if (!collectionSlug || !categorySlug || !subCategorySlug) return "/search";
+    return `/collections/${collectionSlug}/${categorySlug}/${subCategorySlug}`;
+  };
+
+  if (loading) {
+    return (
+      <div className='w-full bg-white border-b border-gray-100 lg:hidden'>
+        <div className='px-4 py-2'>
+          <div className='h-10 bg-gray-200 rounded-md animate-pulse'></div>
+        </div>
+        <div className='divide-y'>
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className='px-4 py-3'>
+              <div className='h-6 bg-gray-200 rounded animate-pulse'></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -168,7 +163,7 @@ export default function CoolMobileMenu() {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className='fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white shadow-xl z-50 lg:hidden overflow-hidden'>
+              className='fixed top-0 left-0 h-full w-80 max-w-[95vw] bg-white shadow-xl z-50 lg:hidden overflow-hidden'>
               {/* Header */}
               <div className='bg-black text-white p-4'>
                 <div className='flex items-center justify-between mb-4'>
@@ -244,13 +239,13 @@ export default function CoolMobileMenu() {
 
                       {/* Collections */}
                       <div className='space-y-2'>
-                        {collectionsWithProducts.map((collection) => (
+                        {collections.map((collection) => (
                           <button
                             key={collection.id}
                             onClick={() => handleCollectionClick(collection.id)}
                             className='w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors group'>
                             <span className='font-medium text-gray-900 group-hover:text-black'>
-                              {collection.name}
+                              {cleanName(collection.name)}
                             </span>
                             <ChevronRight
                               size={16}
@@ -312,10 +307,10 @@ export default function CoolMobileMenu() {
                             className='w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors group border border-gray-200'>
                             <div className='text-left'>
                               <div className='font-medium text-gray-900 group-hover:text-black'>
-                                {category.name}
+                                {cleanName(category.name)}
                               </div>
                               <div className='text-xs text-gray-500 mt-1'>
-                                {category.subCategories.length} categories
+                                {category.subCategories?.length || 0} categories
                               </div>
                             </div>
                             <ChevronRight
@@ -341,11 +336,15 @@ export default function CoolMobileMenu() {
                           (subCategory) => (
                             <Link
                               key={subCategory.id}
-                              href={`/collections/${getCurrentCollection()?.slug}/${getCurrentCategory()?.slug}/${subCategory.slug}`}
+                              href={getSubCategoryUrl(
+                                getCurrentCollection()?.slug || null,
+                                getCurrentCategory()?.slug || null,
+                                subCategory.slug
+                              )}
                               className='block p-3 rounded-lg hover:bg-gray-50 transition-colors group border border-gray-200'
                               onClick={() => setIsOpen(false)}>
                               <div className='font-medium text-gray-900 group-hover:text-black'>
-                                {subCategory.name}
+                                {cleanName(subCategory.name)}
                               </div>
                               {subCategory.products && (
                                 <div className='text-xs text-gray-500 mt-1'>
