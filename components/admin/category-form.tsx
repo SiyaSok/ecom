@@ -24,7 +24,7 @@ import slugify from "slugify";
 import Select from "react-select";
 
 import { createCategory, updateCategory } from "@/lib/actions/category-action";
-import { ArrowLeft, Package, Plus, Sparkles } from "lucide-react";
+import { ArrowLeft, ChartBarStackedIcon, Plus, Sparkles } from "lucide-react";
 
 const CategoryForm = ({
   type,
@@ -105,13 +105,10 @@ const CategoryForm = ({
         </Button>
       </div>
       {/* Hero Header */}
-      <section className='relative bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 rounded-2xl overflow-hidden'>
-        {/* Background Pattern */}
-        {/* <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-600/20 via-transparent to-transparent'></div> */}
-
+      <section className='relative bg-gradient-to-br from-slate-900 via-black to-slate-900 rounded-2xl overflow-hidden'>
         {/* Floating Icons */}
         <div className='absolute top-10 left-10 w-20 h-20 bg-blue-500/10 rounded-full backdrop-blur-sm border border-blue-500/20 flex items-center justify-center'>
-          <Package className='w-8 h-8 text-blue-300' />
+          <ChartBarStackedIcon className='w-8 h-8 text-blue-300' />
         </div>
         <div className='absolute bottom-10 right-10 w-16 h-16 bg-green-500/10 rounded-full backdrop-blur-sm border border-green-500/20 flex items-center justify-center'>
           <Plus className='w-6 h-6 text-green-300' />

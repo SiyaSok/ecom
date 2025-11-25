@@ -39,7 +39,13 @@ import {
 import { getSingleCollectiontById } from "@/lib/actions/collection-action";
 import { useEffect, useState, useTransition } from "react";
 import { getSingleCategoryById } from "@/lib/actions/category-action";
-import { Loader2, Package, Plus, ArrowLeft, Sparkles } from "lucide-react";
+import {
+  Loader2,
+  Plus,
+  ArrowLeft,
+  Sparkles,
+  ShoppingBasket,
+} from "lucide-react";
 
 const ProductForm = ({
   type,
@@ -155,13 +161,13 @@ const ProductForm = ({
         </Button>
       </div>
       {/* Hero Header */}
-      <section className='relative bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 rounded-2xl overflow-hidden'>
+      <section className='relative bg-gradient-to-br from-slate-900 via-black to-slate-900 rounded-2xl overflow-hidden'>
         {/* Background Pattern */}
         {/* <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-600/20 via-transparent to-transparent'></div> */}
 
         {/* Floating Icons */}
         <div className='absolute top-10 left-10 w-20 h-20 bg-blue-500/10 rounded-full backdrop-blur-sm border border-blue-500/20 flex items-center justify-center'>
-          <Package className='w-8 h-8 text-blue-300' />
+          <ShoppingBasket className='w-8 h-8 text-blue-300' />
         </div>
         <div className='absolute bottom-10 right-10 w-16 h-16 bg-green-500/10 rounded-full backdrop-blur-sm border border-green-500/20 flex items-center justify-center'>
           <Plus className='w-6 h-6 text-green-300' />
