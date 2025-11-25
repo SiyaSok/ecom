@@ -6,7 +6,7 @@ import CategoryDrawer from "./category-drawer";
 import Search from "./search";
 const Header = () => {
   return (
-    <header className='w-full border-b bg-black text-white '>
+    <header className='w-full bg-gradient-to-br  from-slate-900 via-black to-slate-900   text-white '>
       <div className='wrapper flex-between'>
         <div className='flex-start'>
           <CategoryDrawer />

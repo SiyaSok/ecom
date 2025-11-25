@@ -119,20 +119,7 @@ export default function MobileDrawer() {
   };
 
   if (loading) {
-    return (
-      <div className='w-full bg-white border-b border-gray-100 lg:hidden'>
-        <div className='px-4 py-2'>
-          <div className='h-10 bg-gray-200 rounded-md animate-pulse'></div>
-        </div>
-        <div className='divide-y'>
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className='px-4 py-3'>
-              <div className='h-6 bg-gray-200 rounded animate-pulse'></div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
+    return <>...</>;
   }
 
   return (
