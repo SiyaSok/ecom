@@ -50,7 +50,7 @@ export default function MobileDrawer() {
   const [collections, setCollections] = useState<CollectionWithCategories[]>(
     []
   );
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchCollections() {
@@ -65,7 +65,7 @@ export default function MobileDrawer() {
         console.error("Failed to fetch collections:", error);
         setCollections([]);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     }
 
@@ -117,22 +117,22 @@ export default function MobileDrawer() {
     return `/collections/${collectionSlug}/${categorySlug}/${subCategorySlug}`;
   };
 
-  if (loading) {
-    return (
-      <div className='w-full bg-white border-b border-gray-100 lg:hidden'>
-        <div className='px-4 py-2'>
-          <div className='h-10 bg-gray-200 rounded-md animate-pulse'></div>
-        </div>
-        <div className='divide-y'>
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className='px-4 py-3'>
-              <div className='h-6 bg-gray-200 rounded animate-pulse'></div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className='w-full bg-white border-b border-gray-100 lg:hidden'>
+  //       <div className='px-4 py-2'>
+  //         <div className='h-10 bg-gray-200 rounded-md animate-pulse'></div>
+  //       </div>
+  //       <div className='divide-y'>
+  //         {[...Array(3)].map((_, i) => (
+  //           <div key={i} className='px-4 py-3'>
+  //             <div className='h-6 bg-gray-200 rounded animate-pulse'></div>
+  //           </div>
+  //         ))}
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
