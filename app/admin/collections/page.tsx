@@ -13,7 +13,7 @@ import {
 import { getAllCollections } from "@/lib/actions/collection-action";
 import { rquireAdmin } from "@/lib/auth-guard";
 import { formatDateTime, formatId } from "@/lib/utils";
-import { SquarePen, Layers, Package, Tag, Image } from "lucide-react";
+import { SquarePen, Layers, Package, Tag, Camera } from "lucide-react";
 import Link from "next/link";
 // import Image from "next/image";
 
@@ -39,13 +39,13 @@ const CollectionsPage = async (props: {
       acc +
       (collection.categories?.reduce(
         (catAcc, category) => catAcc + (category.products?.length || 0),
-        0
+        0,
       ) || 0),
-    0
+    0,
   );
   const totalCategories = collections.data.reduce(
     (acc, collection) => acc + (collection.categories?.length || 0),
-    0
+    0,
   );
 
   // Get product count for collection
@@ -55,7 +55,7 @@ const CollectionsPage = async (props: {
       collection.categories?.reduce(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (acc: number, category: any) => acc + (category.products?.length || 0),
-        0
+        0,
       ) || 0
     );
   };
@@ -182,7 +182,7 @@ const CollectionsPage = async (props: {
                               {collection.images &&
                                 collection.images.length > 0 && (
                                   <div className='flex items-center gap-1 text-xs text-gray-400'>
-                                    <Image className='w-3 h-3' />
+                                    <Camera className='w-3 h-3' />
                                     <span>
                                       {collection.images.length} images
                                     </span>
