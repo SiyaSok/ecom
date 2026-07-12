@@ -2,18 +2,22 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useSearchParams } from "next/navigation";
 import { signInWithCredentials } from "@/lib/actions/user.action";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Eye, LogInIcon } from "lucide-react";
+
 const CredentialsSignInForm = () => {
   const [data, action] = useActionState(signInWithCredentials, {
     success: false,
     message: "",
   });
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
@@ -23,6 +27,7 @@ const CredentialsSignInForm = () => {
 
     return (
       <Button disabled={pending} className='w-full' variant='default'>
+        <LogInIcon className='mr-2 h-4 w-4' />
         {pending ? "Signing In..." : "Sign In"}
       </Button>
     );
@@ -43,16 +48,25 @@ const CredentialsSignInForm = () => {
             defaultValue={""}
           />
         </div>
-        <div>
+        <div className='relative'>
           <Label htmlFor='password'>Password</Label>
           <Input
             id='password'
             name='password'
-            type='password'
+            type={passwordVisible ? "text" : "password"}
             required
             autoComplete='password'
             defaultValue={""}
           />
+          <Eye
+            className='absolute right-3 top-[38px] h-4 w-4 cursor-pointer text-muted-foreground'
+            onClick={() => setPasswordVisible(!passwordVisible)}
+          />
+        </div>
+        <div className='flex items-center justify-between'>
+          {/* <Link href='/forgot-password' target='_self' className='link text-sm'>
+            Forgot Password?
+          </Link> */}
         </div>
         {data && !data.success && (
           <div className='text-center text-destructive'>{data.message}</div>
