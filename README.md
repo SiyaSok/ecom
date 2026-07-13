@@ -20,7 +20,7 @@ A full-stack fashion e-commerce storefront and admin dashboard, built with the N
 
 ## 📋 Table of Contents
 
-- [Screenshots](#-screenshot)
+- [Screenshots](#-screenshots)
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
 - [Architecture](#-architecture)
@@ -39,29 +39,55 @@ A full-stack fashion e-commerce storefront and admin dashboard, built with the N
 
 ---
 
-## 📸 Screenshot
+## 📸 Screenshots
 
 <p align="center">
-  <img src="docs/hero.jpg" alt="The Hanger storefront banner" width="100%" />
+  <img src="docs/screenshot-home.png" alt="Homepage" width="100%" />
 </p>
+<p align="center"><sub>Homepage — collection tiles, New In rail, Browse Categories, and promo banners</sub></p>
 
-<p align="center">
-  <img src="https://utfs.io/f/X55GebA8RFI0h7L1QSNZJ3IcfESsOwyUGoND9Aqv4znRjVPg" alt="Women's Aldo boots product listing" width="24%" />
-  <img src="https://utfs.io/f/X55GebA8RFI0DE7xDpY8r7lUvqWxIcY4dLspAtFyPX35SwEn" alt="Women's Timberland boots product listing" width="24%" />
-  <img src="https://utfs.io/f/X55GebA8RFI0U6EEGHiL52GVcoxI7Fjy9hpzXAklHOgrPEvt" alt="Women's canvas mini purse product listing" width="24%" />
-  <img src="https://utfs.io/f/X55GebA8RFI02lnU1iVKWEPj5xkdrilwmzTGIY90V6uZhNMC" alt="Sterling silver ring product listing" width="24%" />
-</p>
-
-<p align="center"><sub>Homepage banner from <code>public/images</code>; product tiles pulled live from the storefront catalog (Aldo, Timberland, Foschini, American Swiss).</sub></p>
-
-<details>
-<summary>More promo banners bundled with the project</summary>
-<p align="center">
-  <img src="docs/banner-2.jpg" alt="Second promotional banner" width="100%" />
-</p>
-</details>
-
-> Swap in a full-page screenshot of the homepage/cart/admin dashboard here for the best first impression — a tool like [Polypane](https://polypane.app) or your browser's built-in "capture full size screenshot" (DevTools → Cmd/Ctrl+Shift+P) works well. Good pages to capture: homepage, a product detail page, the cart, and the admin overview dashboard.
+<table>
+<tr>
+<td width="50%">
+<img src="docs/screenshot-search.png" alt="Search results with filters" width="100%" />
+<p align="center"><sub>Search results with department/price/rating filters</sub></p>
+</td>
+<td width="50%">
+<img src="docs/screenshot-product.png" alt="Product detail page" width="100%" />
+<p align="center"><sub>Product detail — flexible payment options, rating breakdown, reviews</sub></p>
+</td>
+</tr>
+<tr>
+<td width="50%">
+<img src="docs/screenshot-cart.png" alt="Shopping cart" width="100%" />
+<p align="center"><sub>Cart with order summary</sub></p>
+</td>
+<td width="50%">
+<img src="docs/screenshot-checkout-shipping.png" alt="Checkout - shipping address step" width="100%" />
+<p align="center"><sub>Checkout — shipping address step</sub></p>
+</td>
+</tr>
+<tr>
+<td width="50%">
+<img src="docs/screenshot-checkout-payment.png" alt="Checkout - payment method step" width="100%" />
+<p align="center"><sub>Checkout — payment method (Stripe / PayPal / Cash on Delivery)</sub></p>
+</td>
+<td width="50%">
+<img src="docs/screenshot-admin-overview.png" alt="Admin dashboard overview" width="100%" />
+<p align="center"><sub>Admin dashboard — revenue, sales, and recent orders</sub></p>
+</td>
+</tr>
+<tr>
+<td width="50%">
+<img src="docs/screenshot-admin-orders.png" alt="Admin order management" width="100%" />
+<p align="center"><sub>Admin — order management with payment/delivery status</sub></p>
+</td>
+<td width="50%">
+<img src="docs/screenshot-admin-categories.png" alt="Admin category management" width="100%" />
+<p align="center"><sub>Admin — category & subcategory management</sub></p>
+</td>
+</tr>
+</table>
 
 ---
 
