@@ -9,7 +9,7 @@ import Rating from "./rating";
 import AddToWishList from "./add-to-wishlish";
 import { auth } from "@/auth";
 import { Badge } from "@/components/ui/badge";
-import { Eye, ShoppingBag, Star, Zap } from "lucide-react";
+import { Eye, ShoppingBag, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const ProductCard = async ({
@@ -58,12 +58,12 @@ const ProductCard = async ({
                   <Eye className='h-4 w-4' />
                 </Link>
               </Button>
-              <Button
+              {/* <Button
                 size='icon'
                 variant='secondary'
                 className='bg-white/90 backdrop-blur-sm hover:bg-white h-10 w-10 rounded-full'>
                 <ShoppingBag className='h-4 w-4' />
-              </Button>
+              </Button> */}
             </div>
           </div>
 
@@ -149,23 +149,23 @@ const ProductCard = async ({
               value={Number(product.price)}
               className='text-lg font-bold text-gray-900'
             />
-            {product.stock > 0 && (
+            {/* {product.stock > 0 && (
               <div className='flex items-center gap-1 text-xs text-gray-500'>
                 <div
                   className={`w-2 h-2 rounded-full ${isLowStock ? "bg-orange-500" : "bg-green-500"}`}></div>
                 {isLowStock ? `Only ${product.stock} left` : "In Stock"}
               </div>
-            )}
+            )} */}
           </div>
 
           {/* Quick Add to Cart */}
-          {product.stock > 0 && showActions && (
+          {/* {product.stock > 0 && showActions && (
             <Button
               size='sm'
               className='bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-300 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100'>
               <ShoppingBag className='h-4 w-4' />
             </Button>
-          )}
+          )} */}
         </div>
 
         {/* Additional Features */}
@@ -174,16 +174,16 @@ const ProductCard = async ({
             <div className='w-2 h-2 bg-green-500 rounded-full'></div>
             Free delivery
           </div>
-          {Number(product.price) > 1000 && (
+          {/* {Number(product.price) > 1000 && (
             <div className='flex items-center gap-1 text-blue-600 font-medium'>
               <Star className='h-3 w-3 fill-blue-600' />
               eB Points
             </div>
-          )}
+          )} */}
         </div>
 
         {/* Color Variants (Placeholder) */}
-        {product.images.length > 1 && (
+        {/* {product.images.length > 1 && (
           <div className='flex gap-1 pt-2 border-t border-gray-100'>
             {product.images.slice(0, 3).map((image, index) => (
               <div
@@ -204,15 +204,15 @@ const ProductCard = async ({
               </div>
             )}
           </div>
-        )}
+        )} */}
       </CardContent>
 
       {/* Special Offers Ribbon */}
-      {Number(product.price) > 1500 && (
+      {/* {Number(product.price) > 1500 && (
         <div className='absolute top-0 right-0 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-3 py-1 transform rotate-45 translate-x-8 -translate-y-2 shadow-lg'>
           PREMIUM
         </div>
-      )}
+      )} */}
     </Card>
   );
 };

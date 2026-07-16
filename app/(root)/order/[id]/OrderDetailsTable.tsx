@@ -148,7 +148,7 @@ const OrderDetailsTable = ({
   };
 
   return (
-    <>
+    <div className='max-w-6xl mx-auto px-4 py-4'>
       <h1 className='py-4 text-2xl'>Order {formatId(id)}</h1>
       <div className='grid md:grid-cols-3 md:gap-5'>
         <div className='col-span-2 space-4-y overlow-x-auto'>
@@ -273,7 +273,7 @@ const OrderDetailsTable = ({
           </Card>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

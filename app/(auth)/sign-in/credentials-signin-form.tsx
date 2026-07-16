@@ -79,6 +79,15 @@ const CredentialsSignInForm = () => {
           <Link href='/sign-up' target='_self' className='link'>
             Sign Up
           </Link>
+          <div className='text-sm text-center text-muted-foreground mt-2'>
+            <p>Demo credential:</p>
+            <p>
+              Email : <b>siyandasokhela@gmail.com</b>
+            </p>
+            <p>
+              Password : <b>siyandasokhela</b>
+            </p>
+          </div>
         </div>
       </div>
     </form>

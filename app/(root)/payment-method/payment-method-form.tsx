@@ -37,7 +37,7 @@ const PaymentMethodForm = ({
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof paymentMethodSchema>> = async (
-    values
+    values,
   ) => {
     startTransition(async () => {
       const res = await updateUserPaymentMethod(values);

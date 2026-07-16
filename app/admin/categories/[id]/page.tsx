@@ -20,16 +20,13 @@ const EditProductPage = async (props: { params: Promise<{ id: string }> }) => {
   }
 
   return (
-    <div className='space-y-8 max-w-5xl mx-auto'>
-      <h2 className='h2-bold'>Update Category</h2>
-      <div className='mt-8'>
-        <CategoryForm
-          type='Update'
-          category={category}
-          categoryId={id}
-          subcategory={SubCategory.data}
-        />
-      </div>
+    <div className='space-y-4'>
+      <CategoryForm
+        type='Update'
+        category={category}
+        categoryId={id}
+        subcategory={SubCategory.data}
+      />
     </div>
   );
 };

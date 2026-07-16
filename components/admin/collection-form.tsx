@@ -50,7 +50,7 @@ const CollectionForm = ({
 
   const form = useForm<z.infer<typeof insertCollectionSchema>>({
     resolver: zodResolver(
-      type === "Update" ? updateCollectionSchema : insertCollectionSchema
+      type === "Update" ? updateCollectionSchema : insertCollectionSchema,
     ),
     defaultValues:
       collection && type === "Update"
@@ -104,7 +104,7 @@ const CollectionForm = ({
   const images = form.watch("images");
 
   return (
-    <>
+    <div className='space-y-4'>
       <div className='flex items-center'>
         <Button
           variant='outline'
@@ -230,7 +230,7 @@ const CollectionForm = ({
                                   "slug",
                                   slugify(form.getValues("name"), {
                                     lower: true,
-                                  })
+                                  }),
                                 );
                               }}>
                               Generate{" "}
@@ -297,7 +297,7 @@ const CollectionForm = ({
                               }))}
                             onChange={(selected) => {
                               field.onChange(
-                                selected.map((option) => option.value)
+                                selected.map((option) => option.value),
                               );
                             }}
                           />
@@ -340,7 +340,7 @@ const CollectionForm = ({
                               <UploadButton
                                 endpoint='imageUploader'
                                 onClientUploadComplete={(
-                                  res: { url: string }[]
+                                  res: { url: string }[],
                                 ) => {
                                   form.setValue("images", [
                                     ...images,
@@ -388,7 +388,7 @@ const CollectionForm = ({
           </Form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

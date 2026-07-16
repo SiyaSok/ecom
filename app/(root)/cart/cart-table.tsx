@@ -32,6 +32,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
   const router = useRouter();
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
+  const [isPendingAddToCart, startTransitionAddToCart] = useTransition();
 
   return (
     <div className='max-w-6xl mx-auto px-4 py-4'>
@@ -57,7 +58,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
             Looks like you haven&apos;t added any items to your cart yet.
           </p>
           <Button asChild>
-            <Link href='/products' className='flex items-center gap-2'>
+            <Link href='/' className='flex items-center gap-2'>
               Start Shopping
               <ArrowRight className='h-4 w-4' />
             </Link>
@@ -91,15 +92,15 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                     <div className='flex items-center justify-between mt-3'>
                       <div className='flex items-center border rounded-md'>
                         <Button
-                          disabled={isPending}
+                          disabled={isPendingAddToCart}
                           type='button'
                           variant='ghost'
                           size='icon'
                           className='h-8 w-8 rounded-r-none'
                           onClick={() =>
-                            startTransition(async () => {
+                            startTransitionAddToCart(async () => {
                               const res = await removeItemFromCart(
-                                item.productId
+                                item.productId,
                               );
                               toast({
                                 variant: res.success
@@ -109,7 +110,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                               });
                             })
                           }>
-                          {isPending ? (
+                          {isPendingAddToCart ? (
                             <Loader className='h-3 w-3 animate-spin' />
                           ) : (
                             <Minus className='h-3 w-3' />
@@ -121,13 +122,13 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                           </span>
                         </div>
                         <Button
-                          disabled={isPending}
+                          disabled={isPendingAddToCart}
                           type='button'
                           variant='ghost'
                           size='icon'
                           className='h-8 w-8 rounded-l-none'
                           onClick={() =>
-                            startTransition(async () => {
+                            startTransitionAddToCart(async () => {
                               const res = await addItemToCart(item);
                               toast({
                                 variant: res.success
@@ -137,7 +138,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                               });
                             })
                           }>
-                          {isPending ? (
+                          {isPendingAddToCart ? (
                             <Loader className='h-3 w-3 animate-spin' />
                           ) : (
                             <Plus className='h-3 w-3' />
@@ -192,15 +193,15 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                           <div className='flex items-center justify-center'>
                             <div className='flex items-center border rounded-md'>
                               <Button
-                                disabled={isPending}
+                                disabled={isPendingAddToCart}
                                 type='button'
                                 variant='ghost'
                                 size='icon'
                                 className='h-8 w-8 rounded-r-none'
                                 onClick={() =>
-                                  startTransition(async () => {
+                                  startTransitionAddToCart(async () => {
                                     const res = await removeItemFromCart(
-                                      item.productId
+                                      item.productId,
                                     );
                                     toast({
                                       variant: res.success
@@ -210,7 +211,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                                     });
                                   })
                                 }>
-                                {isPending ? (
+                                {isPendingAddToCart ? (
                                   <Loader className='h-3 w-3 animate-spin' />
                                 ) : (
                                   <Minus className='h-3 w-3' />
@@ -222,13 +223,13 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                                 </span>
                               </div>
                               <Button
-                                disabled={isPending}
+                                disabled={isPendingAddToCart}
                                 type='button'
                                 variant='ghost'
                                 size='icon'
                                 className='h-8 w-8 rounded-l-none'
                                 onClick={() =>
-                                  startTransition(async () => {
+                                  startTransitionAddToCart(async () => {
                                     const res = await addItemToCart(item);
                                     toast({
                                       variant: res.success
@@ -238,7 +239,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                                     });
                                   })
                                 }>
-                                {isPending ? (
+                                {isPendingAddToCart ? (
                                   <Loader className='h-3 w-3 animate-spin' />
                                 ) : (
                                   <Plus className='h-3 w-3' />

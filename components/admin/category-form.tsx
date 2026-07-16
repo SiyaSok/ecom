@@ -42,7 +42,7 @@ const CategoryForm = ({
 
   const form = useForm<z.infer<typeof insertCategorySchema>>({
     resolver: zodResolver(
-      type === "Update" ? updateCategorySchema : insertCategorySchema
+      type === "Update" ? updateCategorySchema : insertCategorySchema,
     ),
     defaultValues:
       category && type === "Update"
@@ -54,7 +54,7 @@ const CategoryForm = ({
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof insertCategorySchema>> = async (
-    values
+    values,
   ) => {
     // On Create
     if (type === "Create") {
@@ -216,7 +216,7 @@ const CategoryForm = ({
                                   "slug",
                                   slugify(form.getValues("name"), {
                                     lower: true,
-                                  })
+                                  }),
                                 );
                               }}>
                               Generate{" "}
@@ -282,7 +282,7 @@ const CategoryForm = ({
                               }))}
                             onChange={(selected) =>
                               field.onChange(
-                                selected.map((option) => option.value)
+                                selected.map((option) => option.value),
                               )
                             }
                             className='react-select-container'
