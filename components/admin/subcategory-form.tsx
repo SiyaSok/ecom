@@ -45,7 +45,7 @@ const SubCategoryForm = ({
 
   const form = useForm<z.infer<typeof insertSubCategorySchema>>({
     resolver: zodResolver(
-      type === "Update" ? updateSubCategorySchema : insertSubCategorySchema
+      type === "Update" ? updateSubCategorySchema : insertSubCategorySchema,
     ),
     defaultValues:
       category && type === "Update" ? category : productDefaultValues,
@@ -210,13 +210,14 @@ const SubCategoryForm = ({
                             />
                             <Button
                               type='button'
+                              variant='outline'
                               className='h-11 bg-gray-50 hover:bg-gray-100 border-gray-300'
                               onClick={() => {
                                 form.setValue(
                                   "slug",
                                   slugify(form.getValues("name"), {
                                     lower: true,
-                                  })
+                                  }),
                                 );
                               }}>
                               Generate{" "}

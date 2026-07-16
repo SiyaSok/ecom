@@ -69,14 +69,14 @@ const ProductForm = ({
 
   const form = useForm<z.infer<typeof insertProductSchema>>({
     resolver: zodResolver(
-      type === "Update" ? updateProductSchema : insertProductSchema
+      type === "Update" ? updateProductSchema : insertProductSchema,
     ),
     defaultValues:
       product && type === "Update" ? product : productDefaultValues,
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (
-    values
+    values,
   ) => {
     // On Create
     if (type === "Create") {
@@ -103,9 +103,6 @@ const ProductForm = ({
       }
 
       const res = await updateeProducts({ ...values, id: productId });
-
-      console.log("Update Response:", res);
-
       if (!res.success) {
         toast({
           variant: "destructive",
@@ -280,7 +277,7 @@ const ProductForm = ({
                                   "slug",
                                   slugify(form.getValues("name"), {
                                     lower: true,
-                                  })
+                                  }),
                                 );
                               }}>
                               Generate
@@ -440,7 +437,7 @@ const ProductForm = ({
                                       value={category.id}>
                                       {category.name}
                                     </SelectItem>
-                                  )
+                                  ),
                                 )}
                               </SelectContent>
                             </Select>
@@ -537,7 +534,7 @@ const ProductForm = ({
                                     onClick={() => {
                                       form.setValue(
                                         "images",
-                                        images.filter((img) => img !== image)
+                                        images.filter((img) => img !== image),
                                       );
                                     }}>
                                     ×
@@ -552,7 +549,7 @@ const ProductForm = ({
                               <UploadButton
                                 endpoint='imageUploader'
                                 onClientUploadComplete={(
-                                  res: { url: string }[]
+                                  res: { url: string }[],
                                 ) => {
                                   form.setValue("images", [
                                     ...images,
@@ -642,7 +639,7 @@ const ProductForm = ({
                           <UploadButton
                             endpoint='imageUploader'
                             onClientUploadComplete={(
-                              res: { url: string }[]
+                              res: { url: string }[],
                             ) => {
                               form.setValue("banner", res[0].url);
                               toast({
