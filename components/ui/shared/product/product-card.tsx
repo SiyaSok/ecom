@@ -9,7 +9,7 @@ import Rating from "./rating";
 import AddToWishList from "./add-to-wishlish";
 import { auth } from "@/auth";
 import { Badge } from "@/components/ui/badge";
-import { Eye, ShoppingBag, Zap } from "lucide-react";
+import { Eye, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const ProductCard = async ({
