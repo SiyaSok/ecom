@@ -9,6 +9,7 @@ import { authConfig } from "./auth.config";
 import { cookies } from "next/headers";
 
 export const config: NextAuthConfig = {
+  trustHost: true,
   pages: {
     signIn: "/sign-in",
     signOut: "/sign-in",
@@ -36,7 +37,7 @@ export const config: NextAuthConfig = {
 
         const isValidPassword = compareSync(
           credentials.password as string,
-          user.password
+          user.password,
         );
         if (!isValidPassword) return null;
 
